@@ -1,0 +1,116 @@
+{
+  "_source": "Distilled from selsabilshop.net + Latina brief. Hierarchical, FR-primary, AR + EN translations.",
+  "_notes": "These are the canonical product categories the storefront filter, admin taxonomy, and SKU prefix scheme should align to.",
+  "categories": [
+    {
+      "key": "shoes",
+      "label_fr": "Chaussures",
+      "label_ar": "الأحذية",
+      "label_en": "Shoes",
+      "sku_prefix": "LT-CH",
+      "subcategories": [
+        { "key": "escarpin",     "label_fr": "Escarpin",       "label_ar": "كعب عالي",    "label_en": "Pumps",       "variants_hint": ["Demi-Talon", "Talon haut", "Soirée", "Matte", "Glacé"] },
+        { "key": "ballerine",    "label_fr": "Ballerine",      "label_ar": "بالرين",      "label_en": "Ballet flats" },
+        { "key": "mocassins",    "label_fr": "Mocassins",      "label_ar": "موكاسان",     "label_en": "Loafers" },
+        { "key": "sandales",     "label_fr": "Sandales",       "label_ar": "صنادل",       "label_en": "Sandals" },
+        { "key": "mules",        "label_fr": "Mules",          "label_ar": "بابوش",       "label_en": "Mules" },
+        { "key": "sabot",        "label_fr": "Sabot",          "label_ar": "سابو",        "label_en": "Clogs" },
+        { "key": "boots",        "label_fr": "Boots",          "label_ar": "بوط",         "label_en": "Boots" },
+        { "key": "bottines",     "label_fr": "Bottines",       "label_ar": "بوط قصير",    "label_en": "Ankle boots" },
+        { "key": "derbies",      "label_fr": "Derbies",        "label_ar": "ديربي",       "label_en": "Derbies" },
+        { "key": "baskets",      "label_fr": "Baskets",        "label_ar": "أحذية رياضية","label_en": "Sneakers" },
+        { "key": "compense",     "label_fr": "Compensé",       "label_ar": "كعب مرتفع",   "label_en": "Wedges" },
+        { "key": "espadrilles",  "label_fr": "Espadrilles",    "label_ar": "إسبادريل",    "label_en": "Espadrilles" },
+        { "key": "birks",        "label_fr": "Birks",          "label_ar": "بيركس",       "label_en": "Birkenstocks-style" }
+      ]
+    },
+    {
+      "key": "bags",
+      "label_fr": "Sacs",
+      "label_ar": "الحقائب",
+      "label_en": "Bags",
+      "sku_prefix": "LT-SA",
+      "subcategories": [
+        { "key": "sac_main",     "label_fr": "Sac à main",     "label_ar": "حقيبة يد",    "label_en": "Handbag" },
+        { "key": "sac_epaule",   "label_fr": "Sac épaule",     "label_ar": "حقيبة كتف",   "label_en": "Shoulder bag" },
+        { "key": "tote",         "label_fr": "Tote bag",       "label_ar": "حقيبة كبيرة", "label_en": "Tote bag" },
+        { "key": "bandouliere",  "label_fr": "Bandoulière",    "label_ar": "كروسبودي",    "label_en": "Crossbody" },
+        { "key": "pochette",     "label_fr": "Pochette",       "label_ar": "محفظة كبيرة", "label_en": "Clutch" },
+        { "key": "soiree",       "label_fr": "Sac soirée",     "label_ar": "حقيبة سهرة",  "label_en": "Evening bag" },
+        { "key": "mini",         "label_fr": "Mini sac",       "label_ar": "حقيبة صغيرة", "label_en": "Mini bag" }
+      ]
+    },
+    {
+      "key": "accessories",
+      "label_fr": "Accessoires",
+      "label_ar": "الإكسسوارات",
+      "label_en": "Accessories",
+      "sku_prefix": "LT-AC",
+      "subcategories": [
+        { "key": "foulard",      "label_fr": "Foulard",        "label_ar": "وشاح",        "label_en": "Scarf" },
+        { "key": "ceinture",     "label_fr": "Ceinture",       "label_ar": "حزام",        "label_en": "Belt" },
+        { "key": "bijoux",       "label_fr": "Bijoux",         "label_ar": "مجوهرات",     "label_en": "Jewellery" },
+        { "key": "bracelet",     "label_fr": "Bracelet",       "label_ar": "سوار",        "label_en": "Bracelet" },
+        { "key": "lunettes",     "label_fr": "Lunettes",       "label_ar": "نظارات",      "label_en": "Sunglasses" },
+        { "key": "maroquinerie", "label_fr": "Maroquinerie",   "label_ar": "محفظة",       "label_en": "Wallet / leather goods" },
+        { "key": "chapellerie",  "label_fr": "Chapellerie",    "label_ar": "قبعات",       "label_en": "Hats" }
+      ]
+    }
+  ],
+  "filter_facets": {
+    "color": [
+      { "key": "noir",   "label_fr": "Noir",   "label_ar": "أسود",   "swatch": "#1A1A1A" },
+      { "key": "blanc",  "label_fr": "Blanc",  "label_ar": "أبيض",   "swatch": "#FAFAFA" },
+      { "key": "beige",  "label_fr": "Beige",  "label_ar": "بيج",    "swatch": "#D4B896" },
+      { "key": "nude",   "label_fr": "Nude",   "label_ar": "نود",    "swatch": "#E5C4AE" },
+      { "key": "rose",   "label_fr": "Rose",   "label_ar": "وردي",   "swatch": "#E8B4B8" },
+      { "key": "marron", "label_fr": "Marron", "label_ar": "بني",    "swatch": "#6B3F2A" },
+      { "key": "camel",  "label_fr": "Camel",  "label_ar": "جملي",   "swatch": "#B07A4E" },
+      { "key": "khaki",  "label_fr": "Khaki",  "label_ar": "كاكي",   "swatch": "#7A7B53" },
+      { "key": "bleu",   "label_fr": "Bleu",   "label_ar": "أزرق",   "swatch": "#2E4B6F" },
+      { "key": "or",     "label_fr": "Or",     "label_ar": "ذهبي",   "swatch": "#C9A267" },
+      { "key": "argent", "label_fr": "Argent", "label_ar": "فضي",    "swatch": "#C0C0C8" }
+    ],
+    "size_eu": [35, 36, 37, 38, 39, 40, 41, 42],
+    "heel_height_cm": [
+      { "key": "flat",     "label_fr": "Plat (0-1 cm)",      "label_ar": "مسطح",         "min": 0,  "max": 1 },
+      { "key": "low",      "label_fr": "Bas (1-3 cm)",       "label_ar": "منخفض",        "min": 1,  "max": 3 },
+      { "key": "demi",     "label_fr": "Demi-talon (3-6 cm)","label_ar": "كعب نصفي",     "min": 3,  "max": 6 },
+      { "key": "mid",      "label_fr": "Moyen (6-8 cm)",     "label_ar": "متوسط",        "min": 6,  "max": 8 },
+      { "key": "high",     "label_fr": "Haut (8-10 cm)",     "label_ar": "عالي",         "min": 8,  "max": 10 },
+      { "key": "very_high","label_fr": "Très haut (10+ cm)", "label_ar": "عالي جدًا",   "min": 10, "max": 99 }
+    ],
+    "material": [
+      { "key": "cuir",       "label_fr": "Cuir",           "label_ar": "جلد" },
+      { "key": "cuir_verni", "label_fr": "Cuir verni",     "label_ar": "جلد لامع" },
+      { "key": "daim",       "label_fr": "Daim / Suède",   "label_ar": "شامواه" },
+      { "key": "synthetique","label_fr": "Synthétique",    "label_ar": "صناعي" },
+      { "key": "textile",    "label_fr": "Textile",        "label_ar": "نسيج" },
+      { "key": "velours",    "label_fr": "Velours",        "label_ar": "مخمل" },
+      { "key": "satin",      "label_fr": "Satin",          "label_ar": "ساتان" },
+      { "key": "perles",     "label_fr": "Perles",         "label_ar": "لؤلؤ" }
+    ],
+    "occasion": [
+      { "key": "quotidien",  "label_fr": "Quotidien",     "label_ar": "يومي" },
+      { "key": "soiree",     "label_fr": "Soirée",        "label_ar": "سهرة" },
+      { "key": "mariage",    "label_fr": "Mariage",       "label_ar": "عرس" },
+      { "key": "bureau",     "label_fr": "Bureau",        "label_ar": "مكتب" },
+      { "key": "vacances",   "label_fr": "Vacances",      "label_ar": "عطلة" }
+    ]
+  },
+  "segment_targeting": {
+    "_doc": "Segment views filter the same catalog by `audience` tags on each product, not by separating the inventory.",
+    "A": {
+      "label_fr": "12 — 30 ans",
+      "label_ar": "12 — 30 سنة",
+      "biases": ["baskets", "compense", "espadrilles", "mini", "bandouliere", "lunettes"],
+      "color_lean": ["rose", "blanc", "beige", "or"]
+    },
+    "B": {
+      "label_fr": "30 — 50 ans",
+      "label_ar": "30 — 50 سنة",
+      "biases": ["escarpin", "mocassins", "derbies", "sac_main", "tote", "maroquinerie"],
+      "color_lean": ["noir", "marron", "camel", "khaki", "nude"]
+    }
+  }
+}
