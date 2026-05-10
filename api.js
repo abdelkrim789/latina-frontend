@@ -113,6 +113,9 @@ const api = (() => {
   const getLoyalty      = ()         => get("/loyalty");
   const restockAlert    = (data)     => post("/restock-alerts", data);
   const submitReview    = (pid, data)=> post(`/reviews/${pid}`, data);
+  const checkCoupon     = (code)     => get(`/coupons/check?code=${encodeURIComponent(code)}`);
+  const enterContest    = ()         => post("/contest/enter");
+  const subscribeNewsletter = (email)=> post("/newsletter", { email });
 
   // ── Admin ─────────────────────────────────────────────────────
   const adminLogin  = async (email, password) => {
@@ -134,6 +137,7 @@ const api = (() => {
     getOrders, getOrder, trackOrder, placeOrder,
     getWishlist, toggleWishlist, syncWishlist,
     getLoyalty, restockAlert, submitReview,
+    checkCoupon, enterContest, subscribeNewsletter,
     // admin
     adminLogin,
     admin: {

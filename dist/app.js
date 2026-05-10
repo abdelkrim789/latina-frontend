@@ -482,7 +482,11 @@ var App = function App() {
       });
     }
   }), /*#__PURE__*/React.createElement(RewardsScene, {
-    lang: lang
+    lang: lang,
+    user: user,
+    onOpenAuth: function onOpenAuth() {
+      return setAuthOpen(true);
+    }
   }), /*#__PURE__*/React.createElement(TrustScene, {
     lang: lang
   }), /*#__PURE__*/React.createElement(RecentlyViewedStrip, {

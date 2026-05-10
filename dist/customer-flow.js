@@ -306,10 +306,18 @@ var CartDrawer = function CartDrawer(_ref3) {
     _useState0 = _slicedToArray(_useState9, 2),
     couponCode = _useState0[0],
     setCouponCode = _useState0[1];
-  var _useState1 = useState(false),
+  var _useState1 = useState(null),
     _useState10 = _slicedToArray(_useState1, 2),
-    couponApplied = _useState10[0],
-    setCouponApplied = _useState10[1];
+    couponData = _useState10[0],
+    setCouponData = _useState10[1]; // { code, type, value }
+  var _useState11 = useState(false),
+    _useState12 = _slicedToArray(_useState11, 2),
+    couponLoading = _useState12[0],
+    setCouponLoading = _useState12[1];
+  var _useState13 = useState(""),
+    _useState14 = _slicedToArray(_useState13, 2),
+    couponError = _useState14[0],
+    setCouponError = _useState14[1];
   var T = {
     fr: {
       title: "Mon Panier",
@@ -366,10 +374,56 @@ var CartDrawer = function CartDrawer(_ref3) {
   var subtotal = cart.reduce(function (s, i) {
     return s + i.price * i.qty;
   }, 0);
-  var applyCoupon = function applyCoupon() {
-    if (!couponCode.trim()) return;
-    setCouponApplied(true);
+  var calcDiscount = function calcDiscount(coupon) {
+    if (!coupon) return 0;
+    if (coupon.type === "percent") return Math.round(subtotal * coupon.value / 100);
+    if (coupon.type === "fixed") return Math.min(coupon.value, subtotal);
+    return 0; // free_shipping handled at checkout
   };
+  var discount = calcDiscount(couponData);
+  var applyCoupon = /*#__PURE__*/function () {
+    var _ref4 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
+      var res, _t2;
+      return _regenerator().w(function (_context2) {
+        while (1) switch (_context2.p = _context2.n) {
+          case 0:
+            if (!(!couponCode.trim() || couponLoading)) {
+              _context2.n = 1;
+              break;
+            }
+            return _context2.a(2);
+          case 1:
+            setCouponLoading(true);
+            setCouponError("");
+            _context2.p = 2;
+            _context2.n = 3;
+            return window.latinaApi.checkCoupon(couponCode.trim());
+          case 3:
+            res = _context2.v;
+            if (res.valid) {
+              setCouponData(res);
+            } else {
+              setCouponError(res.message || "Code invalide.");
+            }
+            _context2.n = 5;
+            break;
+          case 4:
+            _context2.p = 4;
+            _t2 = _context2.v;
+            setCouponError("Erreur lors de la vérification.");
+          case 5:
+            _context2.p = 5;
+            setCouponLoading(false);
+            return _context2.f(5);
+          case 6:
+            return _context2.a(2);
+        }
+      }, _callee2, null, [[2, 4, 5, 6]]);
+    }));
+    return function applyCoupon() {
+      return _ref4.apply(this, arguments);
+    };
+  }();
   var changeQty = function changeQty(idx, delta) {
     onUpdateCart(function (prev) {
       var next = _toConsumableArray(prev);
@@ -453,25 +507,40 @@ var CartDrawer = function CartDrawer(_ref3) {
     value: couponCode,
     onChange: function onChange(e) {
       setCouponCode(e.target.value);
-      setCouponApplied(false);
+      setCouponData(null);
+      setCouponError("");
     },
     onKeyDown: function onKeyDown(e) {
-      return e.key === "Enter" && applyCoupon();
+      return e.key === "Enter" && !couponData && applyCoupon();
     },
-    disabled: couponApplied
-  }), /*#__PURE__*/React.createElement("button", {
+    disabled: !!couponData || couponLoading
+  }), couponData ? /*#__PURE__*/React.createElement("button", {
+    className: "btn-outline-sm",
+    onClick: function onClick() {
+      setCouponData(null);
+      setCouponCode("");
+    }
+  }, "\u2715") : /*#__PURE__*/React.createElement("button", {
     onClick: applyCoupon,
-    disabled: couponApplied || !couponCode.trim(),
+    disabled: couponLoading || !couponCode.trim(),
     className: "btn-outline-sm"
-  }, T.applyCoupon)), couponApplied && /*#__PURE__*/React.createElement("div", {
+  }, couponLoading ? /*#__PURE__*/React.createElement("span", {
+    className: "btn-spinner"
+  }) : T.applyCoupon)), couponData && /*#__PURE__*/React.createElement("div", {
     className: "coupon-ok"
-  }, "\u2713 ", couponCode, " \u2014 ", T.appliedAtCheckout || "appliqué au checkout"), /*#__PURE__*/React.createElement("div", {
+  }, "\u2713 ", couponData.code, couponData.type === "percent" && " \u2014 ".concat(couponData.value, "% de r\xE9duction"), couponData.type === "fixed" && " \u2014 ".concat(couponData.value.toLocaleString(), " DA de r\xE9duction"), couponData.type === "free_shipping" && " \u2014 Livraison offerte"), couponError && /*#__PURE__*/React.createElement("div", {
+    className: "coupon-err t-mono"
+  }, couponError), /*#__PURE__*/React.createElement("div", {
     className: "cart-totals"
   }, /*#__PURE__*/React.createElement("div", {
     className: "ct-row"
   }, /*#__PURE__*/React.createElement("span", null, T.subtotal), /*#__PURE__*/React.createElement("span", {
     className: "t-num"
-  }, subtotal.toLocaleString(), " DA")), /*#__PURE__*/React.createElement("div", {
+  }, subtotal.toLocaleString(), " DA")), discount > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "ct-row ct-discount"
+  }, /*#__PURE__*/React.createElement("span", null, T.discount), /*#__PURE__*/React.createElement("span", {
+    className: "t-num"
+  }, "\u2212", discount.toLocaleString(), " DA")), /*#__PURE__*/React.createElement("div", {
     className: "ct-row"
   }, /*#__PURE__*/React.createElement("span", null, T.shipping), /*#__PURE__*/React.createElement("span", {
     className: "t-mute"
@@ -479,14 +548,14 @@ var CartDrawer = function CartDrawer(_ref3) {
     className: "ct-row total"
   }, /*#__PURE__*/React.createElement("span", null, T.total), /*#__PURE__*/React.createElement("span", {
     className: "t-num"
-  }, subtotal.toLocaleString(), " DA"))), /*#__PURE__*/React.createElement("div", {
+  }, (subtotal - discount).toLocaleString(), " DA"))), /*#__PURE__*/React.createElement("div", {
     className: "cart-cod-note t-mono"
   }, T.cod), /*#__PURE__*/React.createElement("button", {
     className: "btn-primary cart-checkout-btn",
     onClick: function onClick() {
-      return onCheckout(couponApplied ? {
-        code: couponCode
-      } : null);
+      return onCheckout(couponData ? _objectSpread(_objectSpread({}, couponData), {}, {
+        discount: discount
+      }) : null);
     }
   }, T.checkout))));
 };
@@ -494,20 +563,20 @@ var CartDrawer = function CartDrawer(_ref3) {
 /* ============================================================
    CHECKOUT PAGE — 3-step wizard
    ============================================================ */
-var CheckoutPage = function CheckoutPage(_ref4) {
-  var lang = _ref4.lang,
-    open = _ref4.open,
-    onClose = _ref4.onClose,
-    cart = _ref4.cart,
-    user = _ref4.user,
-    onOrderPlaced = _ref4.onOrderPlaced,
-    _ref4$coupon = _ref4.coupon,
-    couponProp = _ref4$coupon === void 0 ? null : _ref4$coupon;
-  var _useState11 = useState(1),
-    _useState12 = _slicedToArray(_useState11, 2),
-    step = _useState12[0],
-    setStep = _useState12[1]; // 1=address, 2=review, 3=confirm
-  var _useState13 = useState({
+var CheckoutPage = function CheckoutPage(_ref5) {
+  var lang = _ref5.lang,
+    open = _ref5.open,
+    onClose = _ref5.onClose,
+    cart = _ref5.cart,
+    user = _ref5.user,
+    onOrderPlaced = _ref5.onOrderPlaced,
+    _ref5$coupon = _ref5.coupon,
+    couponProp = _ref5$coupon === void 0 ? null : _ref5$coupon;
+  var _useState15 = useState(1),
+    _useState16 = _slicedToArray(_useState15, 2),
+    step = _useState16[0],
+    setStep = _useState16[1]; // 1=address, 2=review, 3=confirm
+  var _useState17 = useState({
       name: (user === null || user === void 0 ? void 0 : user.name) || "",
       phone: (user === null || user === void 0 ? void 0 : user.phone) || "",
       wilaya_code: "",
@@ -516,34 +585,34 @@ var CheckoutPage = function CheckoutPage(_ref4) {
       shipping_fee: 0,
       eta_days: 3
     }),
-    _useState14 = _slicedToArray(_useState13, 2),
-    address = _useState14[0],
-    setAddress = _useState14[1];
-  var coupon = couponProp;
-  var _useState15 = useState(0),
-    _useState16 = _slicedToArray(_useState15, 2),
-    loyaltyRedeem = _useState16[0],
-    setLoyaltyRedeem = _useState16[1];
-  var _useState17 = useState(0),
     _useState18 = _slicedToArray(_useState17, 2),
-    loyaltyBalance = _useState18[0],
-    setLoyaltyBalance = _useState18[1];
-  var _useState19 = useState(""),
+    address = _useState18[0],
+    setAddress = _useState18[1];
+  var coupon = couponProp;
+  var _useState19 = useState(0),
     _useState20 = _slicedToArray(_useState19, 2),
-    notes = _useState20[0],
-    setNotes = _useState20[1];
-  var _useState21 = useState(false),
+    loyaltyRedeem = _useState20[0],
+    setLoyaltyRedeem = _useState20[1];
+  var _useState21 = useState(0),
     _useState22 = _slicedToArray(_useState21, 2),
-    loading = _useState22[0],
-    setLoading = _useState22[1];
+    loyaltyBalance = _useState22[0],
+    setLoyaltyBalance = _useState22[1];
   var _useState23 = useState(""),
     _useState24 = _slicedToArray(_useState23, 2),
-    error = _useState24[0],
-    setError = _useState24[1];
-  var _useState25 = useState(null),
+    notes = _useState24[0],
+    setNotes = _useState24[1];
+  var _useState25 = useState(false),
     _useState26 = _slicedToArray(_useState25, 2),
-    order = _useState26[0],
-    setOrder = _useState26[1];
+    loading = _useState26[0],
+    setLoading = _useState26[1];
+  var _useState27 = useState(""),
+    _useState28 = _slicedToArray(_useState27, 2),
+    error = _useState28[0],
+    setError = _useState28[1];
+  var _useState29 = useState(null),
+    _useState30 = _slicedToArray(_useState29, 2),
+    order = _useState30[0],
+    setOrder = _useState30[1];
   var T = {
     fr: {
       title: "Finaliser la commande",
@@ -650,16 +719,17 @@ var CheckoutPage = function CheckoutPage(_ref4) {
     return s + i.price * i.qty;
   }, 0);
   var loyaltyDiscount = Math.floor(loyaltyRedeem / 10);
-  var total = subtotal + address.shipping_fee - loyaltyDiscount;
+  var couponDiscount = (coupon === null || coupon === void 0 ? void 0 : coupon.discount) || 0;
+  var total = subtotal + address.shipping_fee - loyaltyDiscount - couponDiscount;
   var handlePlace = /*#__PURE__*/function () {
-    var _ref5 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
-      var _res$data, payload, res, orderObj, _t2;
-      return _regenerator().w(function (_context2) {
-        while (1) switch (_context2.p = _context2.n) {
+    var _ref6 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
+      var _res$data, payload, res, orderObj, _t3;
+      return _regenerator().w(function (_context3) {
+        while (1) switch (_context3.p = _context3.n) {
           case 0:
             setLoading(true);
             setError("");
-            _context2.p = 1;
+            _context3.p = 1;
             payload = {
               items: cart.filter(function (i) {
                 return i.product_id;
@@ -681,38 +751,38 @@ var CheckoutPage = function CheckoutPage(_ref4) {
               notes: notes || undefined
             };
             if (!(payload.items.length === 0)) {
-              _context2.n = 2;
+              _context3.n = 2;
               break;
             }
             setError("Votre panier ne contient aucun produit valide.");
             setLoading(false);
-            return _context2.a(2);
+            return _context3.a(2);
           case 2:
-            _context2.n = 3;
+            _context3.n = 3;
             return window.latinaApi.placeOrder(payload);
           case 3:
-            res = _context2.v;
+            res = _context3.v;
             orderObj = res.order || ((_res$data = res.data) === null || _res$data === void 0 ? void 0 : _res$data.order) || res.data || res;
             setOrder(orderObj);
             onOrderPlaced && onOrderPlaced(orderObj);
             setStep(3);
-            _context2.n = 5;
+            _context3.n = 5;
             break;
           case 4:
-            _context2.p = 4;
-            _t2 = _context2.v;
-            setError(_t2.message || "Erreur lors de la commande.");
+            _context3.p = 4;
+            _t3 = _context3.v;
+            setError(_t3.message || "Erreur lors de la commande.");
           case 5:
-            _context2.p = 5;
+            _context3.p = 5;
             setLoading(false);
-            return _context2.f(5);
+            return _context3.f(5);
           case 6:
-            return _context2.a(2);
+            return _context3.a(2);
         }
-      }, _callee2, null, [[1, 4, 5, 6]]);
+      }, _callee3, null, [[1, 4, 5, 6]]);
     }));
     return function handlePlace() {
-      return _ref5.apply(this, arguments);
+      return _ref6.apply(this, arguments);
     };
   }();
   if (!open) return null;
@@ -844,7 +914,14 @@ var CheckoutPage = function CheckoutPage(_ref4) {
     className: "co-row"
   }, /*#__PURE__*/React.createElement("span", null, T.shipping), /*#__PURE__*/React.createElement("span", {
     className: "t-num"
-  }, address.shipping_fee.toLocaleString(), " DA")), (coupon === null || coupon === void 0 ? void 0 : coupon.code) && /*#__PURE__*/React.createElement("div", {
+  }, address.shipping_fee.toLocaleString(), " DA")), (coupon === null || coupon === void 0 ? void 0 : coupon.code) && couponDiscount > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "co-row",
+    style: {
+      color: "var(--rose-500)"
+    }
+  }, /*#__PURE__*/React.createElement("span", null, "\uD83C\uDFF7 ", coupon.code), /*#__PURE__*/React.createElement("span", {
+    className: "t-num"
+  }, "\u2212", couponDiscount.toLocaleString(), " DA")), (coupon === null || coupon === void 0 ? void 0 : coupon.type) === "free_shipping" && /*#__PURE__*/React.createElement("div", {
     className: "co-row",
     style: {
       color: "var(--rose-500)"
@@ -852,9 +929,9 @@ var CheckoutPage = function CheckoutPage(_ref4) {
   }, /*#__PURE__*/React.createElement("span", null, "\uD83C\uDFF7 ", coupon.code), /*#__PURE__*/React.createElement("span", {
     className: "t-mono",
     style: {
-      fontSize: 12
+      fontSize: 11
     }
-  }, "appliqu\xE9")), user && loyaltyBalance > 0 && /*#__PURE__*/React.createElement("div", {
+  }, "Livraison offerte")), user && loyaltyBalance > 0 && /*#__PURE__*/React.createElement("div", {
     className: "co-loyalty"
   }, /*#__PURE__*/React.createElement("div", {
     className: "co-row"
@@ -909,33 +986,33 @@ var CheckoutPage = function CheckoutPage(_ref4) {
 /* ============================================================
    ACCOUNT PAGE / DRAWER
    ============================================================ */
-var AccountPage = function AccountPage(_ref6) {
+var AccountPage = function AccountPage(_ref7) {
   var _user$name, _loyalty$points, _loyalty$tier_progres, _loyalty$tier_progres2, _loyalty$history;
-  var lang = _ref6.lang,
-    open = _ref6.open,
-    onClose = _ref6.onClose,
-    user = _ref6.user,
-    onLogout = _ref6.onLogout;
-  var _useState27 = useState("orders"),
-    _useState28 = _slicedToArray(_useState27, 2),
-    tab = _useState28[0],
-    setTab = _useState28[1];
-  var _useState29 = useState([]),
-    _useState30 = _slicedToArray(_useState29, 2),
-    orders = _useState30[0],
-    setOrders = _useState30[1];
-  var _useState31 = useState(null),
+  var lang = _ref7.lang,
+    open = _ref7.open,
+    onClose = _ref7.onClose,
+    user = _ref7.user,
+    onLogout = _ref7.onLogout;
+  var _useState31 = useState("orders"),
     _useState32 = _slicedToArray(_useState31, 2),
-    loyalty = _useState32[0],
-    setLoyalty = _useState32[1];
+    tab = _useState32[0],
+    setTab = _useState32[1];
   var _useState33 = useState([]),
     _useState34 = _slicedToArray(_useState33, 2),
-    wishlistItems = _useState34[0],
-    setWishlistItems = _useState34[1];
-  var _useState35 = useState(false),
+    orders = _useState34[0],
+    setOrders = _useState34[1];
+  var _useState35 = useState(null),
     _useState36 = _slicedToArray(_useState35, 2),
-    loading = _useState36[0],
-    setLoading = _useState36[1];
+    loyalty = _useState36[0],
+    setLoyalty = _useState36[1];
+  var _useState37 = useState([]),
+    _useState38 = _slicedToArray(_useState37, 2),
+    wishlistItems = _useState38[0],
+    setWishlistItems = _useState38[1];
+  var _useState39 = useState(false),
+    _useState40 = _slicedToArray(_useState39, 2),
+    loading = _useState40[0],
+    setLoading = _useState40[1];
   var api = window.latinaApi;
   var T = {
     fr: {
@@ -1197,25 +1274,25 @@ var AccountPage = function AccountPage(_ref6) {
 /* ============================================================
    ORDER TRACKER — standalone component for tracking page
    ============================================================ */
-var OrderTracker = function OrderTracker(_ref7) {
-  var lang = _ref7.lang,
-    reference = _ref7.reference;
-  var _useState37 = useState(null),
-    _useState38 = _slicedToArray(_useState37, 2),
-    order = _useState38[0],
-    setOrder = _useState38[1];
-  var _useState39 = useState(reference || ""),
-    _useState40 = _slicedToArray(_useState39, 2),
-    ref = _useState40[0],
-    setRef = _useState40[1];
-  var _useState41 = useState(false),
+var OrderTracker = function OrderTracker(_ref8) {
+  var lang = _ref8.lang,
+    reference = _ref8.reference;
+  var _useState41 = useState(null),
     _useState42 = _slicedToArray(_useState41, 2),
-    loading = _useState42[0],
-    setLoading = _useState42[1];
-  var _useState43 = useState(""),
+    order = _useState42[0],
+    setOrder = _useState42[1];
+  var _useState43 = useState(reference || ""),
     _useState44 = _slicedToArray(_useState43, 2),
-    error = _useState44[0],
-    setError = _useState44[1];
+    ref = _useState44[0],
+    setRef = _useState44[1];
+  var _useState45 = useState(false),
+    _useState46 = _slicedToArray(_useState45, 2),
+    loading = _useState46[0],
+    setLoading = _useState46[1];
+  var _useState47 = useState(""),
+    _useState48 = _slicedToArray(_useState47, 2),
+    error = _useState48[0],
+    setError = _useState48[1];
   var T = {
     fr: {
       title: "Suivre ma commande",
@@ -1243,43 +1320,43 @@ var OrderTracker = function OrderTracker(_ref7) {
     }
   }[lang] || {};
   var doTrack = /*#__PURE__*/function () {
-    var _ref8 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
-      var res, _t3;
-      return _regenerator().w(function (_context3) {
-        while (1) switch (_context3.p = _context3.n) {
+    var _ref9 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
+      var res, _t4;
+      return _regenerator().w(function (_context4) {
+        while (1) switch (_context4.p = _context4.n) {
           case 0:
             if (ref.trim()) {
-              _context3.n = 1;
+              _context4.n = 1;
               break;
             }
-            return _context3.a(2);
+            return _context4.a(2);
           case 1:
             setLoading(true);
             setError("");
-            _context3.p = 2;
-            _context3.n = 3;
+            _context4.p = 2;
+            _context4.n = 3;
             return window.latinaApi.trackOrder(ref.trim());
           case 3:
-            res = _context3.v;
+            res = _context4.v;
             setOrder(res.data || res);
-            _context3.n = 5;
+            _context4.n = 5;
             break;
           case 4:
-            _context3.p = 4;
-            _t3 = _context3.v;
+            _context4.p = 4;
+            _t4 = _context4.v;
             setError(T.notFound);
             setOrder(null);
           case 5:
-            _context3.p = 5;
+            _context4.p = 5;
             setLoading(false);
-            return _context3.f(5);
+            return _context4.f(5);
           case 6:
-            return _context3.a(2);
+            return _context4.a(2);
         }
-      }, _callee3, null, [[2, 4, 5, 6]]);
+      }, _callee4, null, [[2, 4, 5, 6]]);
     }));
     return function doTrack() {
-      return _ref8.apply(this, arguments);
+      return _ref9.apply(this, arguments);
     };
   }();
   var COD_STATUSES = ["pending", "confirmed", "preparing", "shipped", "out_for_delivery", "delivered"];
