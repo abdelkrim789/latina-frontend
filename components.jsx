@@ -1,23 +1,26 @@
 /* global React */
-const { useState, useEffect, useRef, useMemo } = React;
+const { useState, useEffect, useRef, useMemo, useCallback } = React;
 
 /* ============================================================
    SVG ICONS — minimal, monoline
    ============================================================ */
 
-const LotusMark = ({ size = 56, color = "currentColor" }) => (
-  <svg viewBox="0 0 64 64" width={size} height={size} fill="none" stroke={color} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-    {/* Center petal */}
-    <path d="M32 12 C 28 18, 28 26, 32 32 C 36 26, 36 18, 32 12 Z" />
-    {/* Side petals */}
-    <path d="M22 16 C 20 22, 22 28, 28 32 C 30 26, 28 20, 22 16 Z" />
-    <path d="M42 16 C 44 22, 42 28, 36 32 C 34 26, 36 20, 42 16 Z" />
-    {/* Bowl */}
-    <path d="M16 36 C 20 40, 28 42, 32 42 C 36 42, 44 40, 48 36" />
-    <path d="M14 42 C 18 48, 26 50, 32 50 C 38 50, 46 48, 50 42" />
-    <ellipse cx="32" cy="36" rx="14" ry="3" />
-  </svg>
-);
+/* Brand mark — uses the actual Latina logo SVG exported from Figma.
+   The SVG has its own rose-gold colors so `color` prop is ignored;
+   `size` sets the rendered height (width scales proportionally 319:178). */
+const LotusMark = ({ size = 56 }) => {
+  const w = Math.round(size * (319 / 178));
+  return (
+    <img
+      src="assets/latina-mark.svg"
+      width={w}
+      height={size}
+      alt="Latina logo mark"
+      style={{ display: "block", objectFit: "contain" }}
+      draggable={false}
+    />
+  );
+};
 
 const IconBag = (p) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" {...p}>
@@ -135,6 +138,17 @@ const ProductCard = ({ product, onAdd, onQuickView, onWishlist, wishlisted, badg
     en: { add: "+ Cart",   quick: "Quick view",     wish: "Wishlist",low: "Only",       remaining: "left",       out: "Back soon",    restock: "Notify me" }
   }[lang] || {};
 
+  // Category label from _tab
+  const catLabels = { shoes: {fr:"Chaussures",ar:"أحذية",en:"Shoes"}, bags: {fr:"Sacs",ar:"حقائب",en:"Bags"}, access: {fr:"Accessoires",ar:"إكسس.",en:"Acc."} };
+  const catLabel = product._catLabel || catLabels[product._tab]?.[lang] || null;
+
+  // Compare price — show only if compare > price
+  const hasDiscount = product.compare && product.compare > product.price;
+
+  // Cap color swatches at 6, show overflow count
+  const visibleSwatches = colorSwatches.slice(0, 6);
+  const hiddenCount = colorSwatches.length - visibleSwatches.length;
+
   return (
     <div
       ref={ref}
@@ -158,12 +172,15 @@ const ProductCard = ({ product, onAdd, onQuickView, onWishlist, wishlisted, badg
         </button>
 
         <div className="product-image">
-          {(product.img || product.image) && (
+          {(product.img || product.image) ? (
             <img src={product.img || product.image} alt={product.name} className="pc-img" loading="lazy" />
+          ) : (
+            <>
+              <span className="ph-label">{product.cat || catLabel}</span>
+              <span className="ph-sku">SKU · {product.sku}</span>
+            </>
           )}
-          <span className="ph-label">{product.cat}</span>
-          <span className="ph-sku">SKU · {product.sku}</span>
-          {/* Hover-revealed quick-view chip */}
+          {outOfStock && <div className="pc-out-overlay">{labels.out}</div>}
           <button type="button" className="pc-quick" onClick={handleQuickView}>
             <IconSearch width={12} height={12} />
             <span>{labels.quick}</span>
@@ -171,14 +188,13 @@ const ProductCard = ({ product, onAdd, onQuickView, onWishlist, wishlisted, badg
         </div>
 
         <div className="meta">
-          <div className="row">
+          {catLabel && <span className="pc-cat-tag">{catLabel}</span>}
+          <div className="pc-name-row">
             <span className="name">{product.name}</span>
-            {lowStock && <span className="pc-low t-mono">{labels.low} {stock} {labels.remaining}</span>}
-            {outOfStock && <span className="pc-out t-mono">{labels.out}</span>}
           </div>
-          {colorSwatches.length > 0 && (
+          {visibleSwatches.length > 0 && (
             <div className="pc-colors">
-              {colorSwatches.map(({ color, hasStock }) => (
+              {visibleSwatches.map(({ color, hasStock }) => (
                 <span
                   key={color}
                   className={`pc-color-dot${hasStock ? "" : " sold-out"}`}
@@ -186,10 +202,15 @@ const ProductCard = ({ product, onAdd, onQuickView, onWishlist, wishlisted, badg
                   title={color}
                 />
               ))}
+              {hiddenCount > 0 && <span className="pc-color-more">+{hiddenCount}</span>}
             </div>
           )}
-          <div className="row">
-            <span className="price t-num">{product.price.toLocaleString("fr-DZ")} DA</span>
+          <div className="pc-price-row">
+            <div className="pc-prices">
+              <span className="price t-num">{Number(product.price).toLocaleString("fr-DZ")} DA</span>
+              {hasDiscount && <span className="pc-compare t-num">{Number(product.compare).toLocaleString("fr-DZ")}</span>}
+            </div>
+            {lowStock && <span className="pc-low t-mono">{labels.low} {stock}</span>}
             {outOfStock ? (
               <button type="button" className="pc-restock" onClick={(e)=>{e.stopPropagation(); onQuickView?.(product, { restockMode: true });}}>
                 {labels.restock} →
@@ -205,178 +226,273 @@ const ProductCard = ({ product, onAdd, onQuickView, onWishlist, wishlisted, badg
 };
 
 /* ============================================================
-   ACT 1 — CINEMATIC BOX OPENING
+   ACT 1 — CINEMATIC OPENING v2
+   Fully GSAP-orchestrated. No Three.js dependency.
+   Dark-luxury aesthetic → auto-plays → fades into app.
    ============================================================ */
 
-const ShoeboxStage = ({ opened, flying, onOpen }) => {
-  const stageRef = useRef(null);
-  const sceneRef = useRef(null);
-  const openedRef = useRef(opened);
-  const flyingRef = useRef(flying);
-  openedRef.current = opened;
-  flyingRef.current = flying;
+const BoxOpening = ({ onComplete, lang = "fr", speed = 1 }) => {
+  const rootRef   = useRef(null);
+  const canvasRef = useRef(null);
+  const tlRef     = useRef(null);
+  const psRef     = useRef({ raf: 0, particles: [], active: false });
 
-  useEffect(() => {
-    if (!stageRef.current) return;
-    let cancelled = false;
+  const copy = ({
+    fr: { skip: "Passer", sub: "Une boutique pensée juste pour vous" },
+    ar: { skip: "تجاوز", sub: "متجر صُمِّم خصيصاً لكِ" },
+    en: { skip: "Skip",  sub: "A boutique designed just for you" }
+  })[lang] || { skip: "Skip", sub: "" };
 
-    const init = () => {
-      if (cancelled) return;
-      if (!window.LatinaShoebox || !stageRef.current) {
-        requestAnimationFrame(init);
-        return;
-      }
-      sceneRef.current = window.LatinaShoebox.createShoebox(stageRef.current, {});
-      if (openedRef.current) sceneRef.current.open();
-      if (flyingRef.current) sceneRef.current.fly();
+  const products = [
+    { cat_fr:"CHAUSSURES", cat_ar:"أحذية",  cat_en:"SHOES",    name_fr:"Escarpins",  name_ar:"كعب عالي",   name_en:"Heels",    price:"7 900 DA", accent:"#F2C9C0" },
+    { cat_fr:"SACS",       cat_ar:"حقائب",  cat_en:"BAGS",     name_fr:"Sac Soir",   name_ar:"حقيبة سهرة", name_en:"Evening Bag", price:"9 200 DA", accent:"#CB9E7F" },
+    { cat_fr:"SANDALES",   cat_ar:"صنادل",  cat_en:"SANDALS",  name_fr:"Sandales",   name_ar:"صنادل",      name_en:"Sandals",  price:"6 400 DA", accent:"#E2B8A2" },
+  ];
+
+  /* Petal data — generated once, stable across re-renders */
+  const petals = useMemo(() => Array.from({ length: 42 }, (_, i) => ({
+    id: i,
+    left:    5 + Math.random() * 90,
+    delay:   Math.random() * 8,
+    dur:     5 + Math.random() * 6,
+    size:    8 + Math.random() * 22,
+    ratio:   0.5 + Math.random() * 0.7,
+    drift:   (Math.random() - 0.5) * 360,
+    rot:     Math.random() * 1440 - 720,
+    rotX:    Math.random() * 60 - 30,
+    opacity: 0.3 + Math.random() * 0.55,
+    color:   ["#F2C9C0","#E8A89A","#E2B8A2","#F9E8E1","#CB9E7F","#D4A080"][Math.floor(Math.random()*6)],
+    shape:   i % 3,
+  })), []);
+
+  /* ── Canvas particle system (rising shimmer) ──────────────── */
+  const startParticles = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const resize = () => {
+      canvas.width  = window.innerWidth  * dpr;
+      canvas.height = window.innerHeight * dpr;
+      ctx.scale(dpr, dpr);
     };
+    resize();
+    window.addEventListener("resize", resize);
 
-    if (window.LatinaShoebox) init();
-    else window.addEventListener("latina-shoebox-ready", init, { once: true });
+    const COLS = ["#CB9E7F","#F2C9C0","#E2B8A2","#D4A080","#EFE8D8","#BB8B68"];
+    const spawn = () => ({
+      x:     window.innerWidth  * (0.25 + Math.random() * 0.5),
+      y:     window.innerHeight * (0.5  + Math.random() * 0.15),
+      vx:    (Math.random() - 0.5) * 1.0,
+      vy:   -(0.4 + Math.random() * 1.8),
+      size:  0.8 + Math.random() * 2.8,
+      life:  1,
+      decay: 0.004 + Math.random() * 0.007,
+      color: COLS[Math.floor(Math.random() * COLS.length)],
+      glow:  Math.random() > 0.55,
+    });
 
-    return () => {
-      cancelled = true;
-      window.removeEventListener("latina-shoebox-ready", init);
-      if (sceneRef.current) {
-        sceneRef.current.dispose();
-        sceneRef.current = null;
+    const ps = psRef.current;
+    ps.active = true;
+    let last = 0;
+
+    const tick = (ts) => {
+      if (!ps.active) { window.removeEventListener("resize", resize); return; }
+      if (ts - last > 35) { for (let i = 0; i < 4; i++) ps.particles.push(spawn()); last = ts; }
+
+      ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+      ps.particles = ps.particles.filter(p => p.life > 0);
+      for (const p of ps.particles) {
+        p.x  += p.vx;
+        p.y  += p.vy;
+        p.vy -= 0.012;
+        p.life -= p.decay;
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, p.life * 0.75);
+        if (p.glow) { ctx.shadowColor = p.color; ctx.shadowBlur = 10; }
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
       }
+      ps.raf = requestAnimationFrame(tick);
     };
+    ps.raf = requestAnimationFrame(tick);
   }, []);
 
+  const stopParticles = useCallback(() => {
+    psRef.current.active = false;
+    cancelAnimationFrame(psRef.current.raf);
+  }, []);
+
+  /* ── GSAP master timeline ─────────────────────────────────── */
   useEffect(() => {
-    if (opened && sceneRef.current) sceneRef.current.open();
-  }, [opened]);
+    if (!rootRef.current || !window.gsap) return;
+    const D = (s) => s / Math.max(0.3, speed);
+    startParticles();
 
-  useEffect(() => {
-    if (flying && sceneRef.current) sceneRef.current.fly();
-  }, [flying]);
+    gsap.set(".ci-logo-img, .ci-glow, .ci-tagline-w, .ci-rule, .ci-sub, .ci-eyebrow", {
+      opacity: 0,
+    });
+    gsap.set(".ci-wordmark", { opacity: 0, y: 14 });
+    gsap.set(".ci-logo-img", { scale: 0.55, filter: "blur(28px)" });
+    gsap.set(".ci-glow", { scale: 0.3 });
+    gsap.set(".ci-tagline-w", { y: 22 });
+    gsap.set(".ci-rule", { scaleX: 0 });
+    gsap.set(".ci-eyebrow", { y: -14 });
 
-  return (
-    <div
-      ref={stageRef}
-      className={`shoebox-stage ${opened ? "opened" : ""} ${flying ? "flying" : ""}`}
-      onClick={onOpen}
-    />
-  );
-};
+    const tl = gsap.timeline();
+    tlRef.current = tl;
 
-const BoxOpening = ({ onComplete, lang = "fr", speed = 1 }) => {
-  const [opened, setOpened] = useState(false);
-  const [flying, setFlying] = useState(false);
-  const [dismissing, setDismissing] = useState(false);
-  const [skipReady, setSkipReady] = useState(false);
+    /* Phase 1 — Glow bloom */
+    tl.to(".ci-glow",
+      { opacity: 1, scale: 1, duration: D(2.2), ease: "power2.out" }, 0)
 
-  useEffect(() => {
-    const t = setTimeout(() => setSkipReady(true), 2000 / speed);
-    return () => clearTimeout(t);
+    /* Phase 2 — Logo materialises */
+    .to(".ci-logo-img",
+      { opacity: 1, scale: 1, filter: "blur(0px)", duration: D(1.5), ease: "back.out(1.5)" },
+      D(0.4))
+
+    /* Phase 2b — Wordmark fades in under the mark */
+    .to(".ci-wordmark",
+      { opacity: 1, y: 0, duration: D(1.0), ease: "power2.out" },
+      D(1.2))
+
+    /* Phase 3 — Eyebrow label */
+    .to(".ci-eyebrow",
+      { opacity: 1, y: 0, duration: D(0.7), ease: "power3.out" },
+      D(1.4))
+
+    /* Phase 4 — Tagline words stagger */
+    .to(".ci-tagline-w",
+      { opacity: 1, y: 0, stagger: D(0.1), duration: D(0.65), ease: "back.out(1.8)" },
+      D(1.7))
+
+    /* Phase 5 — Decorative rules extend */
+    .to(".ci-rule",
+      { scaleX: 1, stagger: 0.04, duration: D(1.0), ease: "expo.out" },
+      D(1.75))
+
+    /* Phase 6 — Sub-tagline */
+    .to(".ci-sub",
+      { opacity: 1, duration: D(0.9), ease: "power2.out" },
+      D(2.2))
+
+    /* Hold on full reveal */
+    .to({}, { duration: D(2.6) })
+
+    /* Phase 8 — Exit */
+    .to(".ci-wordmark",
+      { opacity: 0, y: -10, duration: D(0.45), ease: "power1.in" }, "exit")
+    .to(".ci-sub, .ci-eyebrow",
+      { opacity: 0, duration: D(0.4), ease: "power1.in" }, "exit")
+    .to(".ci-tagline-w",
+      { opacity: 0, y: -12, stagger: 0.04, duration: D(0.45), ease: "power2.in" }, "exit+=0.08")
+    .to(".ci-rule",
+      { scaleX: 0, duration: D(0.5), ease: "expo.in" }, "exit+=0.08")
+    .to(".ci-logo-img",
+      { opacity: 0, scale: 1.4, filter: "blur(20px)", duration: D(0.9), ease: "power2.in" }, "exit+=0.2")
+    .to(".ci-glow",
+      { opacity: 0, scale: 2.5, duration: D(1.0), ease: "power2.in" }, "exit+=0.25")
+
+    /* Final fade of bg */
+    .to(".ci-bg",
+      { opacity: 0, duration: D(0.9), ease: "power2.inOut" }, "exit+=0.6")
+    .to(rootRef.current,
+      {
+        opacity: 0, duration: D(0.5), ease: "power2.inOut",
+        onComplete: () => { stopParticles(); onComplete?.(); }
+      }, "exit+=0.9");
+
+    return () => { tl.kill(); stopParticles(); };
   }, [speed]);
 
-  const open = () => {
-    if (opened) return;
-    setOpened(true);
-    // smoother, slightly faster staging for opening → fly → dismiss
-    setTimeout(() => setFlying(true), 2000 / speed);
-    setTimeout(() => setDismissing(true), 3200 / speed);
-    setTimeout(() => onComplete?.(), 4200 / speed);
-  };
+  /* Skip handler — collapses timeline instantly */
+  const skip = useCallback(() => {
+    if (tlRef.current) tlRef.current.kill();
+    stopParticles();
+    gsap.to(rootRef.current, {
+      opacity: 0, duration: 0.5, ease: "power2.inOut",
+      onComplete: () => onComplete?.()
+    });
+  }, [onComplete]);
 
-  const skip = () => {
-    setDismissing(true);
-    // respect speed setting when skipping
-    setTimeout(() => onComplete?.(), Math.max(500, 1000 / speed));
-  };
-
-  // Generate petals once
-  const petals = useMemo(() =>
-    Array.from({ length: 18 }, (_, i) => ({
-      key: i,
-      tx: (Math.random() - 0.5) * 600,
-      ty: -100 - Math.random() * 400,
-      tr: (Math.random() - 0.5) * 720,
-      delay: Math.random() * 0.8,
-      size: 8 + Math.random() * 14,
-      color: ["#F2C9C0", "#E8A89A", "#E2B8A2", "#F9E8E1"][Math.floor(Math.random() * 4)]
-    })), []);
-
-  const copy = {
-    fr: { tap: "Cliquez pour ouvrir", skip: "Passer l'intro", tagline: "JUST FOR YOU" },
-    ar: { tap: "اضغطي للفتح", skip: "تجاوز", tagline: "JUST FOR YOU" },
-    en: { tap: "Tap to open", skip: "Skip intro", tagline: "JUST FOR YOU" }
-  }[lang] || { tap: "Tap to open", skip: "Skip", tagline: "JUST FOR YOU" };
+  const L = lang;
+  const nameKey  = `name_${L}`;
+  const catKey   = `cat_${L}`;
 
   return (
-    <div className={`act-one ${dismissing ? "dismissing" : ""}`}>
-      <div className="bg-glow" />
+    <div ref={rootRef} className="ci-stage" aria-live="polite">
+      {/* Background */}
+      <div className="ci-bg" />
 
-      <div className="box-wrap">
-        <div className="box-floor-shadow" />
-        <ShoeboxStage opened={opened} flying={flying} onOpen={open} />
+      {/* Particle canvas */}
+      <canvas ref={canvasRef} className="ci-canvas" aria-hidden="true" />
+
+      {/* Ambient glow orb */}
+      <div className="ci-glow" aria-hidden="true" />
+
+      {/* Petal rain */}
+      <div className="ci-petals" aria-hidden="true">
+        {petals.map(p => (
+          <span
+            key={p.id}
+            className={`ci-petal ci-petal-s${p.shape}`}
+            style={{
+              left: `${p.left}%`,
+              width:  p.size,
+              height: p.size * p.ratio,
+              background: p.color,
+              animationDelay:    `${p.delay}s`,
+              animationDuration: `${p.dur}s`,
+              opacity: p.opacity,
+              "--pdrift": `${p.drift}px`,
+              "--prot":   `${p.rot}deg`,
+              "--protX":  `${p.rotX}deg`,
+            }}
+          />
+        ))}
       </div>
 
-      {/* Click prompt */}
-      {!opened && (
-        <div className="click-prompt">
-          <span className="dot" />
-          <span>{copy.tap}</span>
-          <span className="dot" />
-        </div>
-      )}
+      {/* Core content */}
+      <div className="ci-content">
 
-      {/* Emerging products */}
-      <div className="emerging-product p1">
-        <div style={{ width: "100%", height: "100%", background: "linear-gradient(155deg, #FEFAF6, #F9E8E1)", border: "1px solid #E2B8A2", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 30px 60px -10px rgba(122,69,48,0.3)" }}>
-          <span style={{ fontFamily: "var(--display)", fontSize: 14, color: "var(--rose-500)" }}>Escarpins</span>
-          <span style={{ fontFamily: "var(--mono)", fontSize: 9, letterSpacing: "0.15em", color: "var(--ink-mute)" }}>NUDE 38</span>
+        {/* Brand mark + wordmark */}
+        <div className="ci-logo-wrap">
+          <img
+            src="assets/latina-mark.svg"
+            className="ci-logo-img"
+            alt="Latina"
+            draggable={false}
+          />
+          <div className="ci-wordmark">Latina</div>
         </div>
-      </div>
-      <div className="emerging-product p2">
-        <div style={{ width: "100%", height: "100%", background: "linear-gradient(155deg, #F9E8E1, #FEFAF6)", border: "1px solid #E2B8A2", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 30px 60px -10px rgba(122,69,48,0.3)" }}>
-          <span style={{ fontFamily: "var(--display)", fontSize: 14, color: "var(--rose-500)" }}>Sac à main</span>
-          <span style={{ fontFamily: "var(--mono)", fontSize: 9, letterSpacing: "0.15em", color: "var(--ink-mute)" }}>ROSE</span>
-        </div>
-      </div>
-      <div className="emerging-product p3">
-        <div style={{ width: "100%", height: "100%", background: "linear-gradient(155deg, #FEFAF6, #F2C9C0)", border: "1px solid #E2B8A2", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 30px 60px -10px rgba(122,69,48,0.3)" }}>
-          <span style={{ fontFamily: "var(--display)", fontSize: 14, color: "var(--rose-500)" }}>Sandales</span>
-          <span style={{ fontFamily: "var(--mono)", fontSize: 9, letterSpacing: "0.15em", color: "var(--ink-mute)" }}>OR · 37</span>
-        </div>
-      </div>
 
-      {/* Petal particles */}
-      {petals.map(p => (
-        <div
-          key={p.key}
-          className="petal"
-          style={{
-            left: "50%", top: "50%",
-            width: p.size, height: p.size,
-            background: p.color,
-            animationDelay: `${p.delay + 0.4}s`,
-            "--tx": `${p.tx}px`,
-            "--ty": `${p.ty}px`,
-            "--tr": `${p.tr}deg`
-          }}
-        />
-      ))}
+        {/* Eyebrow */}
+        <span className="ci-eyebrow">Collection Printemps 2026</span>
+
+        {/* Tagline */}
+        <div className="ci-tagline" aria-label="Just for you">
+          <span className="ci-rule ci-rule-l" aria-hidden="true" />
+          {"JUST FOR YOU".split(" ").map((w, i) => (
+            <span key={i} className="ci-tagline-w">{w}</span>
+          ))}
+          <span className="ci-rule ci-rule-r" aria-hidden="true" />
+        </div>
+
+        {/* Sub */}
+        <p className="ci-sub">{copy.sub}</p>
+
+      </div>
 
       {/* Skip */}
-      {skipReady && !opened && (
-        <div className="skip-hint">
-          <div className="countdown" />
-          <button
-            onClick={skip}
-            style={{
-              background: "none", border: "none", cursor: "pointer",
-              fontFamily: "var(--mono)", fontSize: 10,
-              letterSpacing: "0.3em", textTransform: "uppercase",
-              color: "var(--ink-mute)"
-            }}
-          >
-            {copy.skip} →
-          </button>
-        </div>
-      )}
+      <button className="ci-skip" onClick={skip} aria-label={copy.skip}>
+        <span>{copy.skip}</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="m5 12 14 0M13 6l6 6-6 6"/>
+        </svg>
+      </button>
     </div>
   );
 };
@@ -385,50 +501,225 @@ const BoxOpening = ({ onComplete, lang = "fr", speed = 1 }) => {
    NAV
    ============================================================ */
 
+const IconBell = (p) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" {...p}>
+    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+  </svg>
+);
+
 const Nav = ({ lang, setLang, cartCount, hidden, user, onAuthOpen, onCartOpen, onAccountOpen }) => {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [notifs, setNotifs]         = useState([]);
+  const [unread, setUnread]         = useState(0);
+  const [notifOpen, setNotifOpen]   = useState(false);
+  const notifRef                    = useRef(null);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
+
+  // Fetch notifications when logged in, poll every 30s
+  useEffect(() => {
+    if (!user || !window.latinaApi) { setNotifs([]); setUnread(0); return; }
+    const fetchNotifs = async () => {
+      try {
+        const data = await window.latinaApi.getNotifications();
+        setNotifs(data.data || []);
+        setUnread(data.unread_count || 0);
+      } catch {}
+    };
+    fetchNotifs();
+    const interval = setInterval(fetchNotifs, 30000);
+    return () => clearInterval(interval);
+  }, [user]);
+
+  // Close notification dropdown on outside click
+  useEffect(() => {
+    if (!notifOpen) return;
+    const handler = (e) => { if (notifRef.current && !notifRef.current.contains(e.target)) setNotifOpen(false); };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [notifOpen]);
+
+  const handleMarkAllRead = async () => {
+    try { await window.latinaApi.markAllNotifsRead(); setUnread(0); setNotifs(n => n.map(x => ({ ...x, is_read: true }))); } catch {}
+  };
+  const handleMarkRead = async (id) => {
+    try { await window.latinaApi.markNotifRead(id); setNotifs(n => n.map(x => x.id === id ? { ...x, is_read: true } : x)); setUnread(u => Math.max(0, u - 1)); } catch {}
+  };
+
+  const NOTIF_ICONS = { reservation_created: "📅", reservation_activated: "✅", reservation_cancelled: "❌", reservation_expired: "⏰" };
+
+  const close = () => setMobileOpen(false);
+
   const t = {
     fr: { chaussures: "Chaussures", sacs: "Sacs", access: "Accessoires", concours: "Concours", fid: "Fidélité", panier: "Panier", login: "Connexion", account: "Mon compte" },
     ar: { chaussures: "الأحذية", sacs: "الحقائب", access: "الإكسسوارات", concours: "المسابقة", fid: "الولاء", panier: "السلة", login: "دخول", account: "حسابي" },
     en: { chaussures: "Shoes", sacs: "Bags", access: "Accessories", concours: "Contest", fid: "Loyalty", panier: "Cart", login: "Sign in", account: "Account" }
   }[lang] || {};
 
+  const navLinks = [
+    { href: "#collection", label: t.chaussures },
+    { href: "#collection", label: t.sacs },
+    { href: "#collection", label: t.access },
+    { href: "#concours",   label: t.concours },
+    { href: "#fidelite",   label: t.fid },
+  ];
+
   return (
-    <nav className={`nav ${hidden ? "hidden" : ""}`} dir={lang === "ar" ? "rtl" : "ltr"}>
-      <div className="nav-brand">
-        <div className="logo-mark"><LotusMark size={28} color="var(--rose-500)" /></div>
-        <span className="brand-name">Latina</span>
-      </div>
-      <div className="nav-links">
-        <a href="#collection">{t.chaussures}</a>
-        <a href="#collection">{t.sacs}</a>
-        <a href="#collection">{t.access}</a>
-        <a href="#concours">{t.concours}</a>
-        <a href="#fidelite">{t.fid}</a>
-      </div>
-      <div className="nav-actions">
-        <div className="lang-toggle">
-          <button className={lang === "fr" ? "active" : ""} onClick={() => setLang("fr")}>FR</button>
-          <span className="sep">·</span>
-          <button className={lang === "ar" ? "active" : ""} onClick={() => setLang("ar")}>ع</button>
-          <span className="sep">·</span>
-          <button className={lang === "en" ? "active" : ""} onClick={() => setLang("en")}>EN</button>
+    <>
+      <nav className={`nav ${hidden ? "hidden" : ""} ${scrolled ? "scrolled" : ""}`} dir={lang === "ar" ? "rtl" : "ltr"}>
+        <div className="nav-inner">
+          <div className="nav-brand">
+            <div className="logo-mark">
+              <LotusMark size={44} />
+            </div>
+          </div>
+
+          <div className="nav-links">
+            {navLinks.map(({ href, label }) => (
+              <a key={label} href={href} className="nav-link">
+                <span className="nav-link-text">{label}</span>
+                <span className="nav-link-line" aria-hidden="true" />
+              </a>
+            ))}
+          </div>
+
+          <div className="nav-actions">
+            <div className="lang-toggle nav-lang-desktop">
+              {["fr", "ar", "en"].map((l, i) => (
+                <span key={l} className="lang-item">
+                  {i > 0 && <span className="sep">·</span>}
+                  <button className={lang === l ? "active" : ""} onClick={() => setLang(l)}>
+                    {l === "fr" ? "FR" : l === "ar" ? "ع" : "EN"}
+                  </button>
+                </span>
+              ))}
+            </div>
+
+            {user ? (
+              <button className="nav-user-btn nav-auth-desktop" onClick={onAccountOpen} aria-label={t.account}>
+                <IconUser width={14} height={14} />
+                <span className="nav-user-name">{user.name?.split(" ")[0]}</span>
+              </button>
+            ) : (
+              <button className="nav-login-btn nav-auth-desktop" onClick={onAuthOpen} aria-label={t.login}>
+                <IconUser width={14} height={14} />
+                <span>{t.login}</span>
+              </button>
+            )}
+
+            {/* Notification bell — only for logged-in clients */}
+            {user && (
+              <div className="nav-notif-wrap" ref={notifRef}>
+                <button
+                  className={`nav-notif-btn${notifOpen ? " open" : ""}`}
+                  aria-label="Notifications"
+                  onClick={() => setNotifOpen(v => !v)}
+                >
+                  <IconBell width={16} height={16} />
+                  {unread > 0 && <span className="nav-notif-badge">{unread > 9 ? "9+" : unread}</span>}
+                </button>
+
+                {notifOpen && (
+                  <div className="nav-notif-dropdown">
+                    <div className="nnd-head">
+                      <span className="nnd-title">Notifications</span>
+                      {unread > 0 && (
+                        <button className="nnd-read-all" onClick={handleMarkAllRead}>Tout lire</button>
+                      )}
+                    </div>
+                    {notifs.length === 0 ? (
+                      <div className="nnd-empty">Aucune notification.</div>
+                    ) : (
+                      <div className="nnd-list">
+                        {notifs.slice(0, 8).map(n => (
+                          <div
+                            key={n.id}
+                            className={`nnd-item${n.is_read ? "" : " unread"}`}
+                            onClick={() => { if (!n.is_read) handleMarkRead(n.id); }}
+                          >
+                            <span className="nnd-icon">{NOTIF_ICONS[n.type] || "🔔"}</span>
+                            <div className="nnd-content">
+                              <div className="nnd-item-title">{n.title}</div>
+                              <div className="nnd-item-body">{n.body}</div>
+                              <div className="nnd-item-time t-mono">{new Date(n.created_at).toLocaleDateString("fr-DZ")}</div>
+                            </div>
+                            {!n.is_read && <span className="nnd-dot" />}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            <button className="cart-btn" onClick={onCartOpen} aria-label={t.panier}>
+              <IconBag width={15} height={15} />
+              {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+            </button>
+
+            {/* Hamburger — visible only on mobile */}
+            <button
+              className={`nav-hamburger ${mobileOpen ? "open" : ""}`}
+              onClick={() => setMobileOpen(v => !v)}
+              aria-label="Menu"
+              aria-expanded={mobileOpen}
+            >
+              <span /><span /><span />
+            </button>
+          </div>
         </div>
-        {user ? (
-          <button className="nav-user-btn" onClick={onAccountOpen}>
-            <IconUser width={13} height={13} />
-            <span className="nav-user-name">{user.name?.split(" ")[0]}</span>
-          </button>
-        ) : (
-          <button className="nav-login-btn" onClick={onAuthOpen}>
-            <IconUser width={13} height={13} /> {t.login}
-          </button>
-        )}
-        <button className="cart-btn" onClick={onCartOpen}>
-          <IconBag width={14} height={14} />
-          <span>{t.panier}{cartCount > 0 && ` (${cartCount})`}</span>
-        </button>
-      </div>
-    </nav>
+      </nav>
+
+      {/* Mobile full-screen menu */}
+      {mobileOpen && (
+        <div className="nav-mobile-menu" dir={lang === "ar" ? "rtl" : "ltr"}>
+          <div className="nav-mobile-backdrop" onClick={close} />
+          <div className="nav-mobile-content">
+            <nav className="nav-mobile-links">
+              {navLinks.map(({ href, label }) => (
+                <a key={label} href={href} className="nav-mobile-link" onClick={close}>{label}</a>
+              ))}
+            </nav>
+            <div className="nav-mobile-bottom">
+              <div className="lang-toggle" style={{marginBottom: 16}}>
+                {["fr", "ar", "en"].map((l, i) => (
+                  <span key={l} className="lang-item">
+                    {i > 0 && <span className="sep">·</span>}
+                    <button className={lang === l ? "active" : ""} onClick={() => { setLang(l); }}>
+                      {l === "fr" ? "Français" : l === "ar" ? "العربية" : "English"}
+                    </button>
+                  </span>
+                ))}
+              </div>
+              {user ? (
+                <button className="nav-login-btn" style={{width:"100%", justifyContent:"center"}} onClick={() => { onAccountOpen(); close(); }}>
+                  <IconUser width={14} height={14} />
+                  <span>{t.account}</span>
+                </button>
+              ) : (
+                <button className="nav-login-btn" style={{width:"100%", justifyContent:"center"}} onClick={() => { onAuthOpen(); close(); }}>
+                  <IconUser width={14} height={14} />
+                  <span>{t.login}</span>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
@@ -526,28 +817,47 @@ const MATERIALS = [
   { key: "perles",      fr: "Perles",      ar: "لؤلؤ",      en: "Pearl" }
 ];
 
-const FilterRail = ({ filters, setFilters, lang = "fr", availableSizes = [], onClear, count }) => {
+const FilterRail = ({ filters, setFilters, lang = "fr", availableSizes = [], onClear, count, mobile = false }) => {
   const t = {
-    fr: { title: "Filtres", color: "Couleur", size: "Taille", heel: "Hauteur talon", material: "Matière", clear: "Effacer", results: "résultats" },
-    ar: { title: "تصفية",   color: "اللون",   size: "المقاس", heel: "ارتفاع الكعب",  material: "المادة",  clear: "مسح",     results: "نتيجة" },
-    en: { title: "Filters", color: "Color",   size: "Size",   heel: "Heel height",   material: "Material",clear: "Clear",  results: "results" }
+    fr: { title: "Filtres", color: "Couleur", size: "Taille", heel: "Hauteur talon", material: "Matière", clear: "Effacer tout", results: "résultats" },
+    ar: { title: "تصفية",   color: "اللون",   size: "المقاس", heel: "ارتفاع الكعب",  material: "المادة",  clear: "مسح الكل",  results: "نتيجة" },
+    en: { title: "Filters", color: "Color",   size: "Size",   heel: "Heel height",   material: "Material",clear: "Clear all", results: "results" }
   }[lang] || {};
+
+  const [open, setOpen] = useState({ color: true, size: true, heel: false, material: false });
+  const toggle = (k) => setOpen(o => ({ ...o, [k]: !o[k] }));
 
   const toggleArr = (key, value) => {
     const cur = filters[key] || [];
     setFilters({ ...filters, [key]: cur.includes(value) ? cur.filter(v => v !== value) : [...cur, value] });
   };
 
-  return (
-    <aside className="filter-rail">
-      <div className="fr-head">
-        <span className="t-mono fr-title">{t.title}</span>
-        <span className="t-mono fr-count t-num">{count} {t.results}</span>
-      </div>
+  const activeCount = (filters.colors?.length || 0) + (filters.sizes?.length || 0)
+    + (filters.heel?.length || 0) + (filters.materials?.length || 0);
 
-      {/* Color */}
-      <div className="fr-group">
-        <div className="fr-label t-mono">{t.color}</div>
+  const FrGroup = ({ id, label, active, children }) => (
+    <div className={`fr-group ${open[id] ? "fr-open" : ""}`}>
+      <button type="button" className="fr-group-head" onClick={() => toggle(id)}>
+        <span className="fr-label t-mono">{label}</span>
+        <span className="fr-group-meta">
+          {active > 0 && <span className="fr-active-dot">{active}</span>}
+          <span className="fr-chevron">{open[id] ? "▴" : "▾"}</span>
+        </span>
+      </button>
+      {open[id] && <div className="fr-group-body">{children}</div>}
+    </div>
+  );
+
+  return (
+    <aside className={`filter-rail${mobile ? " filter-rail-mobile" : ""}`}>
+      {!mobile && (
+        <div className="fr-head">
+          <span className="t-mono fr-title">{t.title}</span>
+          <span className="t-mono fr-count t-num">{count} {t.results}</span>
+        </div>
+      )}
+
+      <FrGroup id="color" label={t.color} active={filters.colors?.length || 0}>
         <div className="fr-swatches">
           {Object.entries(COLOR_SWATCHES).map(([key, hex]) => (
             <button
@@ -556,79 +866,89 @@ const FilterRail = ({ filters, setFilters, lang = "fr", availableSizes = [], onC
               className={`fr-swatch ${(filters.colors || []).includes(key) ? "on" : ""}`}
               style={{ background: hex }}
               aria-label={key}
-              aria-pressed={(filters.colors || []).includes(key)}
+              title={key}
               onClick={() => toggleArr("colors", key)}
             />
           ))}
         </div>
-      </div>
+      </FrGroup>
 
-      {/* Size */}
       {availableSizes.length > 0 && (
-        <div className="fr-group">
-          <div className="fr-label t-mono">{t.size}</div>
+        <FrGroup id="size" label={t.size} active={filters.sizes?.length || 0}>
           <div className="fr-chips">
             {availableSizes.map(sz => (
-              <button
-                key={sz}
-                type="button"
+              <button key={sz} type="button"
                 className={`fr-chip t-num ${(filters.sizes || []).includes(sz) ? "on" : ""}`}
                 onClick={() => toggleArr("sizes", sz)}
               >{sz}</button>
             ))}
           </div>
-        </div>
+        </FrGroup>
       )}
 
-      {/* Heel */}
-      <div className="fr-group">
-        <div className="fr-label t-mono">{t.heel}</div>
+      <FrGroup id="heel" label={t.heel} active={filters.heel?.length || 0}>
         <div className="fr-chips">
           {HEEL_BUCKETS.map(b => (
-            <button
-              key={b.key}
-              type="button"
+            <button key={b.key} type="button"
               className={`fr-chip ${(filters.heel || []).includes(b.key) ? "on" : ""}`}
               onClick={() => toggleArr("heel", b.key)}
             >{b[`label_${lang}`] || b.label_fr}</button>
           ))}
         </div>
-      </div>
+      </FrGroup>
 
-      {/* Material */}
-      <div className="fr-group">
-        <div className="fr-label t-mono">{t.material}</div>
+      <FrGroup id="material" label={t.material} active={filters.materials?.length || 0}>
         <div className="fr-chips">
           {MATERIALS.map(m => (
-            <button
-              key={m.key}
-              type="button"
+            <button key={m.key} type="button"
               className={`fr-chip ${(filters.materials || []).includes(m.key) ? "on" : ""}`}
               onClick={() => toggleArr("materials", m.key)}
             >{m[lang] || m.fr}</button>
           ))}
         </div>
-      </div>
+      </FrGroup>
 
-      <button type="button" className="fr-clear t-mono" onClick={onClear}>{t.clear} ✕</button>
+      {activeCount > 0 && (
+        <button type="button" className="fr-clear t-mono" onClick={onClear}>{t.clear} ✕</button>
+      )}
     </aside>
   );
 };
 
-// Apply filters to a product list (matches if any selected value matches).
+// Apply filters to a product list.
+// Each active filter group is AND-ed; within a group any match passes (OR).
 const applyFilters = (products, filters, segment) => {
   return products.filter(p => {
+    // Segment (audience)
     if (segment && segment !== "ALL" && !(p.audience || []).includes(segment)) return false;
-    if (filters.colors?.length && !filters.colors.some(c => (p.colors || []).includes(c))) return false;
-    if (filters.sizes?.length  && !filters.sizes.some(s  => (p.sizes  || []).includes(s)))  return false;
-    if (filters.materials?.length && !filters.materials.includes(p.material)) return false;
+
+    // Colors — compare lower-cased to handle any case discrepancy
+    if (filters.colors?.length) {
+      const pColors = (p.colors || []).map(c => c.toLowerCase());
+      if (!filters.colors.some(c => pColors.includes(c.toLowerCase()))) return false;
+    }
+
+    // Sizes — coerce both sides to string so "37" === 37 still matches
+    if (filters.sizes?.length) {
+      const pSizes = (p.sizes || []).map(String);
+      if (!filters.sizes.some(s => pSizes.includes(String(s)))) return false;
+    }
+
+    // Materials — p.materials is an array (fixed from p.material singular bug)
+    if (filters.materials?.length) {
+      const pMaterials = (p.materials || []).map(m => m.toLowerCase());
+      if (!filters.materials.some(m => pMaterials.includes(m.toLowerCase()))) return false;
+    }
+
+    // Heel height buckets
     if (filters.heel?.length) {
       const inBucket = filters.heel.some(k => {
         const b = HEEL_BUCKETS.find(x => x.key === k);
-        return b && p.heel >= b.min && p.heel < b.max;
+        return b && (p.heel ?? 0) >= b.min && (p.heel ?? 0) < b.max;
       });
       if (!inBucket) return false;
     }
+
     return true;
   });
 };
@@ -1159,13 +1479,245 @@ const WilayaSelector = ({ lang = "fr", onChange }) => {
   );
 };
 
+/* ============================================================
+   (ReservationModal removed — reservations are admin-only now)
+   ============================================================ */
+const _ReservationModal_REMOVED = ({ product, lang = "fr", user, onClose, whatsappNumber }) => {
+  const [step, setStep]         = useState(1); // 1=form 2=confirm/whatsapp 3=done
+  const [duration, setDuration] = useState(1);
+  const [name, setName]         = useState(user?.name || "");
+  const [phone, setPhone]       = useState(user?.phone || "");
+  const [qty, setQty]           = useState(1);
+  const [loading, setLoading]   = useState(false);
+  const [error, setError]       = useState("");
+  const [result, setResult]     = useState(null);
+
+  const price        = product.effective_price ?? product.price ?? 0;
+  const partialAmt   = duration > 1 ? Math.round(price * qty * 0.40) : 0;
+  const requiresPay  = duration > 1;
+
+  const handleDurationChange = (d) => {
+    setDuration(d);
+    if (d === 1) setQty(1);
+  };
+
+  const t = {
+    fr: {
+      title: "Réserver ce produit",
+      step1: "Vos informations",
+      nameLbl: "Nom complet", phoneLbl: "Téléphone",
+      qtyLbl: "Quantité", durationLbl: "Durée de réservation",
+      d1: "1 jour — gratuit",
+      d2: "2 jours", d3: "3 jours", d4: "4 jours", d5: "5 jours",
+      payNote: (amt) => `Acompte requis : ${amt.toLocaleString("fr-DZ")} DA (40%)`,
+      freeNote: "Réservation gratuite — confirmez sous 24h sinon elle expire automatiquement.",
+      freeQtyNote: "1 article · 1 produit par jour",
+      paidQtyNote: "Max 3 articles au total sur toutes vos réservations payantes actives.",
+      next: "Continuer", confirm: "Confirmer la réservation",
+      whatsappBtn: "Payer via WhatsApp 💬",
+      whatsappNote: "Contactez-nous sur WhatsApp pour effectuer le paiement de l'acompte, puis votre réservation sera activée.",
+      doneTitle: "Réservation enregistrée !",
+      doneBody: (ref, days) => `Votre réservation #${ref} est valide ${days > 1 ? `${days} jours` : "24h"}. Notre équipe vous contactera pour confirmer.`,
+      close: "Fermer",
+      cancel: "Annuler",
+    },
+    ar: {
+      title: "احجزي هذا المنتج",
+      step1: "معلوماتك",
+      nameLbl: "الاسم الكامل", phoneLbl: "رقم الهاتف",
+      qtyLbl: "الكمية", durationLbl: "مدة الحجز",
+      d1: "يوم واحد — مجاني",
+      d2: "يومان", d3: "3 أيام", d4: "4 أيام", d5: "5 أيام",
+      payNote: (amt) => `دفعة مسبقة : ${amt.toLocaleString("fr-DZ")} دج (40%)`,
+      freeNote: "حجز مجاني — أكدي طلبك خلال 24 ساعة وإلا سيُلغى تلقائياً.",
+      freeQtyNote: "مقال واحد · منتج واحد في اليوم",
+      paidQtyNote: "بحد أقصى 3 مقالات في مجموع حجوزاتك المدفوعة النشطة.",
+      next: "التالي", confirm: "تأكيد الحجز",
+      whatsappBtn: "الدفع عبر واتساب 💬",
+      whatsappNote: "تواصلي معنا عبر واتساب لإتمام دفع الدفعة المسبقة، وسيتم تفعيل حجزك.",
+      doneTitle: "تم تسجيل الحجز!",
+      doneBody: (ref, days) => `حجزك #${ref} ساري لمدة ${days > 1 ? `${days} أيام` : "24 ساعة"}. سيتصل بك فريقنا للتأكيد.`,
+      close: "إغلاق",
+      cancel: "إلغاء",
+    },
+    en: {
+      title: "Reserve this product",
+      step1: "Your details",
+      nameLbl: "Full name", phoneLbl: "Phone",
+      qtyLbl: "Quantity", durationLbl: "Reservation duration",
+      d1: "1 day — free",
+      d2: "2 days", d3: "3 days", d4: "4 days", d5: "5 days",
+      payNote: (amt) => `Deposit required: ${amt.toLocaleString("fr-DZ")} DA (40%)`,
+      freeNote: "Free reservation — confirm within 24h or it expires automatically.",
+      freeQtyNote: "1 item · 1 product per day",
+      paidQtyNote: "Max 3 items total across all your active paid reservations.",
+      next: "Continue", confirm: "Confirm reservation",
+      whatsappBtn: "Pay via WhatsApp 💬",
+      whatsappNote: "Contact us on WhatsApp to pay the deposit, then your reservation will be activated.",
+      doneTitle: "Reservation registered!",
+      doneBody: (ref, days) => `Your reservation #${ref} is valid for ${days > 1 ? `${days} days` : "24h"}. Our team will contact you to confirm.`,
+      close: "Close",
+      cancel: "Cancel",
+    }
+  }[lang] || {};
+
+  const durationLabels = { 1: t.d1, 2: t.d2, 3: t.d3, 4: t.d4, 5: t.d5 };
+
+  const buildWhatsappUrl = (ref) => {
+    const num = (whatsappNumber || "").replace(/\D/g, "");
+    const msg = lang === "ar"
+      ? `مرحباً، أريد دفع اعتماد حجزي\nالمرجع: ${ref}\nالمنتج: ${product.name || product.name_fr}\nالمبلغ: ${partialAmt.toLocaleString("fr-DZ")} دج`
+      : `Bonjour, je souhaite régler l'acompte pour ma réservation\nRéf : ${ref}\nProduit : ${product.name || product.name_fr}\nMontant : ${partialAmt.toLocaleString("fr-DZ")} DA`;
+    return `https://wa.me/${num}?text=${encodeURIComponent(msg)}`;
+  };
+
+  const handleSubmit = async () => {
+    if (!name.trim() || !phone.trim()) { setError("Veuillez remplir tous les champs."); return; }
+    setLoading(true); setError("");
+    try {
+      const res = await window.latinaApi.createReservation({
+        product_id: product._apiId || product.id,
+        client_name: name.trim(),
+        client_phone: phone.trim(),
+        quantity: qty,
+        duration_days: duration,
+      });
+      setResult(res);
+      setStep(3);
+    } catch (e) {
+      setError(e.message || "Erreur lors de la réservation.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="resv-overlay" onClick={onClose}>
+      <div className="resv-modal" onClick={e => e.stopPropagation()}>
+        <div className="resv-header">
+          <div>
+            <div className="resv-title">{t.title}</div>
+            <div className="resv-product-name">{product.name || product.name_fr}</div>
+          </div>
+          <button className="resv-close" onClick={onClose}>✕</button>
+        </div>
+
+        {step === 1 && (
+          <div className="resv-body">
+            {/* Duration picker */}
+            <div className="resv-field">
+              <label className="resv-label">{t.durationLbl}</label>
+              <div className="resv-duration-grid">
+                {[1,2,3,4,5].map(d => (
+                  <button
+                    key={d}
+                    className={`resv-dur-btn${duration === d ? " active" : ""}`}
+                    onClick={() => handleDurationChange(d)}
+                  >
+                    {durationLabels[d]}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Payment info */}
+            <div className={`resv-pay-note ${requiresPay ? "requires-pay" : "free"}`}>
+              {requiresPay ? t.payNote(partialAmt) : t.freeNote}
+            </div>
+
+            {/* Client info */}
+            <div className="resv-field">
+              <label className="resv-label">{t.nameLbl}</label>
+              <input className="resv-input" value={name} onChange={e => setName(e.target.value)} placeholder="Fatima Zohra…" />
+            </div>
+            <div className="resv-field">
+              <label className="resv-label">{t.phoneLbl}</label>
+              <input className="resv-input" type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="05XXXXXXXX" />
+            </div>
+
+            {/* Quantity — fixed at 1 for free (1-day), selector for paid */}
+            {!requiresPay ? (
+              <div className="resv-qty-fixed">
+                <span className="resv-qty-badge">1</span>
+                <span className="resv-qty-rule">{t.freeQtyNote}</span>
+              </div>
+            ) : (
+              <div className="resv-field">
+                <label className="resv-label">{t.qtyLbl}</label>
+                <select className="resv-input" value={qty} onChange={e => setQty(Number(e.target.value))}>
+                  {[1,2,3].map(n => <option key={n} value={n}>{n}</option>)}
+                </select>
+                <div className="resv-qty-hint">{t.paidQtyNote}</div>
+              </div>
+            )}
+
+            {error && <div className="resv-error">{error}</div>}
+
+            <div className="resv-actions">
+              <button className="resv-btn-ghost" onClick={onClose}>{t.cancel}</button>
+              {requiresPay ? (
+                <button className="resv-btn-primary" onClick={() => setStep(2)} disabled={!name || !phone}>
+                  {t.next}
+                </button>
+              ) : (
+                <button className="resv-btn-primary" onClick={handleSubmit} disabled={loading || !name || !phone}>
+                  {loading ? "…" : t.confirm}
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {step === 2 && (
+          <div className="resv-body">
+            <div className="resv-summary-box">
+              <div className="resv-summary-row"><span>{t.durationLbl}</span><strong>{duration} jours</strong></div>
+              <div className="resv-summary-row"><span>{t.nameLbl}</span><strong>{name}</strong></div>
+              <div className="resv-summary-row"><span>{t.phoneLbl}</span><strong>{phone}</strong></div>
+              <div className="resv-summary-row"><span>{t.qtyLbl}</span><strong>{qty}</strong></div>
+              <div className="resv-summary-row highlight"><span>Acompte 40%</span><strong>{partialAmt.toLocaleString("fr-DZ")} DA</strong></div>
+            </div>
+            <div className="resv-whatsapp-note">{t.whatsappNote}</div>
+            {error && <div className="resv-error">{error}</div>}
+            <div className="resv-actions">
+              <button className="resv-btn-ghost" onClick={() => setStep(1)}>{t.cancel}</button>
+              <button className="resv-btn-primary" onClick={handleSubmit} disabled={loading}>
+                {loading ? "…" : t.confirm}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {step === 3 && result && (
+          <div className="resv-body resv-done">
+            <div className="resv-done-icon">📅</div>
+            <div className="resv-done-title">{t.doneTitle}</div>
+            <div className="resv-done-body">{t.doneBody(result.reference, duration)}</div>
+            {requiresPay && whatsappNumber && (
+              <a
+                className="resv-whatsapp-btn"
+                href={buildWhatsappUrl(result.reference)}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t.whatsappBtn}
+              </a>
+            )}
+            <button className="resv-btn-primary" onClick={onClose}>{t.close}</button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 Object.assign(window, {
-  LotusMark, IconBag, IconHeart, IconSearch, IconUser, IconTruck, IconCash, IconShield, IconReturn,
+  LotusMark, IconBag, IconHeart, IconSearch, IconUser, IconTruck, IconCash, IconShield, IconReturn, IconBell,
   ProductCard, BoxOpening, Nav,
   ScrollProgress, SceneMarker, useSceneProgress,
   FilterRail, applyFilters, COLOR_SWATCHES, HEEL_BUCKETS, MATERIALS,
   QuickView, SegmentToggle,
   WhatsAppFloat, CodTrustStrip,
   useRecentlyViewed, RecentlyViewedStrip,
-  WilayaSelector, COMMUNES_SEED
+  WilayaSelector, COMMUNES_SEED,
 });
