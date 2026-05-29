@@ -459,7 +459,7 @@
       T.checkout
     ))));
   };
-  var CrossSellSection = ({ cart, lang, onClose }) => {
+  var CrossSellSection = ({ cart, lang, onClose, onQuickView }) => {
     const [suggestions, setSuggestions] = useState([]);
     useEffect(() => {
       const api = window.latinaApi;
@@ -501,10 +501,13 @@
       const price = Number(p.effective_price ?? p.price);
       const img = window.mediaUrl(p.primary_image?.url || p.media?.[0]?.url) || null;
       const hasDiscount = p.compare_price && p.compare_price > price;
-      return /* @__PURE__ */ React.createElement("div", { key: p.id, className: "cs-cx-card", onClick: onClose }, /* @__PURE__ */ React.createElement("div", { className: "cs-cx-img" }, img ? /* @__PURE__ */ React.createElement("img", { src: img, alt: name, loading: "lazy" }) : /* @__PURE__ */ React.createElement("div", { className: "cs-cx-img-ph" }), p.is_featured && /* @__PURE__ */ React.createElement("span", { className: "cs-cx-badge" }, "\u2605"), hasDiscount && /* @__PURE__ */ React.createElement("span", { className: "cs-cx-sale-badge" }, "\u2212", Math.round((1 - price / p.compare_price) * 100), "%")), /* @__PURE__ */ React.createElement("div", { className: "cs-cx-info" }, /* @__PURE__ */ React.createElement("div", { className: "cs-cx-name" }, name), /* @__PURE__ */ React.createElement("div", { className: "cs-cx-prices" }, /* @__PURE__ */ React.createElement("span", { className: "cs-cx-price t-num" }, price.toLocaleString("fr-DZ"), " DA"), hasDiscount && /* @__PURE__ */ React.createElement("span", { className: "cs-cx-compare t-num" }, Number(p.compare_price).toLocaleString("fr-DZ")))));
+      return /* @__PURE__ */ React.createElement("div", { key: p.id, className: "cs-cx-card", onClick: () => {
+        onClose();
+        onQuickView?.(p);
+      } }, /* @__PURE__ */ React.createElement("div", { className: "cs-cx-img" }, img ? /* @__PURE__ */ React.createElement("img", { src: img, alt: name, loading: "lazy" }) : /* @__PURE__ */ React.createElement("div", { className: "cs-cx-img-ph" }), p.is_featured && /* @__PURE__ */ React.createElement("span", { className: "cs-cx-badge" }, "\u2605"), hasDiscount && /* @__PURE__ */ React.createElement("span", { className: "cs-cx-sale-badge" }, "\u2212", Math.round((1 - price / p.compare_price) * 100), "%")), /* @__PURE__ */ React.createElement("div", { className: "cs-cx-info" }, /* @__PURE__ */ React.createElement("div", { className: "cs-cx-name" }, name), /* @__PURE__ */ React.createElement("div", { className: "cs-cx-prices" }, /* @__PURE__ */ React.createElement("span", { className: "cs-cx-price t-num" }, price.toLocaleString("fr-DZ"), " DA"), hasDiscount && /* @__PURE__ */ React.createElement("span", { className: "cs-cx-compare t-num" }, Number(p.compare_price).toLocaleString("fr-DZ")))));
     })), /* @__PURE__ */ React.createElement("button", { className: "cs-cx-cta", onClick: onClose }, T.cta, " \u2192"));
   };
-  var CheckoutPage = ({ lang, open, onClose, cart, user, onOrderPlaced, coupon: couponProp = null, onAuthOpen }) => {
+  var CheckoutPage = ({ lang, open, onClose, cart, user, onOrderPlaced, coupon: couponProp = null, onAuthOpen, onQuickView }) => {
     const [step, setStep] = useState(1);
     const [address, setAddress] = useState({ name: user?.name || "", phone: user?.phone || "", wilaya_code: "", commune_id: null, street: "", shipping_fee: 0, eta_days: 3 });
     const coupon = couponProp;
@@ -693,7 +696,7 @@
         }
       },
       { fr: "Cr\xE9er mon compte \u2014 c'est gratuit", ar: "\u0625\u0646\u0634\u0627\u0621 \u062D\u0633\u0627\u0628\u064A \u2014 \u0645\u062C\u0627\u0646\u0627\u064B", en: "Create my account \u2014 it's free" }[lang] || "Cr\xE9er mon compte \u2014 c'est gratuit"
-    ), /* @__PURE__ */ React.createElement("p", { className: "co-join-later" }, { fr: "Vous pouvez aussi vous inscrire plus tard depuis le menu.", ar: "\u064A\u0645\u0643\u0646\u0643 \u0627\u0644\u062A\u0633\u062C\u064A\u0644 \u0644\u0627\u062D\u0642\u0627\u064B \u0645\u0646 \u0627\u0644\u0642\u0627\u0626\u0645\u0629.", en: "You can also sign up later from the menu." }[lang] || "Vous pouvez aussi vous inscrire plus tard."))), /* @__PURE__ */ React.createElement(CrossSellSection, { cart, lang, onClose })))));
+    ), /* @__PURE__ */ React.createElement("p", { className: "co-join-later" }, { fr: "Vous pouvez aussi vous inscrire plus tard depuis le menu.", ar: "\u064A\u0645\u0643\u0646\u0643 \u0627\u0644\u062A\u0633\u062C\u064A\u0644 \u0644\u0627\u062D\u0642\u0627\u064B \u0645\u0646 \u0627\u0644\u0642\u0627\u0626\u0645\u0629.", en: "You can also sign up later from the menu." }[lang] || "Vous pouvez aussi vous inscrire plus tard."))), /* @__PURE__ */ React.createElement(CrossSellSection, { cart, lang, onClose, onQuickView })))));
   };
   var AccountPage = ({ lang, open, onClose, user, onLogout }) => {
     const [tab, setTab] = useState("orders");

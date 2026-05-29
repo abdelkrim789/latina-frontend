@@ -663,7 +663,7 @@ const CartDrawer = ({ lang, open, onClose, cart, onUpdateCart, onCheckout, user 
 /* ============================================================
    CROSS-SELL SECTION — shown after order confirmation
    ============================================================ */
-const CrossSellSection = ({ cart, lang, onClose }) => {
+const CrossSellSection = ({ cart, lang, onClose, onQuickView }) => {
   const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
@@ -721,7 +721,7 @@ const CrossSellSection = ({ cart, lang, onClose }) => {
           const img   = window.mediaUrl(p.primary_image?.url || p.media?.[0]?.url) || null;
           const hasDiscount = p.compare_price && p.compare_price > price;
           return (
-            <div key={p.id} className="cs-cx-card" onClick={onClose}>
+            <div key={p.id} className="cs-cx-card" onClick={() => { onClose(); onQuickView?.(p); }}>
               <div className="cs-cx-img">
                 {img ? <img src={img} alt={name} loading="lazy" /> : <div className="cs-cx-img-ph" />}
                 {p.is_featured && <span className="cs-cx-badge">★</span>}
@@ -752,7 +752,7 @@ const CrossSellSection = ({ cart, lang, onClose }) => {
 /* ============================================================
    CHECKOUT PAGE — 3-step wizard
    ============================================================ */
-const CheckoutPage = ({ lang, open, onClose, cart, user, onOrderPlaced, coupon: couponProp = null, onAuthOpen }) => {
+const CheckoutPage = ({ lang, open, onClose, cart, user, onOrderPlaced, coupon: couponProp = null, onAuthOpen, onQuickView }) => {
   const [step, setStep] = useState(1); // 1=address, 2=review, 3=confirm
   const [address, setAddress] = useState({ name: user?.name || "", phone: user?.phone || "", wilaya_code: "", commune_id: null, street: "", shipping_fee: 0, eta_days: 3 });
   const coupon = couponProp;
@@ -1057,7 +1057,7 @@ const CheckoutPage = ({ lang, open, onClose, cart, user, onOrderPlaced, coupon: 
                 </div>
               )}
 
-              <CrossSellSection cart={cart} lang={lang} onClose={onClose} />
+              <CrossSellSection cart={cart} lang={lang} onClose={onClose} onQuickView={onQuickView} />
             </div>
           )}
         </div>

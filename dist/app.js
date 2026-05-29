@@ -316,7 +316,8 @@
         user,
         coupon: checkoutCoupon,
         onOrderPlaced: handleOrderPlaced,
-        onAuthOpen: () => setAuthOpen(true)
+        onAuthOpen: () => setAuthOpen(true),
+        onQuickView: openQuickView
       }
     ), /* @__PURE__ */ React.createElement(
       AccountPage,

@@ -43,22 +43,33 @@ const App = () => {
   const [user, setUser] = useState(() => {
     try { return JSON.parse(localStorage.getItem(USER_KEY) || "null"); } catch { return null; }
   });
+  /* Force-logout helper — single source of truth for session teardown */
+  const forceLogout = useCallback(() => {
+    setUser(null);
+    localStorage.removeItem(USER_KEY);
+    localStorage.removeItem("latina-token");
+  }, []);
+
   const handleLogin = (u) => {
     setUser(u);
     localStorage.setItem(USER_KEY, JSON.stringify(u));
   };
-  const handleLogout = async () => {
-    try { await window.latinaApi.logout(); } catch {}
-    setUser(null);
-    localStorage.removeItem(USER_KEY);
-    localStorage.removeItem("latina-token");
+  const handleLogout = () => {
+    const tok = localStorage.getItem("latina-token"); // capture before forceLogout clears it
+    forceLogout();                                     // instant: setUser(null) + clear storage
+    window.latinaApi.logout(tok).catch(() => {});      // fire-and-forget: blacklist JWT on server
   };
 
   /* ── Modals ── */
   const [authOpen, setAuthOpen] = useState(false);
+  const [authInitialStep, setAuthInitialStep] = useState(null);
+  const [authResetData, setAuthResetData] = useState(null);
   const [cartOpen, setCartOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [supportOpen, setSupportOpen] = useState(false);
+  const [fabOpen, setFabOpen] = useState(false);
   const [checkoutCoupon, setCheckoutCoupon] = useState(null);
 
   /* ── Fly-to-cart ── */
@@ -73,14 +84,63 @@ const App = () => {
   });
   const [recent, pushRecent] = useRecentlyViewed();
 
-  /* Verify stored JWT on mount — clear stale user if token expired */
+  /* Detect ?verified=1 and ?action=reset URL params from email links */
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("verified") === "1") {
+      setAuthInitialStep("verified");
+      setAuthOpen(true);
+      window.history.replaceState({}, "", window.location.pathname);
+    } else if (params.get("action") === "reset" && params.get("token")) {
+      setAuthInitialStep("reset");
+      setAuthResetData({ token: params.get("token"), email: params.get("email") || "" });
+      setAuthOpen(true);
+      window.history.replaceState({}, "", window.location.pathname);
+    }
+  }, []);
+
+  /* Listen for global 401 events emitted by api.js (token expired / blocked) */
+  useEffect(() => {
+    const handler = () => forceLogout();
+    window.addEventListener("latina:auth-fail", handler);
+    return () => window.removeEventListener("latina:auth-fail", handler);
+  }, [forceLogout]);
+
+  /* Verify stored JWT on mount — also detects if admin blocked the account */
   useEffect(() => {
     if (!user) return;
-    window.latinaApi.getMe().catch(() => {
-      setUser(null);
-      localStorage.removeItem(USER_KEY);
-    });
+    window.latinaApi.getMe()
+      .then(res => {
+        const fresh = res.user || res.data?.user || res;
+        if (fresh?.is_active === false) {
+          /* Account was blocked server-side — end the session immediately */
+          forceLogout();
+          return;
+        }
+        /* Refresh stored profile (name, tier, points may have changed) */
+        if (fresh?.id) {
+          const merged = { ...user, ...fresh };
+          setUser(merged);
+          localStorage.setItem(USER_KEY, JSON.stringify(merged));
+        }
+      })
+      .catch(() => forceLogout());
   }, []);
+
+  /* Periodic re-check every 5 min while logged in — catches blocks that happen
+     mid-session without requiring the user to perform any action. */
+  useEffect(() => {
+    if (!user) return;
+    const id = setInterval(() => {
+      window.latinaApi.getMe()
+        .then(res => {
+          const fresh = res.user || res.data?.user || res;
+          if (fresh?.is_active === false) forceLogout();
+        })
+        .catch(() => {});
+    }, 5 * 60 * 1000);
+    return () => clearInterval(id);
+  }, [user?.id, forceLogout]);
 
   /* Sync server wishlist when user logs in */
   useEffect(() => {
@@ -121,7 +181,7 @@ const App = () => {
       variant: variantLabel || null,
       price: Number(actualPrice),
       qty: 1,
-      image: product.media?.[0]?.url || product.img || null,
+      image: window.mediaUrl(product.media?.[0]?.url || product.img) || null,
     };
     setCart(prev => {
       const idx = prev.findIndex(i => i.variant_id === item.variant_id && i.product_id === item.product_id);
@@ -188,22 +248,28 @@ const App = () => {
     root.style.setProperty("--speed", t.speed);
   }, [t.pinkIntensity, t.speed]);
 
-  /* Reveal-on-scroll */
+  /* Init animations when box is already dismissed (returning visitor) */
   useEffect(() => {
     if (!boxDone) return;
-    const observer = new IntersectionObserver(
-      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("in"); }),
-      { threshold: 0.15, rootMargin: "0px 0px -80px 0px" }
-    );
-    document.querySelectorAll(".reveal, .reveal-stagger").forEach(el => observer.observe(el));
-    return () => observer.disconnect();
-  }, [boxDone, lang]);
+    setTimeout(() => window.LatinaAnimations?.init(), 300);
+  }, [boxDone]);
 
-  const handleBoxDone = () => { localStorage.setItem("latina-box-seen", "1"); setBoxDone(true); };
+  const handleBoxDone = () => {
+    localStorage.setItem("latina-box-seen", "1");
+    setBoxDone(true);
+    // Boot GSAP animation system after box sequence completes
+    requestAnimationFrame(() => {
+      setTimeout(() => window.LatinaAnimations?.init(), 600);
+    });
+  };
   const replayOpening = () => { localStorage.removeItem("latina-box-seen"); setBoxDone(false); window.scrollTo(0, 0); };
 
+  /* Refresh ScrollTrigger when segment or lang changes */
+  useEffect(() => {
+    if (boxDone) setTimeout(() => window.LatinaAnimations?.refresh(), 200);
+  }, [segment, lang, boxDone]);
+
   const handleCheckout = (coupon) => {
-    if (!user) { setCartOpen(false); setAuthOpen(true); return; }
     setCheckoutCoupon(coupon);
     setCartOpen(false);
     setCheckoutOpen(true);
@@ -267,7 +333,14 @@ const App = () => {
       )}
 
       {/* Auth Modal */}
-      <AuthModal lang={lang} open={authOpen} onClose={() => setAuthOpen(false)} onLogin={handleLogin} />
+      <AuthModal
+        lang={lang}
+        open={authOpen}
+        onClose={() => { setAuthOpen(false); setAuthInitialStep(null); setAuthResetData(null); }}
+        onLogin={handleLogin}
+        initialStep={authInitialStep}
+        resetData={authResetData}
+      />
 
       {/* Cart Drawer */}
       <CartDrawer
@@ -282,6 +355,8 @@ const App = () => {
         lang={lang} open={checkoutOpen} onClose={() => setCheckoutOpen(false)}
         cart={cart} user={user} coupon={checkoutCoupon}
         onOrderPlaced={handleOrderPlaced}
+        onAuthOpen={() => setAuthOpen(true)}
+        onQuickView={openQuickView}
       />
 
       {/* Account */}
@@ -292,6 +367,33 @@ const App = () => {
 
       {/* WhatsApp */}
       {boxDone && <WhatsAppFloat lang={lang} />}
+
+      {/* Help FAB */}
+      {boxDone && (
+        <div className="help-fab">
+          {fabOpen && (
+            <div className="help-fab-options">
+              <button className="help-fab-option" onClick={() => { setFabOpen(false); setFeedbackOpen(true); }}>
+                <span>★</span>
+                {lang === "ar" ? "تقييم" : lang === "en" ? "Feedback" : "Avis"}
+              </button>
+              <button className="help-fab-option" onClick={() => { setFabOpen(false); setSupportOpen(true); }}>
+                <span>💬</span>
+                {lang === "ar" ? "دعم" : lang === "en" ? "Support" : "Support"}
+              </button>
+            </div>
+          )}
+          <button className={`help-fab-main ${fabOpen ? "open" : ""}`} onClick={() => setFabOpen(v => !v)}>
+            {fabOpen ? "✕" : "?"}
+          </button>
+        </div>
+      )}
+
+      {/* Feedback Modal */}
+      <FeedbackModal lang={lang} open={feedbackOpen} onClose={() => setFeedbackOpen(false)} user={user} onAuthOpen={() => setAuthOpen(true)} />
+
+      {/* Support Modal */}
+      <SupportModal lang={lang} open={supportOpen} onClose={() => setSupportOpen(false)} user={user} />
 
       {/* Fly-to-cart particles */}
       {flyers.map(f => (
