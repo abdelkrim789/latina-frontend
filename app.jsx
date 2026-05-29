@@ -295,7 +295,6 @@ const App = () => {
 
       <main style={{ opacity: boxDone ? 1 : 0, transition: "opacity 1s ease 0.4s" }}>
         <HeroScene lang={lang} onAdd={handleAdd} />
-        <ManifestoScene lang={lang} />
         <CodTrustStrip lang={lang} />
         <CollectionScene
           lang={lang}
@@ -308,6 +307,7 @@ const App = () => {
           onWishlist={toggleWishlist}
           onProductView={pushRecent}
         />
+        <ManifestoScene lang={lang} />
         <SegmentsScene
           lang={lang}
           onEnterSegment={(seg) => {

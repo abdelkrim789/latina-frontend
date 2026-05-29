@@ -250,7 +250,7 @@
         onCartOpen: () => setCartOpen(true),
         onAccountOpen: () => setAccountOpen(true)
       }
-    ), /* @__PURE__ */ React.createElement("main", { style: { opacity: boxDone ? 1 : 0, transition: "opacity 1s ease 0.4s" } }, /* @__PURE__ */ React.createElement(HeroScene, { lang, onAdd: handleAdd }), /* @__PURE__ */ React.createElement(ManifestoScene, { lang }), /* @__PURE__ */ React.createElement(CodTrustStrip, { lang }), /* @__PURE__ */ React.createElement(
+    ), /* @__PURE__ */ React.createElement("main", { style: { opacity: boxDone ? 1 : 0, transition: "opacity 1s ease 0.4s" } }, /* @__PURE__ */ React.createElement(HeroScene, { lang, onAdd: handleAdd }), /* @__PURE__ */ React.createElement(CodTrustStrip, { lang }), /* @__PURE__ */ React.createElement(
       CollectionScene,
       {
         lang,
@@ -263,7 +263,7 @@
         onWishlist: toggleWishlist,
         onProductView: pushRecent
       }
-    ), /* @__PURE__ */ React.createElement(
+    ), /* @__PURE__ */ React.createElement(ManifestoScene, { lang }), /* @__PURE__ */ React.createElement(
       SegmentsScene,
       {
         lang,
