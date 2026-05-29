@@ -1,1433 +1,1286 @@
-"use strict";
-
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
-function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
-function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
-function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
-function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
-function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
-function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
-function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
-function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
-function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
-function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
-/* global React, ReactDOM */
-var _React = React,
-  useState = _React.useState,
-  useEffect = _React.useEffect,
-  useRef = _React.useRef,
-  useCallback = _React.useCallback,
-  useMemo = _React.useMemo;
-
-/* ============================================================
-   AUTH MODAL — Login / Register
-   ============================================================ */
-var AuthModal = function AuthModal(_ref) {
-  var lang = _ref.lang,
-    open = _ref.open,
-    onClose = _ref.onClose,
-    onLogin = _ref.onLogin;
-  var _useState = useState("login"),
-    _useState2 = _slicedToArray(_useState, 2),
-    tab = _useState2[0],
-    setTab = _useState2[1];
-  var _useState3 = useState({
-      name: "",
-      login: "",
-      phone: "",
-      email: "",
-      password: "",
-      confirm: ""
-    }),
-    _useState4 = _slicedToArray(_useState3, 2),
-    form = _useState4[0],
-    setForm = _useState4[1];
-  var _useState5 = useState(false),
-    _useState6 = _slicedToArray(_useState5, 2),
-    loading = _useState6[0],
-    setLoading = _useState6[1];
-  var _useState7 = useState(""),
-    _useState8 = _slicedToArray(_useState7, 2),
-    error = _useState8[0],
-    setError = _useState8[1];
-  var api = window.latinaApi;
-  var T = {
-    fr: {
-      login: "Connexion",
-      register: "Créer un compte",
-      name: "Nom complet",
-      loginField: "Email ou téléphone",
-      phone: "Téléphone (0XXXXXXXXX)",
-      email: "Email (optionnel)",
-      password: "Mot de passe",
-      confirm: "Confirmer le mot de passe",
-      loginBtn: "Se connecter",
-      registerBtn: "S'inscrire",
-      noAccount: "Pas encore de compte ?",
-      hasAccount: "Déjà un compte ?",
-      joinMsg: "Rejoignez Latina et gagnez des points fidélité."
-    },
-    ar: {
-      login: "تسجيل الدخول",
-      register: "إنشاء حساب",
-      name: "الاسم الكامل",
-      loginField: "البريد أو الهاتف",
-      phone: "الهاتف (0XXXXXXXXX)",
-      email: "البريد الإلكتروني (اختياري)",
-      password: "كلمة المرور",
-      confirm: "تأكيد كلمة المرور",
-      loginBtn: "دخول",
-      registerBtn: "إنشاء حساب",
-      noAccount: "ليس لديك حساب؟",
-      hasAccount: "لديك حساب؟",
-      joinMsg: "انضمي إلى لاتينا واكسبي نقاط الولاء."
-    },
-    en: {
-      login: "Sign In",
-      register: "Create Account",
-      name: "Full name",
-      loginField: "Email or phone",
-      phone: "Phone (0XXXXXXXXX)",
-      email: "Email (optional)",
-      password: "Password",
-      confirm: "Confirm password",
-      loginBtn: "Sign in",
-      registerBtn: "Register",
-      noAccount: "No account yet?",
-      hasAccount: "Already have an account?",
-      joinMsg: "Join Latina and earn loyalty points."
-    }
-  }[lang] || {};
-  useEffect(function () {
-    if (open) {
+(() => {
+  // customer-flow.jsx
+  var { useState, useEffect, useRef, useCallback, useMemo } = React;
+  var AuthModal = ({ lang, open, onClose, onLogin, initialStep, resetData }) => {
+    const [tab, setTab] = useState("login");
+    const [form, setForm] = useState({ name: "", login: "", phone: "", email: "", password: "", confirm: "" });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [step, setStep] = useState("form");
+    const [profilePhone, setProfilePhone] = useState("");
+    const [forgotEmail, setForgotEmail] = useState("");
+    const [resetPw, setResetPw] = useState({ password: "", confirm: "" });
+    const [resendSuccess, setResendSuccess] = useState(false);
+    const api = window.latinaApi;
+    const googleBtnRef = useRef(null);
+    const googleCbRef = useRef(null);
+    const pendingUserRef = useRef(null);
+    const T = {
+      fr: {
+        login: "Connexion",
+        register: "Cr\xE9er un compte",
+        name: "Nom complet",
+        loginField: "Email ou t\xE9l\xE9phone",
+        phone: "T\xE9l\xE9phone (0XXXXXXXXX)",
+        email: "Email (optionnel)",
+        password: "Mot de passe",
+        confirm: "Confirmer le mot de passe",
+        loginBtn: "Se connecter",
+        registerBtn: "S'inscrire",
+        noAccount: "Pas encore de compte ?",
+        hasAccount: "D\xE9j\xE0 un compte ?",
+        joinMsg: "Rejoignez Latina et gagnez des points fid\xE9lit\xE9.",
+        completeTitle: "Derni\xE8re \xE9tape",
+        completeMsg: "Votre num\xE9ro de t\xE9l\xE9phone est n\xE9cessaire pour les commandes et livraisons.",
+        saveBtn: "Continuer",
+        verifySentTitle: "V\xE9rifiez votre email",
+        verifySentMsg: (email) => `Un lien d'activation a \xE9t\xE9 envoy\xE9 \xE0 ${email}. Cliquez dessus pour activer votre compte.`,
+        resendBtn: "Renvoyer l'email",
+        resendOk: "Email renvoy\xE9 !",
+        accessBtn: "Acc\xE9der \xE0 mon compte \u2192",
+        forgotTitle: "Mot de passe oubli\xE9",
+        forgotMsg: "Entrez votre adresse email et nous vous enverrons un lien pour r\xE9initialiser votre mot de passe.",
+        forgotEmailPlaceholder: "Votre email",
+        forgotSendBtn: "Envoyer le lien",
+        forgotBack: "Retour \xE0 la connexion",
+        forgotSentTitle: "Email envoy\xE9",
+        forgotSentMsg: (email) => `Si l'adresse ${email} est associ\xE9e \xE0 un compte, vous recevrez un lien dans quelques minutes.`,
+        forgotSentBack: "Se connecter",
+        resetTitle: "Nouveau mot de passe",
+        resetMsg: "Choisissez un nouveau mot de passe pour votre compte.",
+        newPassword: "Nouveau mot de passe",
+        confirmPassword: "Confirmer le mot de passe",
+        resetBtn: "Enregistrer",
+        verifiedTitle: "Email v\xE9rifi\xE9 !",
+        verifiedMsg: "Votre adresse email a bien \xE9t\xE9 confirm\xE9e. Vous pouvez maintenant vous connecter.",
+        verifiedLoginBtn: "Se connecter",
+        forgotLink: "Mot de passe oubli\xE9 ?"
+      },
+      ar: {
+        login: "\u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062F\u062E\u0648\u0644",
+        register: "\u0625\u0646\u0634\u0627\u0621 \u062D\u0633\u0627\u0628",
+        name: "\u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0643\u0627\u0645\u0644",
+        loginField: "\u0627\u0644\u0628\u0631\u064A\u062F \u0623\u0648 \u0627\u0644\u0647\u0627\u062A\u0641",
+        phone: "\u0627\u0644\u0647\u0627\u062A\u0641 (0XXXXXXXXX)",
+        email: "\u0627\u0644\u0628\u0631\u064A\u062F \u0627\u0644\u0625\u0644\u0643\u062A\u0631\u0648\u0646\u064A",
+        password: "\u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631",
+        confirm: "\u062A\u0623\u0643\u064A\u062F \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631",
+        loginBtn: "\u062F\u062E\u0648\u0644",
+        registerBtn: "\u0625\u0646\u0634\u0627\u0621 \u062D\u0633\u0627\u0628",
+        noAccount: "\u0644\u064A\u0633 \u0644\u062F\u064A\u0643 \u062D\u0633\u0627\u0628\u061F",
+        hasAccount: "\u0644\u062F\u064A\u0643 \u062D\u0633\u0627\u0628\u061F",
+        joinMsg: "\u0627\u0646\u0636\u0645\u064A \u0625\u0644\u0649 \u0644\u0627\u062A\u064A\u0646\u0627 \u0648\u0627\u0643\u0633\u0628\u064A \u0646\u0642\u0627\u0637 \u0627\u0644\u0648\u0644\u0627\u0621.",
+        completeTitle: "\u062E\u0637\u0648\u0629 \u0623\u062E\u064A\u0631\u0629",
+        completeMsg: "\u0631\u0642\u0645 \u0647\u0627\u062A\u0641\u0643 \u0636\u0631\u0648\u0631\u064A \u0644\u0625\u062A\u0645\u0627\u0645 \u0627\u0644\u0637\u0644\u0628\u0627\u062A \u0648\u0627\u0644\u062A\u0648\u0635\u064A\u0644.",
+        saveBtn: "\u0645\u062A\u0627\u0628\u0639\u0629",
+        verifySentTitle: "\u062A\u062D\u0642\u0642 \u0645\u0646 \u0628\u0631\u064A\u062F\u0643",
+        verifySentMsg: (email) => `\u062A\u0645 \u0625\u0631\u0633\u0627\u0644 \u0631\u0627\u0628\u0637 \u0627\u0644\u062A\u0641\u0639\u064A\u0644 \u0625\u0644\u0649 ${email}. \u0627\u0646\u0642\u0631 \u0639\u0644\u064A\u0647 \u0644\u062A\u0641\u0639\u064A\u0644 \u062D\u0633\u0627\u0628\u0643.`,
+        resendBtn: "\u0625\u0639\u0627\u062F\u0629 \u0627\u0644\u0625\u0631\u0633\u0627\u0644",
+        resendOk: "\u062A\u0645 \u0627\u0644\u0625\u0631\u0633\u0627\u0644 !",
+        accessBtn: "\u0627\u0644\u0648\u0635\u0648\u0644 \u0625\u0644\u0649 \u062D\u0633\u0627\u0628\u064A \u2190",
+        forgotTitle: "\u0646\u0633\u064A\u062A \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631",
+        forgotMsg: "\u0623\u062F\u062E\u0644 \u0628\u0631\u064A\u062F\u0643 \u0627\u0644\u0625\u0644\u0643\u062A\u0631\u0648\u0646\u064A \u0648\u0633\u0646\u0631\u0633\u0644 \u0644\u0643 \u0631\u0627\u0628\u0637\u0627\u064B \u0644\u0625\u0639\u0627\u062F\u0629 \u062A\u0639\u064A\u064A\u0646 \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631.",
+        forgotEmailPlaceholder: "\u0628\u0631\u064A\u062F\u0643 \u0627\u0644\u0625\u0644\u0643\u062A\u0631\u0648\u0646\u064A",
+        forgotSendBtn: "\u0625\u0631\u0633\u0627\u0644 \u0627\u0644\u0631\u0627\u0628\u0637",
+        forgotBack: "\u0627\u0644\u0639\u0648\u062F\u0629 \u0644\u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062F\u062E\u0648\u0644",
+        forgotSentTitle: "\u062A\u0645 \u0627\u0644\u0625\u0631\u0633\u0627\u0644",
+        forgotSentMsg: (email) => `\u0625\u0630\u0627 \u0643\u0627\u0646 ${email} \u0645\u0631\u062A\u0628\u0637\u0627\u064B \u0628\u062D\u0633\u0627\u0628\u060C \u0633\u062A\u0635\u0644\u0643 \u0631\u0633\u0627\u0644\u0629 \u0642\u0631\u064A\u0628\u0627\u064B.`,
+        forgotSentBack: "\u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062F\u062E\u0648\u0644",
+        resetTitle: "\u0643\u0644\u0645\u0629 \u0645\u0631\u0648\u0631 \u062C\u062F\u064A\u062F\u0629",
+        resetMsg: "\u0627\u062E\u062A\u0631 \u0643\u0644\u0645\u0629 \u0645\u0631\u0648\u0631 \u062C\u062F\u064A\u062F\u0629 \u0644\u062D\u0633\u0627\u0628\u0643.",
+        newPassword: "\u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631 \u0627\u0644\u062C\u062F\u064A\u062F\u0629",
+        confirmPassword: "\u062A\u0623\u0643\u064A\u062F \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631",
+        resetBtn: "\u062D\u0641\u0638",
+        verifiedTitle: "\u062A\u0645 \u0627\u0644\u062A\u062D\u0642\u0642 !",
+        verifiedMsg: "\u062A\u0645 \u062A\u0623\u0643\u064A\u062F \u0628\u0631\u064A\u062F\u0643 \u0627\u0644\u0625\u0644\u0643\u062A\u0631\u0648\u0646\u064A. \u064A\u0645\u0643\u0646\u0643 \u0627\u0644\u0622\u0646 \u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062F\u062E\u0648\u0644.",
+        verifiedLoginBtn: "\u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062F\u062E\u0648\u0644",
+        forgotLink: "\u0646\u0633\u064A\u062A \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631\u061F"
+      },
+      en: {
+        login: "Sign In",
+        register: "Create Account",
+        name: "Full name",
+        loginField: "Email or phone",
+        phone: "Phone (0XXXXXXXXX)",
+        email: "Email",
+        password: "Password",
+        confirm: "Confirm password",
+        loginBtn: "Sign in",
+        registerBtn: "Register",
+        noAccount: "No account yet?",
+        hasAccount: "Already have an account?",
+        joinMsg: "Join Latina and earn loyalty points.",
+        completeTitle: "One last step",
+        completeMsg: "Your phone number is required for orders and delivery.",
+        saveBtn: "Continue",
+        verifySentTitle: "Check your email",
+        verifySentMsg: (email) => `An activation link was sent to ${email}. Click it to activate your account.`,
+        resendBtn: "Resend email",
+        resendOk: "Email resent!",
+        accessBtn: "Access my account \u2192",
+        forgotTitle: "Forgot password",
+        forgotMsg: "Enter your email and we'll send you a reset link.",
+        forgotEmailPlaceholder: "Your email",
+        forgotSendBtn: "Send reset link",
+        forgotBack: "Back to sign in",
+        forgotSentTitle: "Email sent",
+        forgotSentMsg: (email) => `If ${email} is linked to an account, you'll receive a link shortly.`,
+        forgotSentBack: "Sign in",
+        resetTitle: "New password",
+        resetMsg: "Choose a new password for your account.",
+        newPassword: "New password",
+        confirmPassword: "Confirm password",
+        resetBtn: "Save",
+        verifiedTitle: "Email verified!",
+        verifiedMsg: "Your email address has been confirmed. You can now sign in.",
+        verifiedLoginBtn: "Sign in",
+        forgotLink: "Forgot password?"
+      }
+    }[lang] || {};
+    useEffect(() => {
+      if (open) {
+        setError("");
+        setResendSuccess(false);
+        setForm({ name: "", login: "", phone: "", email: "", password: "", confirm: "" });
+        if (initialStep) {
+          setStep(initialStep);
+          if (initialStep === "reset" && resetData) {
+            setForgotEmail(resetData.email || "");
+          }
+        } else {
+          setStep("form");
+        }
+      } else {
+        setStep("form");
+        setProfilePhone("");
+        setForgotEmail("");
+        setResetPw({ password: "", confirm: "" });
+        setResendSuccess(false);
+        pendingUserRef.current = null;
+      }
+    }, [open]);
+    googleCbRef.current = async (response) => {
       setError("");
-      setForm({
-        name: "",
-        phone: "",
-        email: "",
-        password: "",
-        confirm: ""
-      });
-    }
-  }, [open, tab]);
-  var set = function set(k, v) {
-    return setForm(function (f) {
-      return _objectSpread(_objectSpread({}, f), {}, _defineProperty({}, k, v));
-    });
-  };
-  var handleSubmit = /*#__PURE__*/function () {
-    var _ref2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(e) {
-      var _data$data, data, _t;
-      return _regenerator().w(function (_context) {
-        while (1) switch (_context.p = _context.n) {
-          case 0:
-            e.preventDefault();
-            setError("");
-            if (!(tab === "register" && form.password !== form.confirm)) {
-              _context.n = 1;
-              break;
-            }
-            setError("Les mots de passe ne correspondent pas.");
-            return _context.a(2);
-          case 1:
-            setLoading(true);
-            _context.p = 2;
-            if (!(tab === "login")) {
-              _context.n = 4;
-              break;
-            }
-            _context.n = 3;
-            return api.login({
-              login: form.login,
-              password: form.password
-            });
-          case 3:
-            data = _context.v;
-            _context.n = 6;
-            break;
-          case 4:
-            _context.n = 5;
-            return api.register({
-              name: form.name,
-              phone: form.phone,
-              email: form.email || undefined,
-              password: form.password
-            });
-          case 5:
-            data = _context.v;
-          case 6:
-            onLogin(data.user || ((_data$data = data.data) === null || _data$data === void 0 ? void 0 : _data$data.user));
+      setLoading(true);
+      try {
+        const data = await api.loginGoogle(response.credential);
+        if (data.needs_phone) {
+          pendingUserRef.current = data.user;
+          setStep("complete-profile");
+        } else {
+          onLogin(data.user);
+          onClose();
+        }
+      } catch (err) {
+        setError(err.message || "Erreur Google, veuillez r\xE9essayer.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    const handleProfileSubmit = async (e) => {
+      e.preventDefault();
+      setError("");
+      setLoading(true);
+      try {
+        const data = await api.updateProfile({ phone: profilePhone });
+        onLogin(data.user);
+        onClose();
+      } catch (err) {
+        const msg = err.errors?.phone?.[0] || err.message || "Erreur, veuillez r\xE9essayer.";
+        setError(msg);
+      } finally {
+        setLoading(false);
+      }
+    };
+    useEffect(() => {
+      if (!open || !window.GOOGLE_CLIENT_ID || window.GOOGLE_CLIENT_ID === "YOUR_GOOGLE_CLIENT_ID_HERE") return;
+      const init = () => {
+        if (!window.google?.accounts?.id || !googleBtnRef.current) return false;
+        window.google.accounts.id.initialize({
+          client_id: window.GOOGLE_CLIENT_ID,
+          callback: (r) => googleCbRef.current(r)
+        });
+        window.google.accounts.id.renderButton(googleBtnRef.current, {
+          theme: "outline",
+          size: "large",
+          shape: "rectangular",
+          width: 300,
+          locale: lang === "ar" ? "ar" : lang === "en" ? "en" : "fr"
+        });
+        return true;
+      };
+      if (!init()) {
+        const t = setTimeout(init, 1500);
+        return () => clearTimeout(t);
+      }
+    }, [open, lang]);
+    const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      setError("");
+      if (tab === "register" && form.password !== form.confirm) {
+        setError("Les mots de passe ne correspondent pas.");
+        return;
+      }
+      setLoading(true);
+      try {
+        let data;
+        if (tab === "login") {
+          data = await api.login({ login: form.login, password: form.password });
+          onLogin(data.user || data.data?.user);
+          onClose();
+        } else {
+          data = await api.register({ name: form.name, phone: form.phone, email: form.email, password: form.password });
+          if (data.needs_verification) {
+            pendingUserRef.current = data.user || data.data?.user;
+            setStep("verify-sent");
+          } else {
+            onLogin(data.user || data.data?.user);
             onClose();
-            _context.n = 8;
-            break;
-          case 7:
-            _context.p = 7;
-            _t = _context.v;
-            setError(_t.message || "Erreur, veuillez réessayer.");
-          case 8:
-            _context.p = 8;
-            setLoading(false);
-            return _context.f(8);
-          case 9:
-            return _context.a(2);
+          }
         }
-      }, _callee, null, [[2, 7, 8, 9]]);
-    }));
-    return function handleSubmit(_x) {
-      return _ref2.apply(this, arguments);
+      } catch (err) {
+        setError(err.message || "Erreur, veuillez r\xE9essayer.");
+      } finally {
+        setLoading(false);
+      }
     };
-  }();
-  if (!open) return null;
-  return /*#__PURE__*/React.createElement("div", {
-    className: "modal-backdrop",
-    onClick: onClose
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "auth-modal",
-    onClick: function onClick(e) {
-      return e.stopPropagation();
-    },
-    dir: lang === "ar" ? "rtl" : "ltr"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "modal-close",
-    onClick: onClose
-  }, "\u2715"), /*#__PURE__*/React.createElement("div", {
-    className: "auth-brand"
-  }, /*#__PURE__*/React.createElement(LotusMark, {
-    size: 32,
-    color: "var(--rose-500)"
-  }), /*#__PURE__*/React.createElement("span", {
-    className: "brand-name"
-  }, "Latina")), /*#__PURE__*/React.createElement("div", {
-    className: "auth-tabs"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: tab === "login" ? "active" : "",
-    onClick: function onClick() {
-      return setTab("login");
-    }
-  }, T.login), /*#__PURE__*/React.createElement("button", {
-    className: tab === "register" ? "active" : "",
-    onClick: function onClick() {
-      return setTab("register");
-    }
-  }, T.register)), tab === "register" && /*#__PURE__*/React.createElement("p", {
-    className: "auth-tagline"
-  }, T.joinMsg), /*#__PURE__*/React.createElement("form", {
-    className: "auth-form",
-    onSubmit: handleSubmit
-  }, tab === "register" && /*#__PURE__*/React.createElement("input", {
-    type: "text",
-    placeholder: T.name,
-    value: form.name,
-    onChange: function onChange(e) {
-      return set("name", e.target.value);
-    },
-    required: true
-  }), tab === "login" ? /*#__PURE__*/React.createElement("input", {
-    type: "text",
-    placeholder: T.loginField,
-    value: form.login,
-    onChange: function onChange(e) {
-      return set("login", e.target.value);
-    },
-    required: true,
-    autoComplete: "username"
-  }) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("input", {
-    type: "tel",
-    placeholder: T.phone,
-    value: form.phone,
-    onChange: function onChange(e) {
-      return set("phone", e.target.value);
-    },
-    required: true,
-    pattern: "0[5-7][0-9]{8}"
-  }), /*#__PURE__*/React.createElement("input", {
-    type: "email",
-    placeholder: T.email,
-    value: form.email,
-    onChange: function onChange(e) {
-      return set("email", e.target.value);
-    }
-  })), /*#__PURE__*/React.createElement("input", {
-    type: "password",
-    placeholder: T.password,
-    value: form.password,
-    onChange: function onChange(e) {
-      return set("password", e.target.value);
-    },
-    required: true,
-    minLength: 8
-  }), tab === "register" && /*#__PURE__*/React.createElement("input", {
-    type: "password",
-    placeholder: T.confirm,
-    value: form.confirm,
-    onChange: function onChange(e) {
-      return set("confirm", e.target.value);
-    },
-    required: true,
-    minLength: 8
-  }), error && /*#__PURE__*/React.createElement("div", {
-    className: "auth-error"
-  }, error), /*#__PURE__*/React.createElement("button", {
-    type: "submit",
-    className: "btn-primary auth-submit",
-    disabled: loading
-  }, loading ? /*#__PURE__*/React.createElement("span", {
-    className: "btn-spinner"
-  }) : tab === "login" ? T.loginBtn : T.registerBtn)), /*#__PURE__*/React.createElement("div", {
-    className: "auth-switch"
-  }, /*#__PURE__*/React.createElement("span", null, tab === "login" ? T.noAccount : T.hasAccount), /*#__PURE__*/React.createElement("button", {
-    onClick: function onClick() {
-      return setTab(tab === "login" ? "register" : "login");
-    }
-  }, tab === "login" ? T.register : T.login))));
-};
-
-/* ============================================================
-   CART DRAWER
-   ============================================================ */
-var CartDrawer = function CartDrawer(_ref3) {
-  var lang = _ref3.lang,
-    open = _ref3.open,
-    onClose = _ref3.onClose,
-    cart = _ref3.cart,
-    onUpdateCart = _ref3.onUpdateCart,
-    onCheckout = _ref3.onCheckout,
-    user = _ref3.user;
-  var _useState9 = useState(""),
-    _useState0 = _slicedToArray(_useState9, 2),
-    couponCode = _useState0[0],
-    setCouponCode = _useState0[1];
-  var _useState1 = useState(null),
-    _useState10 = _slicedToArray(_useState1, 2),
-    couponData = _useState10[0],
-    setCouponData = _useState10[1]; // { code, type, value }
-  var _useState11 = useState(false),
-    _useState12 = _slicedToArray(_useState11, 2),
-    couponLoading = _useState12[0],
-    setCouponLoading = _useState12[1];
-  var _useState13 = useState(""),
-    _useState14 = _slicedToArray(_useState13, 2),
-    couponError = _useState14[0],
-    setCouponError = _useState14[1];
-  var T = {
-    fr: {
-      title: "Mon Panier",
-      empty: "Votre panier est vide.",
-      emptyHint: "Découvrez notre collection ✨",
-      subtotal: "Sous-total",
-      shipping: "Livraison",
-      discount: "Remise",
-      total: "Total",
-      checkout: "Commander",
-      applyCoupon: "Appliquer",
-      couponPlaceholder: "Code promo",
-      remove: "Supprimer",
-      calculated: "calculée au checkout",
-      freeShipping: "Offerte",
-      qty: "Qté",
-      cod: "Paiement à la livraison uniquement"
-    },
-    ar: {
-      title: "سلة التسوق",
-      empty: "سلتك فارغة.",
-      emptyHint: "اكتشفي مجموعتنا ✨",
-      subtotal: "المجموع الجزئي",
-      shipping: "الشحن",
-      discount: "الخصم",
-      total: "المجموع",
-      checkout: "طلب",
-      applyCoupon: "تطبيق",
-      couponPlaceholder: "كود الخصم",
-      remove: "حذف",
-      calculated: "يُحسب عند الدفع",
-      freeShipping: "مجاني",
-      qty: "الكمية",
-      cod: "الدفع عند الاستلام فقط"
-    },
-    en: {
-      title: "My Cart",
-      empty: "Your cart is empty.",
-      emptyHint: "Explore our collection ✨",
-      subtotal: "Subtotal",
-      shipping: "Shipping",
-      discount: "Discount",
-      total: "Total",
-      checkout: "Order now",
-      applyCoupon: "Apply",
-      couponPlaceholder: "Promo code",
-      remove: "Remove",
-      calculated: "calculated at checkout",
-      freeShipping: "Free",
-      qty: "Qty",
-      cod: "Cash on delivery only"
-    }
-  }[lang] || {};
-  var subtotal = cart.reduce(function (s, i) {
-    return s + i.price * i.qty;
-  }, 0);
-  var calcDiscount = function calcDiscount(coupon) {
-    if (!coupon) return 0;
-    if (coupon.type === "percent") return Math.round(subtotal * coupon.value / 100);
-    if (coupon.type === "fixed") return Math.min(coupon.value, subtotal);
-    return 0; // free_shipping handled at checkout
-  };
-  var discount = calcDiscount(couponData);
-  var applyCoupon = /*#__PURE__*/function () {
-    var _ref4 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
-      var res, _t2;
-      return _regenerator().w(function (_context2) {
-        while (1) switch (_context2.p = _context2.n) {
-          case 0:
-            if (!(!couponCode.trim() || couponLoading)) {
-              _context2.n = 1;
-              break;
+    const handleForgot = async (e) => {
+      e.preventDefault();
+      setError("");
+      setLoading(true);
+      try {
+        await api.forgotPassword(forgotEmail);
+        setStep("forgot-sent");
+      } catch (err) {
+        setError(err.message || "Erreur, veuillez r\xE9essayer.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    const handleReset = async (e) => {
+      e.preventDefault();
+      setError("");
+      if (resetPw.password !== resetPw.confirm) {
+        setError("Les mots de passe ne correspondent pas.");
+        return;
+      }
+      setLoading(true);
+      try {
+        await api.resetPassword({ token: resetData?.token, email: forgotEmail || resetData?.email, password: resetPw.password });
+        setStep("reset-done");
+      } catch (err) {
+        setError(err.message || "Erreur, veuillez r\xE9essayer.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    const handleResend = async () => {
+      setResendSuccess(false);
+      try {
+        await api.resendVerification();
+        setResendSuccess(true);
+      } catch {
+      }
+    };
+    if (!open) return null;
+    const ModalShell = ({ children, closeable = false }) => /* @__PURE__ */ React.createElement("div", { className: "modal-backdrop", onClick: closeable ? onClose : void 0 }, /* @__PURE__ */ React.createElement("div", { className: "auth-modal", onClick: (e) => e.stopPropagation(), dir: lang === "ar" ? "rtl" : "ltr" }, closeable && /* @__PURE__ */ React.createElement("button", { className: "modal-close", onClick: onClose }, "\u2715"), /* @__PURE__ */ React.createElement("div", { className: "auth-brand" }, /* @__PURE__ */ React.createElement(LotusMark, { size: 32, color: "var(--rose-500)" }), /* @__PURE__ */ React.createElement("span", { className: "brand-name" }, "Latina")), children));
+    if (step === "verify-sent") {
+      return /* @__PURE__ */ React.createElement(ModalShell, { closeable: true }, /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 10px", fontSize: "var(--ts-4)", fontFamily: "var(--display)" } }, T.verifySentTitle), /* @__PURE__ */ React.createElement("p", { className: "auth-tagline", style: { margin: "0 0 24px" } }, T.verifySentMsg(pendingUserRef.current?.email || "")), /* @__PURE__ */ React.createElement(
+        "button",
+        {
+          className: "btn-primary auth-submit",
+          onClick: () => {
+            if (pendingUserRef.current) {
+              onLogin(pendingUserRef.current);
             }
-            return _context2.a(2);
-          case 1:
-            setCouponLoading(true);
-            setCouponError("");
-            _context2.p = 2;
-            _context2.n = 3;
-            return window.latinaApi.checkCoupon(couponCode.trim());
-          case 3:
-            res = _context2.v;
-            if (res.valid) {
-              setCouponData(res);
-            } else {
-              setCouponError(res.message || "Code invalide.");
-            }
-            _context2.n = 5;
-            break;
-          case 4:
-            _context2.p = 4;
-            _t2 = _context2.v;
-            setCouponError("Erreur lors de la vérification.");
-          case 5:
-            _context2.p = 5;
-            setCouponLoading(false);
-            return _context2.f(5);
-          case 6:
-            return _context2.a(2);
+            onClose();
+          },
+          style: { width: "100%", marginBottom: 12 }
+        },
+        T.accessBtn
+      ), /* @__PURE__ */ React.createElement(
+        "button",
+        {
+          className: "auth-switch",
+          style: { background: "none", border: "none", color: "var(--rose-500)", cursor: "pointer", fontSize: "var(--ts-1)", width: "100%", justifyContent: "center", marginTop: 4 },
+          onClick: handleResend,
+          disabled: resendSuccess
+        },
+        resendSuccess ? T.resendOk : T.resendBtn
+      ));
+    }
+    if (step === "verified") {
+      return /* @__PURE__ */ React.createElement(ModalShell, { closeable: true }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", padding: "8px 0 16px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 40, marginBottom: 12 } }, "\u2709\uFE0F"), /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 10px", fontSize: "var(--ts-4)", fontFamily: "var(--display)", color: "#10B981" } }, T.verifiedTitle), /* @__PURE__ */ React.createElement("p", { className: "auth-tagline" }, T.verifiedMsg), /* @__PURE__ */ React.createElement("button", { className: "btn-primary auth-submit", style: { marginTop: 16, width: "100%" }, onClick: () => setStep("form") }, T.verifiedLoginBtn)));
+    }
+    if (step === "forgot") {
+      return /* @__PURE__ */ React.createElement(ModalShell, { closeable: true }, /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 10px", fontSize: "var(--ts-4)", fontFamily: "var(--display)" } }, T.forgotTitle), /* @__PURE__ */ React.createElement("p", { className: "auth-tagline" }, T.forgotMsg), /* @__PURE__ */ React.createElement("form", { className: "auth-form", onSubmit: handleForgot }, /* @__PURE__ */ React.createElement("input", { type: "email", placeholder: T.forgotEmailPlaceholder, value: forgotEmail, onChange: (e) => setForgotEmail(e.target.value), required: true, autoFocus: true }), error && /* @__PURE__ */ React.createElement("div", { className: "auth-error" }, error), /* @__PURE__ */ React.createElement("button", { type: "submit", className: "btn-primary auth-submit", disabled: loading }, loading ? /* @__PURE__ */ React.createElement("span", { className: "btn-spinner" }) : T.forgotSendBtn)), /* @__PURE__ */ React.createElement("div", { className: "auth-switch" }, /* @__PURE__ */ React.createElement("button", { onClick: () => setStep("form") }, T.forgotBack)));
+    }
+    if (step === "forgot-sent") {
+      return /* @__PURE__ */ React.createElement(ModalShell, { closeable: true }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", padding: "8px 0 16px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 40, marginBottom: 12 } }, "\u{1F4E9}"), /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 10px", fontSize: "var(--ts-4)", fontFamily: "var(--display)" } }, T.forgotSentTitle), /* @__PURE__ */ React.createElement("p", { className: "auth-tagline" }, T.forgotSentMsg(forgotEmail)), /* @__PURE__ */ React.createElement("button", { className: "btn-primary auth-submit", style: { marginTop: 16, width: "100%" }, onClick: () => setStep("form") }, T.forgotSentBack)));
+    }
+    if (step === "reset") {
+      return /* @__PURE__ */ React.createElement(ModalShell, { closeable: true }, /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 10px", fontSize: "var(--ts-4)", fontFamily: "var(--display)" } }, T.resetTitle), /* @__PURE__ */ React.createElement("p", { className: "auth-tagline" }, T.resetMsg), /* @__PURE__ */ React.createElement("form", { className: "auth-form", onSubmit: handleReset }, /* @__PURE__ */ React.createElement("input", { type: "password", placeholder: T.newPassword, value: resetPw.password, onChange: (e) => setResetPw((p) => ({ ...p, password: e.target.value })), required: true, minLength: 8, autoFocus: true }), /* @__PURE__ */ React.createElement("input", { type: "password", placeholder: T.confirmPassword, value: resetPw.confirm, onChange: (e) => setResetPw((p) => ({ ...p, confirm: e.target.value })), required: true, minLength: 8 }), error && /* @__PURE__ */ React.createElement("div", { className: "auth-error" }, error), /* @__PURE__ */ React.createElement("button", { type: "submit", className: "btn-primary auth-submit", disabled: loading }, loading ? /* @__PURE__ */ React.createElement("span", { className: "btn-spinner" }) : T.resetBtn)));
+    }
+    if (step === "reset-done") {
+      return /* @__PURE__ */ React.createElement(ModalShell, { closeable: true }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", padding: "8px 0 16px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 40, marginBottom: 12 } }, "\u2705"), /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 10px", fontSize: "var(--ts-4)", fontFamily: "var(--display)", color: "#10B981" } }, lang === "ar" ? "\u062A\u0645 \u0628\u0646\u062C\u0627\u062D!" : lang === "en" ? "Done!" : "C'est fait !"), /* @__PURE__ */ React.createElement("p", { className: "auth-tagline" }, lang === "ar" ? "\u062A\u0645 \u062A\u063A\u064A\u064A\u0631 \u0643\u0644\u0645\u0629 \u0645\u0631\u0648\u0631\u0643." : lang === "en" ? "Your password has been changed." : "Votre mot de passe a bien \xE9t\xE9 modifi\xE9."), /* @__PURE__ */ React.createElement("button", { className: "btn-primary auth-submit", style: { marginTop: 16, width: "100%" }, onClick: () => setStep("form") }, T.verifiedLoginBtn)));
+    }
+    if (step === "complete-profile") {
+      return /* @__PURE__ */ React.createElement(ModalShell, null, /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 8px", fontSize: "var(--ts-4)", fontFamily: "var(--display)" } }, T.completeTitle), /* @__PURE__ */ React.createElement("p", { className: "auth-tagline" }, T.completeMsg), /* @__PURE__ */ React.createElement("form", { className: "auth-form", onSubmit: handleProfileSubmit }, /* @__PURE__ */ React.createElement(
+        "input",
+        {
+          type: "tel",
+          placeholder: T.phone,
+          value: profilePhone,
+          onChange: (e) => setProfilePhone(e.target.value),
+          required: true,
+          pattern: "0[5-7][0-9]{8}",
+          autoFocus: true
         }
-      }, _callee2, null, [[2, 4, 5, 6]]);
-    }));
-    return function applyCoupon() {
-      return _ref4.apply(this, arguments);
+      ), error && /* @__PURE__ */ React.createElement("div", { className: "auth-error" }, error), /* @__PURE__ */ React.createElement("button", { type: "submit", className: "btn-primary auth-submit", disabled: loading }, loading ? /* @__PURE__ */ React.createElement("span", { className: "btn-spinner" }) : T.saveBtn)));
+    }
+    return /* @__PURE__ */ React.createElement("div", { className: "modal-backdrop", onClick: onClose }, /* @__PURE__ */ React.createElement("div", { className: "auth-modal", onClick: (e) => e.stopPropagation(), dir: lang === "ar" ? "rtl" : "ltr" }, /* @__PURE__ */ React.createElement("button", { className: "modal-close", onClick: onClose }, "\u2715"), /* @__PURE__ */ React.createElement("div", { className: "auth-brand" }, /* @__PURE__ */ React.createElement(LotusMark, { size: 32, color: "var(--rose-500)" }), /* @__PURE__ */ React.createElement("span", { className: "brand-name" }, "Latina")), /* @__PURE__ */ React.createElement("div", { className: "auth-tabs" }, /* @__PURE__ */ React.createElement("button", { className: tab === "login" ? "active" : "", onClick: () => setTab("login") }, T.login), /* @__PURE__ */ React.createElement("button", { className: tab === "register" ? "active" : "", onClick: () => setTab("register") }, T.register)), tab === "register" && /* @__PURE__ */ React.createElement("p", { className: "auth-tagline" }, T.joinMsg), /* @__PURE__ */ React.createElement("form", { className: "auth-form", onSubmit: handleSubmit }, tab === "register" && /* @__PURE__ */ React.createElement("input", { type: "text", placeholder: T.name, value: form.name, onChange: (e) => set("name", e.target.value), required: true }), tab === "login" ? /* @__PURE__ */ React.createElement("input", { type: "text", placeholder: T.loginField, value: form.login, onChange: (e) => set("login", e.target.value), required: true, autoComplete: "username" }) : /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("input", { type: "tel", placeholder: T.phone, value: form.phone, onChange: (e) => set("phone", e.target.value), required: true, pattern: "0[5-7][0-9]{8}" }), /* @__PURE__ */ React.createElement("input", { type: "email", placeholder: T.email, value: form.email, onChange: (e) => set("email", e.target.value), required: true })), /* @__PURE__ */ React.createElement("input", { type: "password", placeholder: T.password, value: form.password, onChange: (e) => set("password", e.target.value), required: true, minLength: 8 }), tab === "register" && /* @__PURE__ */ React.createElement("input", { type: "password", placeholder: T.confirm, value: form.confirm, onChange: (e) => set("confirm", e.target.value), required: true, minLength: 8 }), tab === "login" && /* @__PURE__ */ React.createElement("div", { style: { textAlign: lang === "ar" ? "left" : "right", marginTop: -4 } }, /* @__PURE__ */ React.createElement("button", { type: "button", onClick: () => setStep("forgot"), style: { background: "none", border: "none", color: "var(--rose-500)", cursor: "pointer", fontSize: "var(--ts-0)", textDecoration: "underline" } }, T.forgotLink)), error && /* @__PURE__ */ React.createElement("div", { className: "auth-error" }, error), /* @__PURE__ */ React.createElement("button", { type: "submit", className: "btn-primary auth-submit", disabled: loading }, loading ? /* @__PURE__ */ React.createElement("span", { className: "btn-spinner" }) : tab === "login" ? T.loginBtn : T.registerBtn)), window.GOOGLE_CLIENT_ID && window.GOOGLE_CLIENT_ID !== "YOUR_GOOGLE_CLIENT_ID_HERE" && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { className: "auth-divider" }, /* @__PURE__ */ React.createElement("span", null, lang === "ar" ? "\u0623\u0648" : lang === "en" ? "or" : "ou")), /* @__PURE__ */ React.createElement("div", { ref: googleBtnRef, className: "google-btn-wrap" })), /* @__PURE__ */ React.createElement("div", { className: "auth-switch" }, /* @__PURE__ */ React.createElement("span", null, tab === "login" ? T.noAccount : T.hasAccount), /* @__PURE__ */ React.createElement("button", { onClick: () => setTab(tab === "login" ? "register" : "login") }, tab === "login" ? T.register : T.login))));
+  };
+  var CartDrawer = ({ lang, open, onClose, cart, onUpdateCart, onCheckout, user }) => {
+    const [couponCode, setCouponCode] = useState("");
+    const [couponData, setCouponData] = useState(null);
+    const [couponLoading, setCouponLoading] = useState(false);
+    const [couponError, setCouponError] = useState("");
+    const T = {
+      fr: {
+        title: "Mon Panier",
+        empty: "Votre panier est vide.",
+        emptyHint: "D\xE9couvrez notre collection \u2728",
+        subtotal: "Sous-total",
+        shipping: "Livraison",
+        discount: "Remise",
+        total: "Total",
+        checkout: "Commander",
+        applyCoupon: "Appliquer",
+        couponPlaceholder: "Code promo",
+        remove: "Supprimer",
+        calculated: "calcul\xE9e au checkout",
+        freeShipping: "Offerte",
+        qty: "Qt\xE9",
+        cod: "Paiement \xE0 la livraison uniquement"
+      },
+      ar: {
+        title: "\u0633\u0644\u0629 \u0627\u0644\u062A\u0633\u0648\u0642",
+        empty: "\u0633\u0644\u062A\u0643 \u0641\u0627\u0631\u063A\u0629.",
+        emptyHint: "\u0627\u0643\u062A\u0634\u0641\u064A \u0645\u062C\u0645\u0648\u0639\u062A\u0646\u0627 \u2728",
+        subtotal: "\u0627\u0644\u0645\u062C\u0645\u0648\u0639 \u0627\u0644\u062C\u0632\u0626\u064A",
+        shipping: "\u0627\u0644\u0634\u062D\u0646",
+        discount: "\u0627\u0644\u062E\u0635\u0645",
+        total: "\u0627\u0644\u0645\u062C\u0645\u0648\u0639",
+        checkout: "\u0637\u0644\u0628",
+        applyCoupon: "\u062A\u0637\u0628\u064A\u0642",
+        couponPlaceholder: "\u0643\u0648\u062F \u0627\u0644\u062E\u0635\u0645",
+        remove: "\u062D\u0630\u0641",
+        calculated: "\u064A\u064F\u062D\u0633\u0628 \u0639\u0646\u062F \u0627\u0644\u062F\u0641\u0639",
+        freeShipping: "\u0645\u062C\u0627\u0646\u064A",
+        qty: "\u0627\u0644\u0643\u0645\u064A\u0629",
+        cod: "\u0627\u0644\u062F\u0641\u0639 \u0639\u0646\u062F \u0627\u0644\u0627\u0633\u062A\u0644\u0627\u0645 \u0641\u0642\u0637"
+      },
+      en: {
+        title: "My Cart",
+        empty: "Your cart is empty.",
+        emptyHint: "Explore our collection \u2728",
+        subtotal: "Subtotal",
+        shipping: "Shipping",
+        discount: "Discount",
+        total: "Total",
+        checkout: "Order now",
+        applyCoupon: "Apply",
+        couponPlaceholder: "Promo code",
+        remove: "Remove",
+        calculated: "calculated at checkout",
+        freeShipping: "Free",
+        qty: "Qty",
+        cod: "Cash on delivery only"
+      }
+    }[lang] || {};
+    const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const calcDiscount = (coupon) => {
+      if (!coupon) return 0;
+      if (coupon.type === "percent") return Math.round(subtotal * coupon.value / 100);
+      if (coupon.type === "fixed") return Math.min(coupon.value, subtotal);
+      return 0;
     };
-  }();
-  var changeQty = function changeQty(idx, delta) {
-    onUpdateCart(function (prev) {
-      var next = _toConsumableArray(prev);
-      next[idx] = _objectSpread(_objectSpread({}, next[idx]), {}, {
-        qty: Math.max(1, next[idx].qty + delta)
-      });
-      return next;
-    });
-  };
-  var removeItem = function removeItem(idx) {
-    onUpdateCart(function (prev) {
-      return prev.filter(function (_, i) {
-        return i !== idx;
-      });
-    });
-  };
-  return /*#__PURE__*/React.createElement(React.Fragment, null, open && /*#__PURE__*/React.createElement("div", {
-    className: "drawer-backdrop",
-    onClick: onClose
-  }), /*#__PURE__*/React.createElement("div", {
-    className: "cart-drawer ".concat(open ? "open" : ""),
-    dir: lang === "ar" ? "rtl" : "ltr"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "cart-drawer-head"
-  }, /*#__PURE__*/React.createElement("h2", {
-    className: "t-h4"
-  }, T.title), /*#__PURE__*/React.createElement("button", {
-    className: "drawer-close",
-    onClick: onClose
-  }, "\u2715")), cart.length === 0 ? /*#__PURE__*/React.createElement("div", {
-    className: "cart-empty"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "cart-empty-icon"
-  }, "\uD83D\uDECD\uFE0F"), /*#__PURE__*/React.createElement("p", null, T.empty), /*#__PURE__*/React.createElement("p", {
-    className: "t-mute"
-  }, T.emptyHint)) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "cart-items"
-  }, cart.map(function (item, idx) {
-    return /*#__PURE__*/React.createElement("div", {
-      className: "cart-item",
-      key: idx
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "ci-img"
-    }, item.image ? /*#__PURE__*/React.createElement("img", {
-      src: item.image,
-      alt: item.name
-    }) : /*#__PURE__*/React.createElement("div", {
-      className: "ci-img-placeholder"
-    }, "\uD83D\uDC5F")), /*#__PURE__*/React.createElement("div", {
-      className: "ci-info"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "ci-name"
-    }, item.name), item.variant && /*#__PURE__*/React.createElement("div", {
-      className: "ci-meta t-mono"
-    }, item.variant), /*#__PURE__*/React.createElement("div", {
-      className: "ci-price t-num"
-    }, (item.price * item.qty).toLocaleString(), " DA")), /*#__PURE__*/React.createElement("div", {
-      className: "ci-controls"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "qty-control"
-    }, /*#__PURE__*/React.createElement("button", {
-      onClick: function onClick() {
-        return changeQty(idx, -1);
-      }
-    }, "\u2212"), /*#__PURE__*/React.createElement("span", {
-      className: "t-num"
-    }, item.qty), /*#__PURE__*/React.createElement("button", {
-      onClick: function onClick() {
-        return changeQty(idx, +1);
-      }
-    }, "+")), /*#__PURE__*/React.createElement("button", {
-      className: "ci-remove",
-      onClick: function onClick() {
-        return removeItem(idx);
-      }
-    }, T.remove)));
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "cart-coupon"
-  }, /*#__PURE__*/React.createElement("input", {
-    placeholder: T.couponPlaceholder,
-    value: couponCode,
-    onChange: function onChange(e) {
-      setCouponCode(e.target.value);
-      setCouponData(null);
+    const discount = calcDiscount(couponData);
+    const applyCoupon = async () => {
+      if (!couponCode.trim() || couponLoading) return;
+      setCouponLoading(true);
       setCouponError("");
-    },
-    onKeyDown: function onKeyDown(e) {
-      return e.key === "Enter" && !couponData && applyCoupon();
-    },
-    disabled: !!couponData || couponLoading
-  }), couponData ? /*#__PURE__*/React.createElement("button", {
-    className: "btn-outline-sm",
-    onClick: function onClick() {
+      try {
+        const res = await window.latinaApi.checkCoupon(couponCode.trim());
+        if (res.valid) {
+          setCouponData(res);
+        } else {
+          setCouponError(res.message || "Code invalide.");
+        }
+      } catch {
+        setCouponError("Erreur lors de la v\xE9rification.");
+      } finally {
+        setCouponLoading(false);
+      }
+    };
+    const changeQty = (idx, delta) => {
+      onUpdateCart((prev) => {
+        const next = [...prev];
+        next[idx] = { ...next[idx], qty: Math.max(1, next[idx].qty + delta) };
+        return next;
+      });
+    };
+    const removeItem = (idx) => {
+      onUpdateCart((prev) => prev.filter((_, i) => i !== idx));
+    };
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, open && /* @__PURE__ */ React.createElement("div", { className: "drawer-backdrop", onClick: onClose }), /* @__PURE__ */ React.createElement("div", { className: `cart-drawer ${open ? "open" : ""}`, dir: lang === "ar" ? "rtl" : "ltr" }, /* @__PURE__ */ React.createElement("div", { className: "cart-drawer-head" }, /* @__PURE__ */ React.createElement("h2", { className: "t-h4" }, T.title), /* @__PURE__ */ React.createElement("button", { className: "drawer-close", onClick: onClose }, "\u2715")), cart.length === 0 ? /* @__PURE__ */ React.createElement("div", { className: "cart-empty" }, /* @__PURE__ */ React.createElement("div", { className: "cart-empty-icon" }, "\u{1F6CD}\uFE0F"), /* @__PURE__ */ React.createElement("p", null, T.empty), /* @__PURE__ */ React.createElement("p", { className: "t-mute" }, T.emptyHint)) : /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { className: "cart-items" }, cart.map((item, idx) => /* @__PURE__ */ React.createElement("div", { className: "cart-item", key: idx }, /* @__PURE__ */ React.createElement("div", { className: "ci-img" }, item.image ? /* @__PURE__ */ React.createElement("img", { src: item.image, alt: item.name }) : /* @__PURE__ */ React.createElement("div", { className: "ci-img-placeholder" }, "\u{1F45F}")), /* @__PURE__ */ React.createElement("div", { className: "ci-info" }, /* @__PURE__ */ React.createElement("div", { className: "ci-name" }, item.name), item.variant && /* @__PURE__ */ React.createElement("div", { className: "ci-meta t-mono" }, item.variant), /* @__PURE__ */ React.createElement("div", { className: "ci-price t-num" }, (item.price * item.qty).toLocaleString(), " DA")), /* @__PURE__ */ React.createElement("div", { className: "ci-controls" }, /* @__PURE__ */ React.createElement("div", { className: "qty-control" }, /* @__PURE__ */ React.createElement("button", { onClick: () => changeQty(idx, -1) }, "\u2212"), /* @__PURE__ */ React.createElement("span", { className: "t-num" }, item.qty), /* @__PURE__ */ React.createElement("button", { onClick: () => changeQty(idx, 1) }, "+")), /* @__PURE__ */ React.createElement("button", { className: "ci-remove", onClick: () => removeItem(idx) }, T.remove))))), /* @__PURE__ */ React.createElement("div", { className: "cart-coupon" }, /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        placeholder: T.couponPlaceholder,
+        value: couponCode,
+        onChange: (e) => {
+          setCouponCode(e.target.value);
+          setCouponData(null);
+          setCouponError("");
+        },
+        onKeyDown: (e) => e.key === "Enter" && !couponData && applyCoupon(),
+        disabled: !!couponData || couponLoading
+      }
+    ), couponData ? /* @__PURE__ */ React.createElement("button", { className: "btn-outline-sm", onClick: () => {
       setCouponData(null);
       setCouponCode("");
-    }
-  }, "\u2715") : /*#__PURE__*/React.createElement("button", {
-    onClick: applyCoupon,
-    disabled: couponLoading || !couponCode.trim(),
-    className: "btn-outline-sm"
-  }, couponLoading ? /*#__PURE__*/React.createElement("span", {
-    className: "btn-spinner"
-  }) : T.applyCoupon)), couponData && /*#__PURE__*/React.createElement("div", {
-    className: "coupon-ok"
-  }, "\u2713 ", couponData.code, couponData.type === "percent" && " \u2014 ".concat(couponData.value, "% de r\xE9duction"), couponData.type === "fixed" && " \u2014 ".concat(couponData.value.toLocaleString(), " DA de r\xE9duction"), couponData.type === "free_shipping" && " \u2014 Livraison offerte"), couponError && /*#__PURE__*/React.createElement("div", {
-    className: "coupon-err t-mono"
-  }, couponError), /*#__PURE__*/React.createElement("div", {
-    className: "cart-totals"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "ct-row"
-  }, /*#__PURE__*/React.createElement("span", null, T.subtotal), /*#__PURE__*/React.createElement("span", {
-    className: "t-num"
-  }, subtotal.toLocaleString(), " DA")), discount > 0 && /*#__PURE__*/React.createElement("div", {
-    className: "ct-row ct-discount"
-  }, /*#__PURE__*/React.createElement("span", null, T.discount), /*#__PURE__*/React.createElement("span", {
-    className: "t-num"
-  }, "\u2212", discount.toLocaleString(), " DA")), /*#__PURE__*/React.createElement("div", {
-    className: "ct-row"
-  }, /*#__PURE__*/React.createElement("span", null, T.shipping), /*#__PURE__*/React.createElement("span", {
-    className: "t-mute"
-  }, T.calculated)), /*#__PURE__*/React.createElement("div", {
-    className: "ct-row total"
-  }, /*#__PURE__*/React.createElement("span", null, T.total), /*#__PURE__*/React.createElement("span", {
-    className: "t-num"
-  }, (subtotal - discount).toLocaleString(), " DA"))), /*#__PURE__*/React.createElement("div", {
-    className: "cart-cod-note t-mono"
-  }, T.cod), /*#__PURE__*/React.createElement("button", {
-    className: "btn-primary cart-checkout-btn",
-    onClick: function onClick() {
-      return onCheckout(couponData ? _objectSpread(_objectSpread({}, couponData), {}, {
-        discount: discount
-      }) : null);
-    }
-  }, T.checkout))));
-};
-
-/* ============================================================
-   CHECKOUT PAGE — 3-step wizard
-   ============================================================ */
-var CheckoutPage = function CheckoutPage(_ref5) {
-  var lang = _ref5.lang,
-    open = _ref5.open,
-    onClose = _ref5.onClose,
-    cart = _ref5.cart,
-    user = _ref5.user,
-    onOrderPlaced = _ref5.onOrderPlaced,
-    _ref5$coupon = _ref5.coupon,
-    couponProp = _ref5$coupon === void 0 ? null : _ref5$coupon;
-  var _useState15 = useState(1),
-    _useState16 = _slicedToArray(_useState15, 2),
-    step = _useState16[0],
-    setStep = _useState16[1]; // 1=address, 2=review, 3=confirm
-  var _useState17 = useState({
-      name: (user === null || user === void 0 ? void 0 : user.name) || "",
-      phone: (user === null || user === void 0 ? void 0 : user.phone) || "",
-      wilaya_code: "",
-      commune_id: null,
-      street: "",
-      shipping_fee: 0,
-      eta_days: 3
-    }),
-    _useState18 = _slicedToArray(_useState17, 2),
-    address = _useState18[0],
-    setAddress = _useState18[1];
-  var coupon = couponProp;
-  var _useState19 = useState(0),
-    _useState20 = _slicedToArray(_useState19, 2),
-    loyaltyRedeem = _useState20[0],
-    setLoyaltyRedeem = _useState20[1];
-  var _useState21 = useState(0),
-    _useState22 = _slicedToArray(_useState21, 2),
-    loyaltyBalance = _useState22[0],
-    setLoyaltyBalance = _useState22[1];
-  var _useState23 = useState(""),
-    _useState24 = _slicedToArray(_useState23, 2),
-    notes = _useState24[0],
-    setNotes = _useState24[1];
-  var _useState25 = useState(false),
-    _useState26 = _slicedToArray(_useState25, 2),
-    loading = _useState26[0],
-    setLoading = _useState26[1];
-  var _useState27 = useState(""),
-    _useState28 = _slicedToArray(_useState27, 2),
-    error = _useState28[0],
-    setError = _useState28[1];
-  var _useState29 = useState(null),
-    _useState30 = _slicedToArray(_useState29, 2),
-    order = _useState30[0],
-    setOrder = _useState30[1];
-  var T = {
-    fr: {
-      title: "Finaliser la commande",
-      step1: "Livraison",
-      step2: "Récapitulatif",
-      step3: "Confirmation",
-      name: "Nom complet",
-      phone: "Téléphone",
-      street: "Adresse (rue, n°, ...)",
-      notes: "Note pour le livreur (optionnel)",
-      next: "Continuer",
-      back: "Retour",
-      confirm: "Confirmer la commande",
-      orderTotal: "Total commande",
-      shipping: "Frais de livraison",
-      loyaltyAvail: "Points disponibles",
-      loyaltyUse: "Utiliser mes points",
-      loyaltyDzd: "= {v} DA de réduction",
-      thankYou: "Merci pour votre commande !",
-      orderRef: "Référence",
-      trackOrder: "Suivre ma commande",
-      deliveryMsg: "Vous serez contactée pour confirmer la livraison.",
-      close: "Fermer",
-      product: "Produit",
-      qty: "Qté",
-      unitPrice: "Prix unit.",
-      lineTotal: "Total"
-    },
-    ar: {
-      title: "إتمام الطلب",
-      step1: "التوصيل",
-      step2: "ملخص",
-      step3: "تأكيد",
-      name: "الاسم الكامل",
-      phone: "الهاتف",
-      street: "العنوان",
-      notes: "ملاحظة للمندوب (اختياري)",
-      next: "التالي",
-      back: "رجوع",
-      confirm: "تأكيد الطلب",
-      orderTotal: "مجموع الطلب",
-      shipping: "رسوم الشحن",
-      loyaltyAvail: "النقاط المتاحة",
-      loyaltyUse: "استخدام نقاطي",
-      loyaltyDzd: "= خصم {v} دج",
-      thankYou: "شكراً على طلبك!",
-      orderRef: "المرجع",
-      trackOrder: "تتبع طلبي",
-      deliveryMsg: "سيتم التواصل معك لتأكيد التوصيل.",
-      close: "إغلاق",
-      product: "المنتج",
-      qty: "الكمية",
-      unitPrice: "سعر الوحدة",
-      lineTotal: "المجموع"
-    },
-    en: {
-      title: "Complete Order",
-      step1: "Delivery",
-      step2: "Summary",
-      step3: "Confirmation",
-      name: "Full name",
-      phone: "Phone",
-      street: "Street address",
-      notes: "Note for delivery (optional)",
-      next: "Continue",
-      back: "Back",
-      confirm: "Place order",
-      orderTotal: "Order total",
-      shipping: "Shipping fee",
-      loyaltyAvail: "Available points",
-      loyaltyUse: "Use my points",
-      loyaltyDzd: "= {v} DA off",
-      thankYou: "Thank you for your order!",
-      orderRef: "Reference",
-      trackOrder: "Track my order",
-      deliveryMsg: "You will be contacted to confirm delivery.",
-      close: "Close",
-      product: "Product",
-      qty: "Qty",
-      unitPrice: "Unit price",
-      lineTotal: "Total"
-    }
-  }[lang] || {};
-  useEffect(function () {
-    if (open && user) {
-      setAddress(function (a) {
-        return _objectSpread(_objectSpread({}, a), {}, {
-          name: user.name || "",
-          phone: user.phone || ""
+    } }, "\u2715") : /* @__PURE__ */ React.createElement("button", { onClick: applyCoupon, disabled: couponLoading || !couponCode.trim(), className: "btn-outline-sm" }, couponLoading ? /* @__PURE__ */ React.createElement("span", { className: "btn-spinner" }) : T.applyCoupon)), couponData && /* @__PURE__ */ React.createElement("div", { className: "coupon-ok" }, "\u2713 ", couponData.code, couponData.type === "percent" && ` \u2014 ${couponData.value}% de r\xE9duction`, couponData.type === "fixed" && ` \u2014 ${couponData.value.toLocaleString()} DA de r\xE9duction`, couponData.type === "free_shipping" && ` \u2014 Livraison offerte`), couponError && /* @__PURE__ */ React.createElement("div", { className: "coupon-err t-mono" }, couponError), /* @__PURE__ */ React.createElement("div", { className: "cart-totals" }, /* @__PURE__ */ React.createElement("div", { className: "ct-row" }, /* @__PURE__ */ React.createElement("span", null, T.subtotal), /* @__PURE__ */ React.createElement("span", { className: "t-num" }, subtotal.toLocaleString(), " DA")), discount > 0 && /* @__PURE__ */ React.createElement("div", { className: "ct-row ct-discount" }, /* @__PURE__ */ React.createElement("span", null, T.discount), /* @__PURE__ */ React.createElement("span", { className: "t-num" }, "\u2212", discount.toLocaleString(), " DA")), /* @__PURE__ */ React.createElement("div", { className: "ct-row" }, /* @__PURE__ */ React.createElement("span", null, T.shipping), /* @__PURE__ */ React.createElement("span", { className: "t-mute" }, T.calculated)), /* @__PURE__ */ React.createElement("div", { className: "ct-row total" }, /* @__PURE__ */ React.createElement("span", null, T.total), /* @__PURE__ */ React.createElement("span", { className: "t-num" }, (subtotal - discount).toLocaleString(), " DA"))), /* @__PURE__ */ React.createElement("div", { className: "cart-cod-note t-mono" }, T.cod), /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        className: "btn-primary cart-checkout-btn",
+        onClick: () => onCheckout(couponData ? { ...couponData, discount } : null)
+      },
+      T.checkout
+    ))));
+  };
+  var CrossSellSection = ({ cart, lang, onClose }) => {
+    const [suggestions, setSuggestions] = useState([]);
+    useEffect(() => {
+      const api = window.latinaApi;
+      if (!api) return;
+      api.getProducts({ per_page: 40 }).then((data) => {
+        const raw = data.data || [];
+        const processed = raw.map((p) => {
+          const catSlug = (p.category?.slug || "").toLowerCase();
+          const catName = (p.category?.name_fr || "").toLowerCase();
+          const parentSlug = (p.category?.parent?.slug || "").toLowerCase();
+          const isBags = catSlug.startsWith("sac") || catName.includes("sac") || catSlug === "bags";
+          const isAccess = catSlug.startsWith("access") || catName.includes("access") || parentSlug.startsWith("access");
+          return { ...p, _tab: isBags ? "bags" : isAccess ? "access" : "shoes", _tags: p.attributes?.tags || [] };
         });
-      });
-      window.latinaApi.getLoyalty().then(function (r) {
-        var _r$data;
-        return setLoyaltyBalance(((_r$data = r.data) === null || _r$data === void 0 ? void 0 : _r$data.points) || r.points || 0);
-      })["catch"](function () {});
-    }
-    if (open) {
-      setStep(1);
-      setError("");
-      setOrder(null);
-    }
-  }, [open]);
-  var subtotal = cart.reduce(function (s, i) {
-    return s + i.price * i.qty;
-  }, 0);
-  var loyaltyDiscount = Math.floor(loyaltyRedeem / 10);
-  var couponDiscount = (coupon === null || coupon === void 0 ? void 0 : coupon.discount) || 0;
-  var total = subtotal + address.shipping_fee - loyaltyDiscount - couponDiscount;
-  var handlePlace = /*#__PURE__*/function () {
-    var _ref6 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
-      var _res$data, payload, res, orderObj, _t3;
-      return _regenerator().w(function (_context3) {
-        while (1) switch (_context3.p = _context3.n) {
-          case 0:
-            setLoading(true);
-            setError("");
-            _context3.p = 1;
-            payload = {
-              items: cart.filter(function (i) {
-                return i.product_id;
-              }).map(function (i) {
-                return {
-                  product_id: i.product_id,
-                  quantity: i.qty,
-                  variant_id: i.variant_id || undefined
-                };
-              }),
-              wilaya_code: Number(address.wilaya_code),
-              commune_id: address.commune_id || undefined,
-              address_line: address.street,
-              delivery_type: "home",
-              guest_name: address.name,
-              guest_phone: address.phone,
-              coupon_code: (coupon === null || coupon === void 0 ? void 0 : coupon.code) || undefined,
-              loyalty_points: loyaltyRedeem || undefined,
-              notes: notes || undefined
-            };
-            if (!(payload.items.length === 0)) {
-              _context3.n = 2;
-              break;
-            }
-            setError("Votre panier ne contient aucun produit valide.");
-            setLoading(false);
-            return _context3.a(2);
-          case 2:
-            _context3.n = 3;
-            return window.latinaApi.placeOrder(payload);
-          case 3:
-            res = _context3.v;
-            orderObj = res.order || ((_res$data = res.data) === null || _res$data === void 0 ? void 0 : _res$data.order) || res.data || res;
-            setOrder(orderObj);
-            onOrderPlaced && onOrderPlaced(orderObj);
-            setStep(3);
-            _context3.n = 5;
-            break;
-          case 4:
-            _context3.p = 4;
-            _t3 = _context3.v;
-            setError(_t3.message || "Erreur lors de la commande.");
-          case 5:
-            _context3.p = 5;
-            setLoading(false);
-            return _context3.f(5);
-          case 6:
-            return _context3.a(2);
+        const orderedIds = new Set(cart.map((i) => i.product_id));
+        const orderedProds = processed.filter((p) => orderedIds.has(p.id));
+        const orderedTabs = new Set(orderedProds.map((p) => p._tab));
+        const orderedTags = new Set(orderedProds.flatMap((p) => p._tags));
+        let candidates = processed.filter(
+          (p) => !orderedIds.has(p.id) && !orderedTabs.has(p._tab) && p.stock > 0 && (orderedTags.size === 0 || p._tags.some((t) => orderedTags.has(t)))
+        );
+        if (candidates.length < 2) {
+          candidates = processed.filter(
+            (p) => !orderedIds.has(p.id) && !orderedTabs.has(p._tab) && p.stock > 0
+          );
         }
-      }, _callee3, null, [[1, 4, 5, 6]]);
-    }));
-    return function handlePlace() {
-      return _ref6.apply(this, arguments);
+        setSuggestions(candidates.slice(0, 4));
+      }).catch(() => {
+      });
+    }, []);
+    if (!suggestions.length) return null;
+    const T = {
+      fr: { eyebrow: "S\xE9lectionn\xE9s pour vous", title: "Compl\xE9tez votre look", cta: "Voir la collection" },
+      ar: { eyebrow: "\u0645\u062E\u062A\u0627\u0631\u0629 \u0644\u0643\u0650", title: "\u0623\u0643\u0645\u0644\u064A \u0625\u0637\u0644\u0627\u0644\u062A\u0643", cta: "\u0639\u0631\u0636 \u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629" },
+      en: { eyebrow: "Selected for you", title: "Complete your look", cta: "Browse collection" }
+    }[lang] || { eyebrow: "S\xE9lectionn\xE9s pour vous", title: "Compl\xE9tez votre look", cta: "Voir la collection" };
+    return /* @__PURE__ */ React.createElement("div", { className: "cs-crosssell" }, /* @__PURE__ */ React.createElement("div", { className: "cs-cx-head" }, /* @__PURE__ */ React.createElement("div", { className: "cs-cx-eyebrow" }, T.eyebrow), /* @__PURE__ */ React.createElement("div", { className: "cs-cx-title" }, T.title)), /* @__PURE__ */ React.createElement("div", { className: "cs-cx-grid" }, suggestions.map((p) => {
+      const name = p[`name_${lang}`] || p.name_fr;
+      const price = Number(p.effective_price ?? p.price);
+      const img = p.primary_image?.url || null;
+      const hasDiscount = p.compare_price && p.compare_price > price;
+      return /* @__PURE__ */ React.createElement("div", { key: p.id, className: "cs-cx-card", onClick: onClose }, /* @__PURE__ */ React.createElement("div", { className: "cs-cx-img" }, img ? /* @__PURE__ */ React.createElement("img", { src: img, alt: name, loading: "lazy" }) : /* @__PURE__ */ React.createElement("div", { className: "cs-cx-img-ph" }), p.is_featured && /* @__PURE__ */ React.createElement("span", { className: "cs-cx-badge" }, "\u2605"), hasDiscount && /* @__PURE__ */ React.createElement("span", { className: "cs-cx-sale-badge" }, "\u2212", Math.round((1 - price / p.compare_price) * 100), "%")), /* @__PURE__ */ React.createElement("div", { className: "cs-cx-info" }, /* @__PURE__ */ React.createElement("div", { className: "cs-cx-name" }, name), /* @__PURE__ */ React.createElement("div", { className: "cs-cx-prices" }, /* @__PURE__ */ React.createElement("span", { className: "cs-cx-price t-num" }, price.toLocaleString("fr-DZ"), " DA"), hasDiscount && /* @__PURE__ */ React.createElement("span", { className: "cs-cx-compare t-num" }, Number(p.compare_price).toLocaleString("fr-DZ")))));
+    })), /* @__PURE__ */ React.createElement("button", { className: "cs-cx-cta", onClick: onClose }, T.cta, " \u2192"));
+  };
+  var CheckoutPage = ({ lang, open, onClose, cart, user, onOrderPlaced, coupon: couponProp = null, onAuthOpen }) => {
+    const [step, setStep] = useState(1);
+    const [address, setAddress] = useState({ name: user?.name || "", phone: user?.phone || "", wilaya_code: "", commune_id: null, street: "", shipping_fee: 0, eta_days: 3 });
+    const coupon = couponProp;
+    const [loyaltyRedeem, setLoyaltyRedeem] = useState(0);
+    const [loyaltyBalance, setLoyaltyBalance] = useState(0);
+    const [notes, setNotes] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [order, setOrder] = useState(null);
+    const T = {
+      fr: {
+        title: "Finaliser la commande",
+        step1: "Livraison",
+        step2: "R\xE9capitulatif",
+        step3: "Confirmation",
+        name: "Nom complet",
+        phone: "T\xE9l\xE9phone",
+        street: "Adresse (rue, n\xB0, ...)",
+        notes: "Note pour le livreur (optionnel)",
+        next: "Continuer",
+        back: "Retour",
+        confirm: "Confirmer la commande",
+        orderTotal: "Total commande",
+        shipping: "Frais de livraison",
+        loyaltyAvail: "Points disponibles",
+        loyaltyUse: "Utiliser mes points",
+        loyaltyDzd: "= {v} DA de r\xE9duction",
+        thankYou: "Merci pour votre commande !",
+        orderRef: "R\xE9f\xE9rence",
+        trackOrder: "Suivre ma commande",
+        deliveryMsg: "Vous serez contact\xE9e pour confirmer la livraison.",
+        close: "Fermer",
+        product: "Produit",
+        qty: "Qt\xE9",
+        unitPrice: "Prix unit.",
+        lineTotal: "Total"
+      },
+      ar: {
+        title: "\u0625\u062A\u0645\u0627\u0645 \u0627\u0644\u0637\u0644\u0628",
+        step1: "\u0627\u0644\u062A\u0648\u0635\u064A\u0644",
+        step2: "\u0645\u0644\u062E\u0635",
+        step3: "\u062A\u0623\u0643\u064A\u062F",
+        name: "\u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0643\u0627\u0645\u0644",
+        phone: "\u0627\u0644\u0647\u0627\u062A\u0641",
+        street: "\u0627\u0644\u0639\u0646\u0648\u0627\u0646",
+        notes: "\u0645\u0644\u0627\u062D\u0638\u0629 \u0644\u0644\u0645\u0646\u062F\u0648\u0628 (\u0627\u062E\u062A\u064A\u0627\u0631\u064A)",
+        next: "\u0627\u0644\u062A\u0627\u0644\u064A",
+        back: "\u0631\u062C\u0648\u0639",
+        confirm: "\u062A\u0623\u0643\u064A\u062F \u0627\u0644\u0637\u0644\u0628",
+        orderTotal: "\u0645\u062C\u0645\u0648\u0639 \u0627\u0644\u0637\u0644\u0628",
+        shipping: "\u0631\u0633\u0648\u0645 \u0627\u0644\u0634\u062D\u0646",
+        loyaltyAvail: "\u0627\u0644\u0646\u0642\u0627\u0637 \u0627\u0644\u0645\u062A\u0627\u062D\u0629",
+        loyaltyUse: "\u0627\u0633\u062A\u062E\u062F\u0627\u0645 \u0646\u0642\u0627\u0637\u064A",
+        loyaltyDzd: "= \u062E\u0635\u0645 {v} \u062F\u062C",
+        thankYou: "\u0634\u0643\u0631\u0627\u064B \u0639\u0644\u0649 \u0637\u0644\u0628\u0643!",
+        orderRef: "\u0627\u0644\u0645\u0631\u062C\u0639",
+        trackOrder: "\u062A\u062A\u0628\u0639 \u0637\u0644\u0628\u064A",
+        deliveryMsg: "\u0633\u064A\u062A\u0645 \u0627\u0644\u062A\u0648\u0627\u0635\u0644 \u0645\u0639\u0643 \u0644\u062A\u0623\u0643\u064A\u062F \u0627\u0644\u062A\u0648\u0635\u064A\u0644.",
+        close: "\u0625\u063A\u0644\u0627\u0642",
+        product: "\u0627\u0644\u0645\u0646\u062A\u062C",
+        qty: "\u0627\u0644\u0643\u0645\u064A\u0629",
+        unitPrice: "\u0633\u0639\u0631 \u0627\u0644\u0648\u062D\u062F\u0629",
+        lineTotal: "\u0627\u0644\u0645\u062C\u0645\u0648\u0639"
+      },
+      en: {
+        title: "Complete Order",
+        step1: "Delivery",
+        step2: "Summary",
+        step3: "Confirmation",
+        name: "Full name",
+        phone: "Phone",
+        street: "Street address",
+        notes: "Note for delivery (optional)",
+        next: "Continue",
+        back: "Back",
+        confirm: "Place order",
+        orderTotal: "Order total",
+        shipping: "Shipping fee",
+        loyaltyAvail: "Available points",
+        loyaltyUse: "Use my points",
+        loyaltyDzd: "= {v} DA off",
+        thankYou: "Thank you for your order!",
+        orderRef: "Reference",
+        trackOrder: "Track my order",
+        deliveryMsg: "You will be contacted to confirm delivery.",
+        close: "Close",
+        product: "Product",
+        qty: "Qty",
+        unitPrice: "Unit price",
+        lineTotal: "Total"
+      }
+    }[lang] || {};
+    useEffect(() => {
+      if (open && user) {
+        setAddress((a) => ({ ...a, name: user.name || "", phone: user.phone || "" }));
+        window.latinaApi.getLoyalty().then((r) => setLoyaltyBalance(r.data?.points || r.points || 0)).catch(() => {
+        });
+      }
+      if (open) {
+        setStep(1);
+        setError("");
+        setOrder(null);
+      }
+    }, [open]);
+    const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const loyaltyDiscount = Math.floor(loyaltyRedeem / 10);
+    const couponDiscount = coupon?.discount || 0;
+    const total = subtotal + address.shipping_fee - loyaltyDiscount - couponDiscount;
+    const handlePlace = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const payload = {
+          items: cart.filter((i) => i.product_id).map((i) => ({
+            product_id: i.product_id,
+            quantity: i.qty,
+            variant_id: i.variant_id || void 0
+          })),
+          wilaya_code: Number(address.wilaya_code),
+          commune_id: address.commune_id || void 0,
+          address_line: address.street,
+          delivery_type: "home",
+          guest_name: address.name,
+          guest_phone: address.phone,
+          coupon_code: coupon?.code || void 0,
+          loyalty_points: loyaltyRedeem || void 0,
+          notes: notes || void 0
+        };
+        if (payload.items.length === 0) {
+          setError("Votre panier ne contient aucun produit valide.");
+          setLoading(false);
+          return;
+        }
+        const res = await window.latinaApi.placeOrder(payload);
+        const orderObj = res.order || res.data?.order || res.data || res;
+        setOrder(orderObj);
+        onOrderPlaced && onOrderPlaced(orderObj);
+        setStep(3);
+      } catch (e) {
+        setError(e.message || "Erreur lors de la commande.");
+      } finally {
+        setLoading(false);
+      }
     };
-  }();
-  if (!open) return null;
-  var steps = [T.step1, T.step2, T.step3];
-  return /*#__PURE__*/React.createElement("div", {
-    className: "checkout-overlay",
-    dir: lang === "ar" ? "rtl" : "ltr"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "checkout-modal"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "checkout-head"
-  }, /*#__PURE__*/React.createElement("h2", {
-    className: "t-h4"
-  }, T.title), /*#__PURE__*/React.createElement("button", {
-    className: "modal-close",
-    onClick: onClose
-  }, "\u2715")), /*#__PURE__*/React.createElement("div", {
-    className: "checkout-steps"
-  }, steps.map(function (s, i) {
-    return /*#__PURE__*/React.createElement("div", {
-      key: i,
-      className: "cs-step ".concat(step === i + 1 ? "active" : "", " ").concat(step > i + 1 ? "done" : "")
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "cs-dot"
-    }, step > i + 1 ? "✓" : i + 1), /*#__PURE__*/React.createElement("span", null, s));
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "checkout-body"
-  }, step === 1 && /*#__PURE__*/React.createElement("div", {
-    className: "co-step-1"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "co-field-row"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "co-field"
-  }, /*#__PURE__*/React.createElement("label", null, T.name), /*#__PURE__*/React.createElement("input", {
-    value: address.name,
-    onChange: function onChange(e) {
-      return setAddress(function (a) {
-        return _objectSpread(_objectSpread({}, a), {}, {
-          name: e.target.value
-        });
-      });
-    },
-    required: true
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "co-field"
-  }, /*#__PURE__*/React.createElement("label", null, T.phone), /*#__PURE__*/React.createElement("input", {
-    type: "tel",
-    value: address.phone,
-    onChange: function onChange(e) {
-      return setAddress(function (a) {
-        return _objectSpread(_objectSpread({}, a), {}, {
-          phone: e.target.value
-        });
-      });
-    },
-    required: true
-  }))), /*#__PURE__*/React.createElement("div", {
-    className: "co-field"
-  }, /*#__PURE__*/React.createElement(WilayaSelector, {
-    lang: lang,
-    onChange: function onChange(val) {
-      if (!val) return;
-      var wilaya_code = val.wilaya_code,
-        commune_id = val.commune_id,
-        fee = val.fee,
-        eta = val.eta;
-      setAddress(function (a) {
-        return _objectSpread(_objectSpread({}, a), {}, {
-          wilaya_code: wilaya_code || val.wilaya,
-          commune_id: commune_id || null,
-          shipping_fee: fee || 0,
-          eta_days: eta || 3
-        });
-      });
-    }
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "co-field"
-  }, /*#__PURE__*/React.createElement("label", null, T.street), /*#__PURE__*/React.createElement("input", {
-    value: address.street,
-    onChange: function onChange(e) {
-      return setAddress(function (a) {
-        return _objectSpread(_objectSpread({}, a), {}, {
-          street: e.target.value
-        });
-      });
-    },
-    required: true
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "co-field"
-  }, /*#__PURE__*/React.createElement("label", null, T.notes), /*#__PURE__*/React.createElement("textarea", {
-    value: notes,
-    onChange: function onChange(e) {
-      return setNotes(e.target.value);
-    },
-    rows: 2
-  })), /*#__PURE__*/React.createElement("button", {
-    className: "btn-primary co-next",
-    disabled: !address.wilaya_code || !address.name || !address.phone || !address.street,
-    onClick: function onClick() {
-      return setStep(2);
-    }
-  }, T.next)), step === 2 && /*#__PURE__*/React.createElement("div", {
-    className: "co-step-2"
-  }, /*#__PURE__*/React.createElement("table", {
-    className: "co-items-table"
-  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, T.product), /*#__PURE__*/React.createElement("th", null, T.qty), /*#__PURE__*/React.createElement("th", {
-    className: "t-right"
-  }, T.unitPrice), /*#__PURE__*/React.createElement("th", {
-    className: "t-right"
-  }, T.lineTotal))), /*#__PURE__*/React.createElement("tbody", null, cart.map(function (item, i) {
-    return /*#__PURE__*/React.createElement("tr", {
-      key: i
-    }, /*#__PURE__*/React.createElement("td", null, item.name, item.variant && /*#__PURE__*/React.createElement("span", {
-      className: "t-mute"
-    }, " \xB7 ", item.variant)), /*#__PURE__*/React.createElement("td", {
-      className: "t-num"
-    }, item.qty), /*#__PURE__*/React.createElement("td", {
-      className: "t-num t-right"
-    }, item.price.toLocaleString(), " DA"), /*#__PURE__*/React.createElement("td", {
-      className: "t-num t-right"
-    }, (item.price * item.qty).toLocaleString(), " DA"));
-  }))), /*#__PURE__*/React.createElement("div", {
-    className: "co-totals"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "co-row"
-  }, /*#__PURE__*/React.createElement("span", null, T.orderTotal), /*#__PURE__*/React.createElement("span", {
-    className: "t-num"
-  }, subtotal.toLocaleString(), " DA")), /*#__PURE__*/React.createElement("div", {
-    className: "co-row"
-  }, /*#__PURE__*/React.createElement("span", null, T.shipping), /*#__PURE__*/React.createElement("span", {
-    className: "t-num"
-  }, address.shipping_fee.toLocaleString(), " DA")), (coupon === null || coupon === void 0 ? void 0 : coupon.code) && couponDiscount > 0 && /*#__PURE__*/React.createElement("div", {
-    className: "co-row",
-    style: {
-      color: "var(--rose-500)"
-    }
-  }, /*#__PURE__*/React.createElement("span", null, "\uD83C\uDFF7 ", coupon.code), /*#__PURE__*/React.createElement("span", {
-    className: "t-num"
-  }, "\u2212", couponDiscount.toLocaleString(), " DA")), (coupon === null || coupon === void 0 ? void 0 : coupon.type) === "free_shipping" && /*#__PURE__*/React.createElement("div", {
-    className: "co-row",
-    style: {
-      color: "var(--rose-500)"
-    }
-  }, /*#__PURE__*/React.createElement("span", null, "\uD83C\uDFF7 ", coupon.code), /*#__PURE__*/React.createElement("span", {
-    className: "t-mono",
-    style: {
-      fontSize: 11
-    }
-  }, "Livraison offerte")), user && loyaltyBalance > 0 && /*#__PURE__*/React.createElement("div", {
-    className: "co-loyalty"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "co-row"
-  }, /*#__PURE__*/React.createElement("span", null, T.loyaltyAvail, ": ", /*#__PURE__*/React.createElement("strong", {
-    className: "t-num"
-  }, loyaltyBalance, " pts"))), /*#__PURE__*/React.createElement("div", {
-    className: "co-loyalty-input"
-  }, /*#__PURE__*/React.createElement("label", null, T.loyaltyUse), /*#__PURE__*/React.createElement("input", {
-    type: "number",
-    min: 0,
-    max: loyaltyBalance,
-    step: 10,
-    value: loyaltyRedeem,
-    onChange: function onChange(e) {
-      return setLoyaltyRedeem(Math.min(loyaltyBalance, Math.max(0, Number(e.target.value))));
-    }
-  }), /*#__PURE__*/React.createElement("span", {
-    className: "t-mute"
-  }, T.loyaltyDzd.replace("{v}", loyaltyDiscount)))), /*#__PURE__*/React.createElement("div", {
-    className: "co-row total"
-  }, /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Total")), /*#__PURE__*/React.createElement("span", {
-    className: "t-num"
-  }, /*#__PURE__*/React.createElement("strong", null, total.toLocaleString(), " DA")))), error && /*#__PURE__*/React.createElement("div", {
-    className: "auth-error"
-  }, error), /*#__PURE__*/React.createElement("div", {
-    className: "co-btns"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "btn-outline co-back",
-    onClick: function onClick() {
-      return setStep(1);
-    }
-  }, T.back), /*#__PURE__*/React.createElement("button", {
-    className: "btn-primary co-confirm",
-    onClick: handlePlace,
-    disabled: loading
-  }, loading ? /*#__PURE__*/React.createElement("span", {
-    className: "btn-spinner"
-  }) : T.confirm))), step === 3 && order && /*#__PURE__*/React.createElement("div", {
-    className: "co-step-3"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "co-success-icon"
-  }, "\u2713"), /*#__PURE__*/React.createElement("h3", {
-    className: "t-h3"
-  }, T.thankYou), /*#__PURE__*/React.createElement("p", null, T.deliveryMsg), /*#__PURE__*/React.createElement("div", {
-    className: "co-ref t-mono"
-  }, /*#__PURE__*/React.createElement("span", null, T.orderRef, ":"), /*#__PURE__*/React.createElement("strong", null, order.reference)), /*#__PURE__*/React.createElement("button", {
-    className: "btn-primary",
-    onClick: onClose
-  }, T.close)))));
-};
-
-/* ============================================================
-   ACCOUNT PAGE / DRAWER
-   ============================================================ */
-var AccountPage = function AccountPage(_ref7) {
-  var _user$name, _loyalty$points, _loyalty$tier_progres, _loyalty$tier_progres2, _loyalty$history;
-  var lang = _ref7.lang,
-    open = _ref7.open,
-    onClose = _ref7.onClose,
-    user = _ref7.user,
-    onLogout = _ref7.onLogout;
-  var _useState31 = useState("orders"),
-    _useState32 = _slicedToArray(_useState31, 2),
-    tab = _useState32[0],
-    setTab = _useState32[1];
-  var _useState33 = useState([]),
-    _useState34 = _slicedToArray(_useState33, 2),
-    orders = _useState34[0],
-    setOrders = _useState34[1];
-  var _useState35 = useState(null),
-    _useState36 = _slicedToArray(_useState35, 2),
-    loyalty = _useState36[0],
-    setLoyalty = _useState36[1];
-  var _useState37 = useState([]),
-    _useState38 = _slicedToArray(_useState37, 2),
-    wishlistItems = _useState38[0],
-    setWishlistItems = _useState38[1];
-  var _useState39 = useState(false),
-    _useState40 = _slicedToArray(_useState39, 2),
-    loading = _useState40[0],
-    setLoading = _useState40[1];
-  var api = window.latinaApi;
-  var T = {
-    fr: {
-      title: "Mon Compte",
-      orders: "Commandes",
-      loyalty: "Fidélité",
-      wishlist: "Favoris",
-      logout: "Se déconnecter",
-      noOrders: "Aucune commande.",
-      hello: "Bonjour",
-      points: "points",
-      tier: "Niveau",
-      history: "Historique des points",
-      ref: "Réf.",
-      status: "Statut",
-      date: "Date",
-      total: "Total",
-      pending: "En attente",
-      confirmed: "Confirmée",
-      preparing: "En préparation",
-      shipped: "Expédiée",
-      out_for_delivery: "En cours de livraison",
-      delivered: "Livrée",
-      cancelled: "Annulée",
-      rto: "Retournée",
-      refunded: "Remboursée",
-      noWishlist: "Votre liste de favoris est vide.",
-      loyaltyInfo: "1 point pour chaque 100 DA d'achat · 10 points = 1 DA de réduction"
-    },
-    ar: {
-      title: "حسابي",
-      orders: "الطلبات",
-      loyalty: "الولاء",
-      wishlist: "المفضلة",
-      logout: "تسجيل الخروج",
-      noOrders: "لا توجد طلبات.",
-      hello: "مرحباً",
-      points: "نقطة",
-      tier: "المستوى",
-      history: "سجل النقاط",
-      ref: "المرجع",
-      status: "الحالة",
-      date: "التاريخ",
-      total: "المجموع",
-      pending: "قيد الانتظار",
-      confirmed: "مؤكد",
-      preparing: "جار التحضير",
-      shipped: "تم الشحن",
-      out_for_delivery: "في الطريق",
-      delivered: "تم التسليم",
-      cancelled: "ملغي",
-      rto: "مرتجع",
-      refunded: "مسترد",
-      noWishlist: "قائمة المفضلة فارغة.",
-      loyaltyInfo: "نقطة لكل 100 دج من المشتريات · 10 نقاط = خصم 1 دج"
-    },
-    en: {
-      title: "My Account",
-      orders: "Orders",
-      loyalty: "Loyalty",
-      wishlist: "Wishlist",
-      logout: "Sign out",
-      noOrders: "No orders yet.",
-      hello: "Hello",
-      points: "points",
-      tier: "Tier",
-      history: "Points history",
-      ref: "Ref.",
-      status: "Status",
-      date: "Date",
-      total: "Total",
-      pending: "Pending",
-      confirmed: "Confirmed",
-      preparing: "Preparing",
-      shipped: "Shipped",
-      out_for_delivery: "Out for delivery",
-      delivered: "Delivered",
-      cancelled: "Cancelled",
-      rto: "Returned",
-      refunded: "Refunded",
-      noWishlist: "Your wishlist is empty.",
-      loyaltyInfo: "1 point per 100 DA · 10 points = 1 DA off"
-    }
-  }[lang] || {};
-  var STATUS_COLORS = {
-    pending: "#F59E0B",
-    confirmed: "#3B82F6",
-    preparing: "#8B5CF6",
-    shipped: "#06B6D4",
-    out_for_delivery: "#10B981",
-    delivered: "#059669",
-    cancelled: "#EF4444",
-    rto: "#F97316",
-    refunded: "#6B7280"
+    if (!open) return null;
+    const steps = [T.step1, T.step2, T.step3];
+    return /* @__PURE__ */ React.createElement("div", { className: "checkout-overlay", dir: lang === "ar" ? "rtl" : "ltr" }, /* @__PURE__ */ React.createElement("div", { className: "checkout-modal" }, /* @__PURE__ */ React.createElement("div", { className: "checkout-head" }, /* @__PURE__ */ React.createElement("h2", { className: "t-h4" }, T.title), /* @__PURE__ */ React.createElement("button", { className: "modal-close", onClick: onClose }, "\u2715")), /* @__PURE__ */ React.createElement("div", { className: "checkout-steps" }, steps.map((s, i) => /* @__PURE__ */ React.createElement("div", { key: i, className: `cs-step ${step === i + 1 ? "active" : ""} ${step > i + 1 ? "done" : ""}` }, /* @__PURE__ */ React.createElement("div", { className: "cs-dot" }, step > i + 1 ? "\u2713" : i + 1), /* @__PURE__ */ React.createElement("span", null, s)))), /* @__PURE__ */ React.createElement("div", { className: "checkout-body" }, step === 1 && /* @__PURE__ */ React.createElement("div", { className: "co-step-1" }, /* @__PURE__ */ React.createElement("div", { className: "co-field-row" }, /* @__PURE__ */ React.createElement("div", { className: "co-field" }, /* @__PURE__ */ React.createElement("label", null, T.name), /* @__PURE__ */ React.createElement("input", { value: address.name, onChange: (e) => setAddress((a) => ({ ...a, name: e.target.value })), required: true })), /* @__PURE__ */ React.createElement("div", { className: "co-field" }, /* @__PURE__ */ React.createElement("label", null, T.phone), /* @__PURE__ */ React.createElement("input", { type: "tel", value: address.phone, onChange: (e) => setAddress((a) => ({ ...a, phone: e.target.value })), required: true }))), /* @__PURE__ */ React.createElement("div", { className: "co-field" }, /* @__PURE__ */ React.createElement(
+      WilayaSelector,
+      {
+        lang,
+        onChange: (val) => {
+          if (!val) return;
+          const { wilaya_code, commune_id, fee, eta } = val;
+          setAddress((a) => ({ ...a, wilaya_code: wilaya_code || val.wilaya, commune_id: commune_id || null, shipping_fee: fee || 0, eta_days: eta || 3 }));
+        }
+      }
+    )), /* @__PURE__ */ React.createElement("div", { className: "co-field" }, /* @__PURE__ */ React.createElement("label", null, T.street), /* @__PURE__ */ React.createElement("input", { value: address.street, onChange: (e) => setAddress((a) => ({ ...a, street: e.target.value })), required: true })), /* @__PURE__ */ React.createElement("div", { className: "co-field" }, /* @__PURE__ */ React.createElement("label", null, T.notes), /* @__PURE__ */ React.createElement("textarea", { value: notes, onChange: (e) => setNotes(e.target.value), rows: 2 })), /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        className: "btn-primary co-next",
+        disabled: !address.wilaya_code || !address.name || !address.phone || !address.street,
+        onClick: () => setStep(2)
+      },
+      T.next
+    )), step === 2 && /* @__PURE__ */ React.createElement("div", { className: "co-step-2" }, /* @__PURE__ */ React.createElement("table", { className: "co-items-table" }, /* @__PURE__ */ React.createElement("thead", null, /* @__PURE__ */ React.createElement("tr", null, /* @__PURE__ */ React.createElement("th", null, T.product), /* @__PURE__ */ React.createElement("th", null, T.qty), /* @__PURE__ */ React.createElement("th", { className: "t-right" }, T.unitPrice), /* @__PURE__ */ React.createElement("th", { className: "t-right" }, T.lineTotal))), /* @__PURE__ */ React.createElement("tbody", null, cart.map((item, i) => /* @__PURE__ */ React.createElement("tr", { key: i }, /* @__PURE__ */ React.createElement("td", null, item.name, item.variant && /* @__PURE__ */ React.createElement("span", { className: "t-mute" }, " \xB7 ", item.variant)), /* @__PURE__ */ React.createElement("td", { className: "t-num" }, item.qty), /* @__PURE__ */ React.createElement("td", { className: "t-num t-right" }, item.price.toLocaleString(), " DA"), /* @__PURE__ */ React.createElement("td", { className: "t-num t-right" }, (item.price * item.qty).toLocaleString(), " DA"))))), /* @__PURE__ */ React.createElement("div", { className: "co-totals" }, /* @__PURE__ */ React.createElement("div", { className: "co-row" }, /* @__PURE__ */ React.createElement("span", null, T.orderTotal), /* @__PURE__ */ React.createElement("span", { className: "t-num" }, subtotal.toLocaleString(), " DA")), /* @__PURE__ */ React.createElement("div", { className: "co-row" }, /* @__PURE__ */ React.createElement("span", null, T.shipping), /* @__PURE__ */ React.createElement("span", { className: "t-num" }, address.shipping_fee.toLocaleString(), " DA")), coupon?.code && couponDiscount > 0 && /* @__PURE__ */ React.createElement("div", { className: "co-row", style: { color: "var(--rose-500)" } }, /* @__PURE__ */ React.createElement("span", null, "\u{1F3F7} ", coupon.code), /* @__PURE__ */ React.createElement("span", { className: "t-num" }, "\u2212", couponDiscount.toLocaleString(), " DA")), coupon?.type === "free_shipping" && /* @__PURE__ */ React.createElement("div", { className: "co-row", style: { color: "var(--rose-500)" } }, /* @__PURE__ */ React.createElement("span", null, "\u{1F3F7} ", coupon.code), /* @__PURE__ */ React.createElement("span", { className: "t-mono", style: { fontSize: 11 } }, "Livraison offerte")), user && loyaltyBalance > 0 && /* @__PURE__ */ React.createElement("div", { className: "co-loyalty" }, /* @__PURE__ */ React.createElement("div", { className: "co-row" }, /* @__PURE__ */ React.createElement("span", null, T.loyaltyAvail, ": ", /* @__PURE__ */ React.createElement("strong", { className: "t-num" }, loyaltyBalance, " pts"))), /* @__PURE__ */ React.createElement("div", { className: "co-loyalty-input" }, /* @__PURE__ */ React.createElement("label", null, T.loyaltyUse), /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        type: "number",
+        min: 0,
+        max: loyaltyBalance,
+        step: 10,
+        value: loyaltyRedeem,
+        onChange: (e) => setLoyaltyRedeem(Math.min(loyaltyBalance, Math.max(0, Number(e.target.value))))
+      }
+    ), /* @__PURE__ */ React.createElement("span", { className: "t-mute" }, T.loyaltyDzd.replace("{v}", loyaltyDiscount)))), /* @__PURE__ */ React.createElement("div", { className: "co-row total" }, /* @__PURE__ */ React.createElement("span", null, /* @__PURE__ */ React.createElement("strong", null, "Total")), /* @__PURE__ */ React.createElement("span", { className: "t-num" }, /* @__PURE__ */ React.createElement("strong", null, total.toLocaleString(), " DA")))), error && /* @__PURE__ */ React.createElement("div", { className: "auth-error" }, error), /* @__PURE__ */ React.createElement("div", { className: "co-btns" }, /* @__PURE__ */ React.createElement("button", { className: "btn-outline co-back", onClick: () => setStep(1) }, T.back), /* @__PURE__ */ React.createElement("button", { className: "btn-primary co-confirm", onClick: handlePlace, disabled: loading }, loading ? /* @__PURE__ */ React.createElement("span", { className: "btn-spinner" }) : T.confirm))), step === 3 && order && /* @__PURE__ */ React.createElement("div", { className: "co-step-3" }, /* @__PURE__ */ React.createElement("div", { className: "co-success-icon" }, "\u2713"), /* @__PURE__ */ React.createElement("h3", { className: "t-h3" }, T.thankYou), /* @__PURE__ */ React.createElement("p", null, T.deliveryMsg), /* @__PURE__ */ React.createElement("div", { className: "co-ref t-mono" }, /* @__PURE__ */ React.createElement("span", null, T.orderRef, ":"), /* @__PURE__ */ React.createElement("strong", null, order.reference)), /* @__PURE__ */ React.createElement("button", { className: "btn-primary", onClick: onClose }, T.close), !user && /* @__PURE__ */ React.createElement("div", { className: "co-join-teaser" }, /* @__PURE__ */ React.createElement("div", { className: "co-join-divider" }, /* @__PURE__ */ React.createElement("span", null, { fr: "Rejoignez la communaut\xE9", ar: "\u0627\u0646\u0636\u0645\u064A \u0644\u0644\u0645\u062C\u062A\u0645\u0639", en: "Join the community" }[lang] || "Rejoignez la communaut\xE9")), /* @__PURE__ */ React.createElement("div", { className: "co-join-card" }, /* @__PURE__ */ React.createElement("p", { className: "co-join-headline" }, {
+      fr: "Votre commande est en route \u2014 et ce n'est que le d\xE9but.",
+      ar: "\u0637\u0644\u0628\u0643 \u0641\u064A \u0627\u0644\u0637\u0631\u064A\u0642 \u2014 \u0648\u0647\u0630\u0647 \u0645\u062C\u0631\u062F \u0627\u0644\u0628\u062F\u0627\u064A\u0629.",
+      en: "Your order is on its way \u2014 and this is just the start."
+    }[lang] || "Votre commande est en route \u2014 et ce n'est que le d\xE9but."), /* @__PURE__ */ React.createElement("ul", { className: "co-join-perks" }, /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("span", { className: "co-perk-icon" }, "\u2726"), /* @__PURE__ */ React.createElement("span", null, { fr: "Gagnez des points \xE0 chaque achat \u2014 \xE9changeables contre des r\xE9ductions", ar: "\u0627\u0643\u0633\u0628\u064A \u0646\u0642\u0627\u0637\u0627\u064B \u0645\u0639 \u0643\u0644 \u0634\u0631\u0627\u0621 \u0648\u062D\u0648\u0651\u0644\u064A\u0647\u0627 \u0644\u062E\u0635\u0648\u0645\u0627\u062A", en: "Earn loyalty points on every purchase" }[lang] || "Gagnez des points \xE0 chaque achat")), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("span", { className: "co-perk-icon" }, "\u25C8"), /* @__PURE__ */ React.createElement("span", null, { fr: "Participez aux concours photo exclusifs de la communaut\xE9", ar: "\u0634\u0627\u0631\u0643\u064A \u0641\u064A \u0645\u0633\u0627\u0628\u0642\u0627\u062A \u0627\u0644\u0635\u0648\u0631 \u0627\u0644\u062D\u0635\u0631\u064A\u0629", en: "Enter exclusive community photo contests" }[lang] || "Participez aux concours photo")), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("span", { className: "co-perk-icon" }, "\u25C7"), /* @__PURE__ */ React.createElement("span", null, { fr: "Suivez toutes vos commandes depuis votre espace", ar: "\u062A\u0627\u0628\u0639\u064A \u062C\u0645\u064A\u0639 \u0637\u0644\u0628\u0627\u062A\u0643 \u0645\u0646 \u062D\u0633\u0627\u0628\u0643", en: "Track all your orders from one place" }[lang] || "Suivez toutes vos commandes")), /* @__PURE__ */ React.createElement("li", null, /* @__PURE__ */ React.createElement("span", { className: "co-perk-icon" }, "\u25C9"), /* @__PURE__ */ React.createElement("span", null, { fr: "Acc\xE9dez en avant-premi\xE8re aux nouvelles collections", ar: "\u0627\u062D\u0635\u0644\u064A \u0639\u0644\u0649 \u0648\u0635\u0648\u0644 \u0645\u0628\u0643\u0631 \u0644\u0644\u0645\u062C\u0645\u0648\u0639\u0627\u062A \u0627\u0644\u062C\u062F\u064A\u062F\u0629", en: "Early access to new collections" }[lang] || "Acc\xE8s avant-premi\xE8re aux collections"))), /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        className: "btn-primary co-join-btn",
+        onClick: () => {
+          onClose();
+          setTimeout(() => onAuthOpen?.(), 200);
+        }
+      },
+      { fr: "Cr\xE9er mon compte \u2014 c'est gratuit", ar: "\u0625\u0646\u0634\u0627\u0621 \u062D\u0633\u0627\u0628\u064A \u2014 \u0645\u062C\u0627\u0646\u0627\u064B", en: "Create my account \u2014 it's free" }[lang] || "Cr\xE9er mon compte \u2014 c'est gratuit"
+    ), /* @__PURE__ */ React.createElement("p", { className: "co-join-later" }, { fr: "Vous pouvez aussi vous inscrire plus tard depuis le menu.", ar: "\u064A\u0645\u0643\u0646\u0643 \u0627\u0644\u062A\u0633\u062C\u064A\u0644 \u0644\u0627\u062D\u0642\u0627\u064B \u0645\u0646 \u0627\u0644\u0642\u0627\u0626\u0645\u0629.", en: "You can also sign up later from the menu." }[lang] || "Vous pouvez aussi vous inscrire plus tard."))), /* @__PURE__ */ React.createElement(CrossSellSection, { cart, lang, onClose })))));
   };
-  useEffect(function () {
-    if (!open || !user) return;
-    setLoading(true);
-    var promises = [api.getOrders().then(function (r) {
-      return setOrders(r.data || (r === null || r === void 0 ? void 0 : r.items) || []);
-    })["catch"](function () {}), api.getLoyalty().then(function (r) {
-      return setLoyalty(r.data || r);
-    })["catch"](function () {}), api.getWishlist().then(function (r) {
-      return setWishlistItems(r.data || r || []);
-    })["catch"](function () {})];
-    Promise.all(promises)["finally"](function () {
-      return setLoading(false);
-    });
-  }, [open, user]);
-  var TIER_COLORS = {
-    petal: "#C68B6F",
-    lotus: "#9B59B6",
-    amber: "#F59E0B"
-  };
-  var TIER_LABELS = {
-    petal: "🌸 Petal",
-    lotus: "🪷 Lotus",
-    amber: "🌟 Amber"
-  };
-  if (!open) return null;
-  return /*#__PURE__*/React.createElement("div", {
-    className: "modal-backdrop",
-    onClick: onClose
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "account-modal",
-    onClick: function onClick(e) {
-      return e.stopPropagation();
-    },
-    dir: lang === "ar" ? "rtl" : "ltr"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "account-head"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-    className: "account-hello t-mono"
-  }, T.hello, ", ", /*#__PURE__*/React.createElement("strong", null, user === null || user === void 0 || (_user$name = user.name) === null || _user$name === void 0 ? void 0 : _user$name.split(" ")[0])), /*#__PURE__*/React.createElement("div", {
-    className: "account-phone t-mute"
-  }, user === null || user === void 0 ? void 0 : user.phone)), /*#__PURE__*/React.createElement("div", {
-    className: "account-head-actions"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "btn-outline-sm",
-    onClick: function onClick() {
+  var AccountPage = ({ lang, open, onClose, user, onLogout }) => {
+    const [tab, setTab] = useState("orders");
+    const [orders, setOrders] = useState([]);
+    const [loyalty, setLoyalty] = useState(null);
+    const [wishlistItems, setWishlistItems] = useState([]);
+    const [reservations, setReservations] = useState([]);
+    const [reservLoading, setReservLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [refreshTick, setRefreshTick] = useState(0);
+    const api = window.latinaApi;
+    useEffect(() => {
+      const h = () => setRefreshTick((t) => t + 1);
+      window.addEventListener("latina:refresh", h);
+      return () => window.removeEventListener("latina:refresh", h);
+    }, []);
+    const T = {
+      fr: {
+        title: "Mon Compte",
+        orders: "Commandes",
+        loyalty: "Fid\xE9lit\xE9",
+        wishlist: "Favoris",
+        reservations: "R\xE9servations",
+        logout: "Se d\xE9connecter",
+        noOrders: "Aucune commande.",
+        hello: "Bonjour",
+        points: "points",
+        tier: "Niveau",
+        history: "Historique des points",
+        ref: "R\xE9f.",
+        status: "Statut",
+        date: "Date",
+        total: "Total",
+        pending: "En attente",
+        confirmed: "Confirm\xE9e",
+        preparing: "En pr\xE9paration",
+        shipped: "Exp\xE9di\xE9e",
+        out_for_delivery: "En cours de livraison",
+        delivered: "Livr\xE9e",
+        cancelled: "Annul\xE9e",
+        rto: "Retourn\xE9e",
+        refunded: "Rembours\xE9e",
+        noWishlist: "Votre liste de favoris est vide.",
+        loyaltyInfo: "1 point pour chaque 100 DA d'achat \xB7 10 points = 1 DA de r\xE9duction",
+        noReservations: "Aucune r\xE9servation.",
+        active: "Active",
+        expired: "Expir\xE9e",
+        daysLeft: (n) => n === 1 ? "1 jour restant" : `${n} jours restants`,
+        hoursLeft: (n) => `${n}h restantes`,
+        deposit: "Acompte (40%)",
+        paymentStatus: "Paiement",
+        paid: "Pay\xE9",
+        payment_pending: "En attente de paiement",
+        payment_none: "Gratuit",
+        cancelResv: "Annuler",
+        whatsappPay: "Payer via WA \u{1F4AC}",
+        cancelConfirm: "Annuler cette r\xE9servation ?",
+        qty: "Qt\xE9",
+        duration: "Dur\xE9e",
+        expires: "Expire le"
+      },
+      ar: {
+        title: "\u062D\u0633\u0627\u0628\u064A",
+        orders: "\u0627\u0644\u0637\u0644\u0628\u0627\u062A",
+        loyalty: "\u0627\u0644\u0648\u0644\u0627\u0621",
+        wishlist: "\u0627\u0644\u0645\u0641\u0636\u0644\u0629",
+        reservations: "\u0627\u0644\u062D\u062C\u0648\u0632\u0627\u062A",
+        logout: "\u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062E\u0631\u0648\u062C",
+        noOrders: "\u0644\u0627 \u062A\u0648\u062C\u062F \u0637\u0644\u0628\u0627\u062A.",
+        hello: "\u0645\u0631\u062D\u0628\u0627\u064B",
+        points: "\u0646\u0642\u0637\u0629",
+        tier: "\u0627\u0644\u0645\u0633\u062A\u0648\u0649",
+        history: "\u0633\u062C\u0644 \u0627\u0644\u0646\u0642\u0627\u0637",
+        ref: "\u0627\u0644\u0645\u0631\u062C\u0639",
+        status: "\u0627\u0644\u062D\u0627\u0644\u0629",
+        date: "\u0627\u0644\u062A\u0627\u0631\u064A\u062E",
+        total: "\u0627\u0644\u0645\u062C\u0645\u0648\u0639",
+        pending: "\u0642\u064A\u062F \u0627\u0644\u0627\u0646\u062A\u0638\u0627\u0631",
+        confirmed: "\u0645\u0624\u0643\u062F",
+        preparing: "\u062C\u0627\u0631 \u0627\u0644\u062A\u062D\u0636\u064A\u0631",
+        shipped: "\u062A\u0645 \u0627\u0644\u0634\u062D\u0646",
+        out_for_delivery: "\u0641\u064A \u0627\u0644\u0637\u0631\u064A\u0642",
+        delivered: "\u062A\u0645 \u0627\u0644\u062A\u0633\u0644\u064A\u0645",
+        cancelled: "\u0645\u0644\u063A\u064A",
+        rto: "\u0645\u0631\u062A\u062C\u0639",
+        refunded: "\u0645\u0633\u062A\u0631\u062F",
+        noWishlist: "\u0642\u0627\u0626\u0645\u0629 \u0627\u0644\u0645\u0641\u0636\u0644\u0629 \u0641\u0627\u0631\u063A\u0629.",
+        loyaltyInfo: "\u0646\u0642\u0637\u0629 \u0644\u0643\u0644 100 \u062F\u062C \u0645\u0646 \u0627\u0644\u0645\u0634\u062A\u0631\u064A\u0627\u062A \xB7 10 \u0646\u0642\u0627\u0637 = \u062E\u0635\u0645 1 \u062F\u062C",
+        noReservations: "\u0644\u0627 \u062A\u0648\u062C\u062F \u062D\u062C\u0648\u0632\u0627\u062A.",
+        active: "\u0646\u0634\u0637",
+        expired: "\u0645\u0646\u062A\u0647\u064A",
+        daysLeft: (n) => `${n} \u064A\u0648\u0645 \u0645\u062A\u0628\u0642\u064A`,
+        hoursLeft: (n) => `${n} \u0633\u0627\u0639\u0629 \u0645\u062A\u0628\u0642\u064A\u0629`,
+        deposit: "\u0627\u0644\u062F\u0641\u0639\u0629 \u0627\u0644\u0645\u0633\u0628\u0642\u0629 (40%)",
+        paymentStatus: "\u0627\u0644\u062F\u0641\u0639",
+        paid: "\u0645\u062F\u0641\u0648\u0639",
+        payment_pending: "\u0641\u064A \u0627\u0646\u062A\u0638\u0627\u0631 \u0627\u0644\u062F\u0641\u0639",
+        payment_none: "\u0645\u062C\u0627\u0646\u064A",
+        cancelResv: "\u0625\u0644\u063A\u0627\u0621",
+        whatsappPay: "\u0627\u0644\u062F\u0641\u0639 \u0639\u0628\u0631 WA \u{1F4AC}",
+        cancelConfirm: "\u0625\u0644\u063A\u0627\u0621 \u0647\u0630\u0627 \u0627\u0644\u062D\u062C\u0632\u061F",
+        qty: "\u0627\u0644\u0643\u0645\u064A\u0629",
+        duration: "\u0627\u0644\u0645\u062F\u0629",
+        expires: "\u064A\u0646\u062A\u0647\u064A \u0641\u064A"
+      },
+      en: {
+        title: "My Account",
+        orders: "Orders",
+        loyalty: "Loyalty",
+        wishlist: "Wishlist",
+        reservations: "Reservations",
+        logout: "Sign out",
+        noOrders: "No orders yet.",
+        hello: "Hello",
+        points: "points",
+        tier: "Tier",
+        history: "Points history",
+        ref: "Ref.",
+        status: "Status",
+        date: "Date",
+        total: "Total",
+        pending: "Pending",
+        confirmed: "Confirmed",
+        preparing: "Preparing",
+        shipped: "Shipped",
+        out_for_delivery: "Out for delivery",
+        delivered: "Delivered",
+        cancelled: "Cancelled",
+        rto: "Returned",
+        refunded: "Refunded",
+        noWishlist: "Your wishlist is empty.",
+        loyaltyInfo: "1 point per 100 DA \xB7 10 points = 1 DA off",
+        noReservations: "No reservations yet.",
+        active: "Active",
+        expired: "Expired",
+        daysLeft: (n) => n === 1 ? "1 day left" : `${n} days left`,
+        hoursLeft: (n) => `${n}h left`,
+        deposit: "Deposit (40%)",
+        paymentStatus: "Payment",
+        paid: "Paid",
+        payment_pending: "Awaiting payment",
+        payment_none: "Free",
+        cancelResv: "Cancel",
+        whatsappPay: "Pay via WA \u{1F4AC}",
+        cancelConfirm: "Cancel this reservation?",
+        qty: "Qty",
+        duration: "Duration",
+        expires: "Expires"
+      }
+    }[lang] || {};
+    const STATUS_COLORS = {
+      pending: "#F59E0B",
+      confirmed: "#3B82F6",
+      preparing: "#8B5CF6",
+      shipped: "#06B6D4",
+      out_for_delivery: "#10B981",
+      delivered: "#059669",
+      cancelled: "#EF4444",
+      rto: "#F97316",
+      refunded: "#6B7280"
+    };
+    useEffect(() => {
+      if (!open || !user) return;
+      setLoading(true);
+      const promises = [
+        api.getOrders().then((r) => setOrders(r.data || r?.items || [])).catch(() => {
+        }),
+        api.getLoyalty().then((r) => setLoyalty(r.data || r)).catch(() => {
+        }),
+        api.getWishlist().then((r) => setWishlistItems(r.data || r || [])).catch(() => {
+        })
+      ];
+      Promise.all(promises).finally(() => setLoading(false));
+    }, [open, user, refreshTick]);
+    useEffect(() => {
+      if (!open || !user || tab !== "reservations") return;
+      setReservLoading(true);
+      Promise.all([
+        api.getMyReservations().then((r) => setReservations(r || [])).catch(() => {
+        }),
+        api.getPublicConfig().then((cfg) => {
+          if (cfg?.whatsapp_reservation) window._latinaWhatsapp = cfg.whatsapp_reservation;
+        }).catch(() => {
+        })
+      ]).finally(() => setReservLoading(false));
+    }, [open, user, tab]);
+    const TIER_COLORS = { petal: "#C68B6F", lotus: "#9B59B6", amber: "#F59E0B" };
+    const TIER_LABELS = { petal: "\u{1F338} Petal", lotus: "\u{1FAB7} Lotus", amber: "\u{1F31F} Amber" };
+    if (!open) return null;
+    return /* @__PURE__ */ React.createElement("div", { className: "modal-backdrop", onClick: onClose }, /* @__PURE__ */ React.createElement("div", { className: "account-modal", onClick: (e) => e.stopPropagation(), dir: lang === "ar" ? "rtl" : "ltr" }, /* @__PURE__ */ React.createElement("div", { className: "account-head" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "account-hello t-mono" }, T.hello, ", ", /* @__PURE__ */ React.createElement("strong", null, user?.name?.split(" ")[0])), /* @__PURE__ */ React.createElement("div", { className: "account-phone t-mute" }, user?.phone)), /* @__PURE__ */ React.createElement("div", { className: "account-head-actions" }, /* @__PURE__ */ React.createElement("button", { className: "btn-outline-sm", onClick: () => {
       onLogout();
       onClose();
-    }
-  }, T.logout), /*#__PURE__*/React.createElement("button", {
-    className: "modal-close",
-    onClick: onClose
-  }, "\u2715"))), /*#__PURE__*/React.createElement("div", {
-    className: "account-tabs"
-  }, ["orders", "loyalty", "wishlist"].map(function (t) {
-    return /*#__PURE__*/React.createElement("button", {
-      key: t,
-      className: tab === t ? "active" : "",
-      onClick: function onClick() {
-        return setTab(t);
+    } }, T.logout), /* @__PURE__ */ React.createElement("button", { className: "modal-close", onClick: onClose }, "\u2715"))), /* @__PURE__ */ React.createElement("div", { className: "account-tabs" }, ["orders", "reservations", "loyalty", "wishlist"].map((t) => /* @__PURE__ */ React.createElement("button", { key: t, className: tab === t ? "active" : "", onClick: () => setTab(t) }, T[t]))), /* @__PURE__ */ React.createElement("div", { className: "account-body" }, loading && /* @__PURE__ */ React.createElement("div", { className: "account-loading" }, "\u2026"), !loading && tab === "orders" && /* @__PURE__ */ React.createElement("div", { className: "acc-orders" }, orders.length === 0 ? /* @__PURE__ */ React.createElement("p", { className: "t-mute" }, T.noOrders) : /* @__PURE__ */ React.createElement("div", { className: "orders-list" }, orders.map((o) => /* @__PURE__ */ React.createElement("div", { key: o.id, className: "order-card" }, /* @__PURE__ */ React.createElement("div", { className: "oc-head" }, /* @__PURE__ */ React.createElement("span", { className: "oc-ref t-mono" }, o.reference), /* @__PURE__ */ React.createElement("span", { className: "oc-status", style: { background: STATUS_COLORS[o.status] + "22", color: STATUS_COLORS[o.status], border: `1px solid ${STATUS_COLORS[o.status]}44` } }, T[o.status] || o.status)), /* @__PURE__ */ React.createElement("div", { className: "oc-meta t-mute" }, /* @__PURE__ */ React.createElement("span", null, new Date(o.created_at).toLocaleDateString(lang === "ar" ? "ar-DZ" : "fr-DZ")), /* @__PURE__ */ React.createElement("span", { className: "t-num" }, Number(o.total).toLocaleString(), " DA")), o.lines?.length > 0 && /* @__PURE__ */ React.createElement("div", { className: "oc-items" }, o.lines.map((l, i) => /* @__PURE__ */ React.createElement("span", { key: i, className: "oc-item-chip" }, l.product_name, " \xD7", l.quantity ?? l.qty))))))), tab === "reservations" && (() => {
+      const RESV_STATUS_COLOR = {
+        pending: "#F59E0B",
+        confirmed: "#3B82F6",
+        active: "#10B981",
+        expired: "#9CA3AF",
+        cancelled: "#EF4444"
+      };
+      const PAYMENT_LABEL = { paid: T.paid, pending: T.payment_pending, none: T.payment_none };
+      return /* @__PURE__ */ React.createElement("div", { className: "acc-reservations" }, reservLoading && /* @__PURE__ */ React.createElement("div", { className: "account-loading" }, "\u2026"), !reservLoading && reservations.length === 0 && /* @__PURE__ */ React.createElement("p", { className: "t-mute" }, T.noReservations), !reservLoading && reservations.map((r) => {
+        const statusColor = RESV_STATUS_COLOR[r.status] || "#9CA3AF";
+        const isPaid = r.duration_days > 1;
+        const payStatus = r.payment_status || "none";
+        const expiresDate = r.expires_at ? new Date(r.expires_at).toLocaleDateString(lang === "ar" ? "ar-DZ" : "fr-DZ") : "\u2014";
+        const daysLeft = r.days_left ?? 0;
+        const hoursLeft = r.hours_left ?? 0;
+        const isUrgent = ["pending", "confirmed", "active"].includes(r.status) && daysLeft === 0;
+        return /* @__PURE__ */ React.createElement("div", { key: r.id, className: `resv-card${isUrgent ? " urgent" : ""}` }, /* @__PURE__ */ React.createElement("div", { className: "resv-card-head" }, /* @__PURE__ */ React.createElement("span", { className: "resv-card-ref t-mono" }, r.reference), /* @__PURE__ */ React.createElement("span", { className: "resv-card-status", style: { background: statusColor + "22", color: statusColor, border: `1px solid ${statusColor}44` } }, T[r.status] || r.status)), /* @__PURE__ */ React.createElement("div", { className: "resv-card-product" }, r.product?.name_fr || "\u2014"), /* @__PURE__ */ React.createElement("div", { className: "resv-card-meta" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("span", { className: "rcm-label" }, T.duration), /* @__PURE__ */ React.createElement("span", { className: "rcm-val" }, r.duration_days, "j")), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("span", { className: "rcm-label" }, T.qty), /* @__PURE__ */ React.createElement("span", { className: "rcm-val" }, r.quantity)), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("span", { className: "rcm-label" }, T.expires), /* @__PURE__ */ React.createElement("span", { className: "rcm-val t-num" }, expiresDate)), isPaid && /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("span", { className: "rcm-label" }, T.deposit), /* @__PURE__ */ React.createElement("span", { className: "rcm-val t-num" }, Number(r.partial_amount).toLocaleString("fr-DZ"), " DA")), isPaid && /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("span", { className: "rcm-label" }, T.paymentStatus), /* @__PURE__ */ React.createElement("span", { className: "rcm-val" }, PAYMENT_LABEL[payStatus] || payStatus))), ["pending", "confirmed", "active"].includes(r.status) && /* @__PURE__ */ React.createElement("div", { className: `resv-card-timer${isUrgent ? " urgent" : ""}` }, isUrgent ? T.hoursLeft(hoursLeft) : T.daysLeft(daysLeft)));
+      }));
+    })(), !loading && tab === "loyalty" && loyalty && /* @__PURE__ */ React.createElement("div", { className: "acc-loyalty" }, /* @__PURE__ */ React.createElement("div", { className: "loyalty-card-big", style: { "--tier-color": TIER_COLORS[loyalty.tier] || "#C68B6F" } }, /* @__PURE__ */ React.createElement("div", { className: "lcb-tier" }, TIER_LABELS[loyalty.tier] || loyalty.tier), /* @__PURE__ */ React.createElement("div", { className: "lcb-points" }, /* @__PURE__ */ React.createElement("span", { className: "t-num lcb-pts-num" }, loyalty.points?.toLocaleString()), /* @__PURE__ */ React.createElement("span", { className: "lcb-pts-label" }, T.points)), loyalty.next_tier && /* @__PURE__ */ React.createElement("div", { className: "lcb-progress" }, /* @__PURE__ */ React.createElement("div", { className: "lcb-track" }, /* @__PURE__ */ React.createElement("div", { className: "lcb-fill", style: { width: `${Math.min(100, loyalty.tier_progress?.pct || 0)}%` } })), /* @__PURE__ */ React.createElement("span", { className: "t-mono lcb-next" }, loyalty.tier_progress?.needed || 0, " pts \u2192 ", loyalty.next_tier)), /* @__PURE__ */ React.createElement("div", { className: "lcb-info t-mono" }, T.loyaltyInfo)), loyalty.history?.length > 0 && /* @__PURE__ */ React.createElement("div", { className: "loyalty-history" }, /* @__PURE__ */ React.createElement("div", { className: "t-h5" }, T.history), loyalty.history.map((e, i) => /* @__PURE__ */ React.createElement("div", { key: i, className: "lh-row" }, /* @__PURE__ */ React.createElement("span", { className: "lh-desc" }, e.note || e.type), /* @__PURE__ */ React.createElement("span", { className: `lh-pts t-num ${e.points > 0 ? "earn" : "spend"}` }, e.points > 0 ? "+" : "", e.points))))), !loading && tab === "wishlist" && /* @__PURE__ */ React.createElement("div", { className: "acc-wishlist" }, wishlistItems.length === 0 ? /* @__PURE__ */ React.createElement("p", { className: "t-mute" }, T.noWishlist) : /* @__PURE__ */ React.createElement("div", { className: "wl-grid" }, wishlistItems.map((p) => /* @__PURE__ */ React.createElement("div", { key: p.id, className: "wl-card" }, p.media?.[0] && /* @__PURE__ */ React.createElement("img", { src: p.media[0].url, alt: p[`name_${lang}`] || p.name_fr }), /* @__PURE__ */ React.createElement("div", { className: "wl-name" }, p[`name_${lang}`] || p.name_fr), /* @__PURE__ */ React.createElement("div", { className: "wl-price t-num" }, Number(p.price).toLocaleString(), " DA"))))))));
+  };
+  var OrderTracker = ({ lang, reference }) => {
+    const [order, setOrder] = useState(null);
+    const [ref, setRef] = useState(reference || "");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const T = {
+      fr: {
+        title: "Suivre ma commande",
+        placeholder: "R\xE9f\xE9rence LAT-XXXXXX",
+        track: "Suivre",
+        notFound: "Commande introuvable.",
+        status: "Statut",
+        eta: "Livraison estim\xE9e"
+      },
+      ar: {
+        title: "\u062A\u062A\u0628\u0639 \u0637\u0644\u0628\u064A",
+        placeholder: "\u0627\u0644\u0645\u0631\u062C\u0639 LAT-XXXXXX",
+        track: "\u062A\u062A\u0628\u0639",
+        notFound: "\u0627\u0644\u0637\u0644\u0628 \u063A\u064A\u0631 \u0645\u0648\u062C\u0648\u062F.",
+        status: "\u0627\u0644\u062D\u0627\u0644\u0629",
+        eta: "\u0627\u0644\u062A\u0633\u0644\u064A\u0645 \u0627\u0644\u0645\u062A\u0648\u0642\u0639"
+      },
+      en: {
+        title: "Track My Order",
+        placeholder: "Reference LAT-XXXXXX",
+        track: "Track",
+        notFound: "Order not found.",
+        status: "Status",
+        eta: "Estimated delivery"
       }
-    }, T[t]);
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "account-body"
-  }, loading && /*#__PURE__*/React.createElement("div", {
-    className: "account-loading"
-  }, "\u2026"), !loading && tab === "orders" && /*#__PURE__*/React.createElement("div", {
-    className: "acc-orders"
-  }, orders.length === 0 ? /*#__PURE__*/React.createElement("p", {
-    className: "t-mute"
-  }, T.noOrders) : /*#__PURE__*/React.createElement("div", {
-    className: "orders-list"
-  }, orders.map(function (o) {
-    var _o$lines;
-    return /*#__PURE__*/React.createElement("div", {
-      key: o.id,
-      className: "order-card"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "oc-head"
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "oc-ref t-mono"
-    }, o.reference), /*#__PURE__*/React.createElement("span", {
-      className: "oc-status",
-      style: {
-        background: STATUS_COLORS[o.status] + "22",
-        color: STATUS_COLORS[o.status],
-        border: "1px solid ".concat(STATUS_COLORS[o.status], "44")
+    }[lang] || {};
+    const doTrack = async () => {
+      if (!ref.trim()) return;
+      setLoading(true);
+      setError("");
+      try {
+        const res = await window.latinaApi.trackOrder(ref.trim());
+        setOrder(res.data || res);
+      } catch {
+        setError(T.notFound);
+        setOrder(null);
+      } finally {
+        setLoading(false);
       }
-    }, T[o.status] || o.status)), /*#__PURE__*/React.createElement("div", {
-      className: "oc-meta t-mute"
-    }, /*#__PURE__*/React.createElement("span", null, new Date(o.created_at).toLocaleDateString(lang === "ar" ? "ar-DZ" : "fr-DZ")), /*#__PURE__*/React.createElement("span", {
-      className: "t-num"
-    }, Number(o.total).toLocaleString(), " DA")), ((_o$lines = o.lines) === null || _o$lines === void 0 ? void 0 : _o$lines.length) > 0 && /*#__PURE__*/React.createElement("div", {
-      className: "oc-items"
-    }, o.lines.map(function (l, i) {
-      var _l$quantity;
-      return /*#__PURE__*/React.createElement("span", {
-        key: i,
-        className: "oc-item-chip"
-      }, l.product_name, " \xD7", (_l$quantity = l.quantity) !== null && _l$quantity !== void 0 ? _l$quantity : l.qty);
-    })));
-  }))), !loading && tab === "loyalty" && loyalty && /*#__PURE__*/React.createElement("div", {
-    className: "acc-loyalty"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "loyalty-card-big",
-    style: {
-      "--tier-color": TIER_COLORS[loyalty.tier] || "#C68B6F"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "lcb-tier"
-  }, TIER_LABELS[loyalty.tier] || loyalty.tier), /*#__PURE__*/React.createElement("div", {
-    className: "lcb-points"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "t-num lcb-pts-num"
-  }, (_loyalty$points = loyalty.points) === null || _loyalty$points === void 0 ? void 0 : _loyalty$points.toLocaleString()), /*#__PURE__*/React.createElement("span", {
-    className: "lcb-pts-label"
-  }, T.points)), loyalty.next_tier && /*#__PURE__*/React.createElement("div", {
-    className: "lcb-progress"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "lcb-track"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "lcb-fill",
-    style: {
-      width: "".concat(Math.min(100, ((_loyalty$tier_progres = loyalty.tier_progress) === null || _loyalty$tier_progres === void 0 ? void 0 : _loyalty$tier_progres.pct) || 0), "%")
-    }
-  })), /*#__PURE__*/React.createElement("span", {
-    className: "t-mono lcb-next"
-  }, ((_loyalty$tier_progres2 = loyalty.tier_progress) === null || _loyalty$tier_progres2 === void 0 ? void 0 : _loyalty$tier_progres2.needed) || 0, " pts \u2192 ", loyalty.next_tier)), /*#__PURE__*/React.createElement("div", {
-    className: "lcb-info t-mono"
-  }, T.loyaltyInfo)), ((_loyalty$history = loyalty.history) === null || _loyalty$history === void 0 ? void 0 : _loyalty$history.length) > 0 && /*#__PURE__*/React.createElement("div", {
-    className: "loyalty-history"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "t-h5"
-  }, T.history), loyalty.history.map(function (e, i) {
-    return /*#__PURE__*/React.createElement("div", {
-      key: i,
-      className: "lh-row"
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "lh-desc"
-    }, e.note || e.type), /*#__PURE__*/React.createElement("span", {
-      className: "lh-pts t-num ".concat(e.points > 0 ? "earn" : "spend")
-    }, e.points > 0 ? "+" : "", e.points));
-  }))), !loading && tab === "wishlist" && /*#__PURE__*/React.createElement("div", {
-    className: "acc-wishlist"
-  }, wishlistItems.length === 0 ? /*#__PURE__*/React.createElement("p", {
-    className: "t-mute"
-  }, T.noWishlist) : /*#__PURE__*/React.createElement("div", {
-    className: "wl-grid"
-  }, wishlistItems.map(function (p) {
-    var _p$media;
-    return /*#__PURE__*/React.createElement("div", {
-      key: p.id,
-      className: "wl-card"
-    }, ((_p$media = p.media) === null || _p$media === void 0 ? void 0 : _p$media[0]) && /*#__PURE__*/React.createElement("img", {
-      src: p.media[0].url,
-      alt: p["name_".concat(lang)] || p.name_fr
-    }), /*#__PURE__*/React.createElement("div", {
-      className: "wl-name"
-    }, p["name_".concat(lang)] || p.name_fr), /*#__PURE__*/React.createElement("div", {
-      className: "wl-price t-num"
-    }, Number(p.price).toLocaleString(), " DA"));
-  }))))));
-};
-
-/* ============================================================
-   ORDER TRACKER — standalone component for tracking page
-   ============================================================ */
-var OrderTracker = function OrderTracker(_ref8) {
-  var lang = _ref8.lang,
-    reference = _ref8.reference;
-  var _useState41 = useState(null),
-    _useState42 = _slicedToArray(_useState41, 2),
-    order = _useState42[0],
-    setOrder = _useState42[1];
-  var _useState43 = useState(reference || ""),
-    _useState44 = _slicedToArray(_useState43, 2),
-    ref = _useState44[0],
-    setRef = _useState44[1];
-  var _useState45 = useState(false),
-    _useState46 = _slicedToArray(_useState45, 2),
-    loading = _useState46[0],
-    setLoading = _useState46[1];
-  var _useState47 = useState(""),
-    _useState48 = _slicedToArray(_useState47, 2),
-    error = _useState48[0],
-    setError = _useState48[1];
-  var T = {
-    fr: {
-      title: "Suivre ma commande",
-      placeholder: "Référence LAT-XXXXXX",
-      track: "Suivre",
-      notFound: "Commande introuvable.",
-      status: "Statut",
-      eta: "Livraison estimée"
-    },
-    ar: {
-      title: "تتبع طلبي",
-      placeholder: "المرجع LAT-XXXXXX",
-      track: "تتبع",
-      notFound: "الطلب غير موجود.",
-      status: "الحالة",
-      eta: "التسليم المتوقع"
-    },
-    en: {
-      title: "Track My Order",
-      placeholder: "Reference LAT-XXXXXX",
-      track: "Track",
-      notFound: "Order not found.",
-      status: "Status",
-      eta: "Estimated delivery"
-    }
-  }[lang] || {};
-  var doTrack = /*#__PURE__*/function () {
-    var _ref9 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
-      var res, _t4;
-      return _regenerator().w(function (_context4) {
-        while (1) switch (_context4.p = _context4.n) {
-          case 0:
-            if (ref.trim()) {
-              _context4.n = 1;
-              break;
-            }
-            return _context4.a(2);
-          case 1:
-            setLoading(true);
-            setError("");
-            _context4.p = 2;
-            _context4.n = 3;
-            return window.latinaApi.trackOrder(ref.trim());
-          case 3:
-            res = _context4.v;
-            setOrder(res.data || res);
-            _context4.n = 5;
-            break;
-          case 4:
-            _context4.p = 4;
-            _t4 = _context4.v;
-            setError(T.notFound);
-            setOrder(null);
-          case 5:
-            _context4.p = 5;
-            setLoading(false);
-            return _context4.f(5);
-          case 6:
-            return _context4.a(2);
-        }
-      }, _callee4, null, [[2, 4, 5, 6]]);
-    }));
-    return function doTrack() {
-      return _ref9.apply(this, arguments);
     };
-  }();
-  var COD_STATUSES = ["pending", "confirmed", "preparing", "shipped", "out_for_delivery", "delivered"];
-  var STATUS_T = {
-    fr: {
-      pending: "En attente",
-      confirmed: "Confirmée",
-      preparing: "En préparation",
-      shipped: "Expédiée",
-      out_for_delivery: "En livraison",
-      delivered: "Livrée"
-    },
-    ar: {
-      pending: "قيد الانتظار",
-      confirmed: "مؤكد",
-      preparing: "جار التحضير",
-      shipped: "تم الشحن",
-      out_for_delivery: "في الطريق",
-      delivered: "تم التسليم"
-    },
-    en: {
-      pending: "Pending",
-      confirmed: "Confirmed",
-      preparing: "Preparing",
-      shipped: "Shipped",
-      out_for_delivery: "Out for delivery",
-      delivered: "Delivered"
-    }
-  }[lang] || {};
-  var curIdx = order ? COD_STATUSES.indexOf(order.status) : -1;
-  return /*#__PURE__*/React.createElement("div", {
-    className: "order-tracker",
-    dir: lang === "ar" ? "rtl" : "ltr"
-  }, /*#__PURE__*/React.createElement("h3", {
-    className: "t-h4"
-  }, T.title), /*#__PURE__*/React.createElement("div", {
-    className: "ot-input"
-  }, /*#__PURE__*/React.createElement("input", {
-    value: ref,
-    onChange: function onChange(e) {
-      return setRef(e.target.value);
-    },
-    placeholder: T.placeholder,
-    onKeyDown: function onKeyDown(e) {
-      return e.key === "Enter" && doTrack();
-    }
-  }), /*#__PURE__*/React.createElement("button", {
-    className: "btn-primary",
-    onClick: doTrack,
-    disabled: loading
-  }, loading ? "…" : T.track)), error && /*#__PURE__*/React.createElement("div", {
-    className: "auth-error"
-  }, error), order && /*#__PURE__*/React.createElement("div", {
-    className: "ot-result"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "ot-progress"
-  }, COD_STATUSES.map(function (s, i) {
-    return /*#__PURE__*/React.createElement("div", {
-      key: s,
-      className: "ot-dot-wrap ".concat(i <= curIdx ? "done" : "", " ").concat(i === curIdx ? "active" : "")
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "ot-dot"
-    }, i < curIdx ? "✓" : i + 1), /*#__PURE__*/React.createElement("span", null, STATUS_T[s]), i < COD_STATUSES.length - 1 && /*#__PURE__*/React.createElement("div", {
-      className: "ot-line"
-    }));
-  }))));
-};
-Object.assign(window, {
-  AuthModal: AuthModal,
-  CartDrawer: CartDrawer,
-  CheckoutPage: CheckoutPage,
-  AccountPage: AccountPage,
-  OrderTracker: OrderTracker
-});
+    const COD_STATUSES = ["pending", "confirmed", "preparing", "shipped", "out_for_delivery", "delivered"];
+    const STATUS_T = {
+      fr: { pending: "En attente", confirmed: "Confirm\xE9e", preparing: "En pr\xE9paration", shipped: "Exp\xE9di\xE9e", out_for_delivery: "En livraison", delivered: "Livr\xE9e" },
+      ar: { pending: "\u0642\u064A\u062F \u0627\u0644\u0627\u0646\u062A\u0638\u0627\u0631", confirmed: "\u0645\u0624\u0643\u062F", preparing: "\u062C\u0627\u0631 \u0627\u0644\u062A\u062D\u0636\u064A\u0631", shipped: "\u062A\u0645 \u0627\u0644\u0634\u062D\u0646", out_for_delivery: "\u0641\u064A \u0627\u0644\u0637\u0631\u064A\u0642", delivered: "\u062A\u0645 \u0627\u0644\u062A\u0633\u0644\u064A\u0645" },
+      en: { pending: "Pending", confirmed: "Confirmed", preparing: "Preparing", shipped: "Shipped", out_for_delivery: "Out for delivery", delivered: "Delivered" }
+    }[lang] || {};
+    const curIdx = order ? COD_STATUSES.indexOf(order.status) : -1;
+    return /* @__PURE__ */ React.createElement("div", { className: "order-tracker", dir: lang === "ar" ? "rtl" : "ltr" }, /* @__PURE__ */ React.createElement("h3", { className: "t-h4" }, T.title), /* @__PURE__ */ React.createElement("div", { className: "ot-input" }, /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        value: ref,
+        onChange: (e) => setRef(e.target.value),
+        placeholder: T.placeholder,
+        onKeyDown: (e) => e.key === "Enter" && doTrack()
+      }
+    ), /* @__PURE__ */ React.createElement("button", { className: "btn-primary", onClick: doTrack, disabled: loading }, loading ? "\u2026" : T.track)), error && /* @__PURE__ */ React.createElement("div", { className: "auth-error" }, error), order && /* @__PURE__ */ React.createElement("div", { className: "ot-result" }, /* @__PURE__ */ React.createElement("div", { className: "ot-progress" }, COD_STATUSES.map((s, i) => /* @__PURE__ */ React.createElement("div", { key: s, className: `ot-dot-wrap ${i <= curIdx ? "done" : ""} ${i === curIdx ? "active" : ""}` }, /* @__PURE__ */ React.createElement("div", { className: "ot-dot" }, i < curIdx ? "\u2713" : i + 1), /* @__PURE__ */ React.createElement("span", null, STATUS_T[s]), i < COD_STATUSES.length - 1 && /* @__PURE__ */ React.createElement("div", { className: "ot-line" }))))));
+  };
+  var FeedbackModal = ({ lang, open, onClose, user, onAuthOpen }) => {
+    const [stars, setStars] = useState(0);
+    const [hovered, setHovered] = useState(0);
+    const [cat, setCat] = useState("");
+    const [comment, setComment] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [done, setDone] = useState(false);
+    const [error, setError] = useState("");
+    const T = {
+      fr: {
+        title: "Votre avis nous importe",
+        sub: "Aidez-nous \xE0 am\xE9liorer votre exp\xE9rience",
+        rateLabel: "Notez votre exp\xE9rience",
+        catLabel: "Domaine",
+        commentLabel: "Commentaire (optionnel)",
+        commentPh: "Dites-nous en plus\u2026",
+        submit: "Envoyer mon avis",
+        submitting: "Envoi\u2026",
+        doneTitle: "Merci pour votre retour !",
+        doneSub: "Votre avis a bien \xE9t\xE9 re\xE7u.",
+        close: "Fermer",
+        cats: ["Qualit\xE9 produit", "Livraison", "Service client", "Site web", "Prix", "Autre"],
+        required: "Merci de choisir une note."
+      },
+      ar: {
+        title: "\u0631\u0623\u064A\u0643 \u064A\u0647\u0645\u0646\u0627",
+        sub: "\u0633\u0627\u0639\u062F\u0646\u0627 \u0639\u0644\u0649 \u062A\u062D\u0633\u064A\u0646 \u062A\u062C\u0631\u0628\u062A\u0643",
+        rateLabel: "\u0642\u064A\u0651\u0645 \u062A\u062C\u0631\u0628\u062A\u0643",
+        catLabel: "\u0627\u0644\u0645\u062C\u0627\u0644",
+        commentLabel: "\u062A\u0639\u0644\u064A\u0642 (\u0627\u062E\u062A\u064A\u0627\u0631\u064A)",
+        commentPh: "\u0623\u062E\u0628\u0631\u0646\u0627 \u0623\u0643\u062B\u0631\u2026",
+        submit: "\u0625\u0631\u0633\u0627\u0644 \u0631\u0623\u064A\u0643",
+        submitting: "\u062C\u0627\u0631\u064D \u0627\u0644\u0625\u0631\u0633\u0627\u0644\u2026",
+        doneTitle: "\u0634\u0643\u0631\u0627\u064B \u0639\u0644\u0649 \u0645\u0644\u0627\u062D\u0638\u0627\u062A\u0643!",
+        doneSub: "\u062A\u0645 \u0627\u0633\u062A\u0644\u0627\u0645 \u0631\u0623\u064A\u0643 \u0628\u0646\u062C\u0627\u062D.",
+        close: "\u0625\u063A\u0644\u0627\u0642",
+        cats: ["\u062C\u0648\u062F\u0629 \u0627\u0644\u0645\u0646\u062A\u062C", "\u0627\u0644\u062A\u0648\u0635\u064A\u0644", "\u062E\u062F\u0645\u0629 \u0627\u0644\u0639\u0645\u0644\u0627\u0621", "\u0627\u0644\u0645\u0648\u0642\u0639", "\u0627\u0644\u0633\u0639\u0631", "\u0623\u062E\u0631\u0649"],
+        required: "\u0627\u0644\u0631\u062C\u0627\u0621 \u0627\u062E\u062A\u064A\u0627\u0631 \u062A\u0642\u064A\u064A\u0645."
+      },
+      en: {
+        title: "Your feedback matters",
+        sub: "Help us improve your experience",
+        rateLabel: "Rate your experience",
+        catLabel: "Category",
+        commentLabel: "Comment (optional)",
+        commentPh: "Tell us more\u2026",
+        submit: "Submit feedback",
+        submitting: "Sending\u2026",
+        doneTitle: "Thank you for your feedback!",
+        doneSub: "We have received your review.",
+        close: "Close",
+        cats: ["Product quality", "Delivery", "Customer service", "Website", "Pricing", "Other"],
+        required: "Please choose a rating."
+      }
+    };
+    const t = T[lang] || T.fr;
+    const reset = () => {
+      setStars(0);
+      setHovered(0);
+      setCat("");
+      setComment("");
+      setDone(false);
+      setError("");
+    };
+    if (!open) return null;
+    const handleSubmit = async () => {
+      if (!stars) {
+        setError(t.required);
+        return;
+      }
+      setLoading(true);
+      setError("");
+      try {
+        await window.latinaApi.submitFeedback({ rating: stars, category: cat || null, comment: comment || null, lang });
+        setDone(true);
+      } catch (e) {
+        setError(e.message || "Erreur r\xE9seau, r\xE9essayez.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    const handleClose = () => {
+      reset();
+      onClose();
+    };
+    const loginWall = {
+      fr: { msg: "Connectez-vous pour laisser un avis.", btn: "Se connecter" },
+      ar: { msg: "\u0633\u062C\u0644\u064A \u0627\u0644\u062F\u062E\u0648\u0644 \u0644\u062A\u0631\u0643 \u062A\u0642\u064A\u064A\u0645.", btn: "\u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062F\u062E\u0648\u0644" },
+      en: { msg: "Sign in to leave a review.", btn: "Sign in" }
+    }[lang] || { msg: "Sign in to leave a review.", btn: "Sign in" };
+    return /* @__PURE__ */ React.createElement("div", { className: "modal-backdrop", onClick: handleClose }, /* @__PURE__ */ React.createElement("div", { className: "feedback-modal", onClick: (e) => e.stopPropagation() }, !user && /* @__PURE__ */ React.createElement("div", { className: "fb-login-wall" }, /* @__PURE__ */ React.createElement("button", { className: "modal-close", onClick: handleClose }, "\u2715"), /* @__PURE__ */ React.createElement("div", { className: "fb-login-icon" }, "\u{1F512}"), /* @__PURE__ */ React.createElement("p", { className: "fb-login-msg" }, loginWall.msg), /* @__PURE__ */ React.createElement("button", { className: "fb-submit", onClick: () => {
+      handleClose();
+      onAuthOpen?.();
+    } }, loginWall.btn)), user && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("button", { className: "modal-close", onClick: handleClose }, "\u2715"), done ? /* @__PURE__ */ React.createElement("div", { className: "fb-success" }, /* @__PURE__ */ React.createElement("div", { className: "fb-success-icon" }, "\u2726"), /* @__PURE__ */ React.createElement("h3", null, t.doneTitle), /* @__PURE__ */ React.createElement("p", null, t.doneSub), /* @__PURE__ */ React.createElement("button", { className: "fb-submit", onClick: handleClose }, t.close)) : /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { className: "fb-header" }, /* @__PURE__ */ React.createElement("h2", { className: "fb-title" }, t.title), /* @__PURE__ */ React.createElement("p", { className: "fb-sub" }, t.sub)), /* @__PURE__ */ React.createElement("div", { className: "fb-section" }, /* @__PURE__ */ React.createElement("label", { className: "fb-label" }, t.rateLabel), /* @__PURE__ */ React.createElement("div", { className: "fb-stars-row" }, [1, 2, 3, 4, 5].map((n) => /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        key: n,
+        className: `fb-star ${(hovered || stars) >= n ? "active" : ""}`,
+        onMouseEnter: () => setHovered(n),
+        onMouseLeave: () => setHovered(0),
+        onClick: () => setStars(n)
+      },
+      "\u2605"
+    )), stars > 0 && /* @__PURE__ */ React.createElement("span", { className: "fb-star-text" }, ["", "M\xE9diocre", "Passable", "Bien", "Tr\xE8s bien", "Excellent"][stars]))), /* @__PURE__ */ React.createElement("div", { className: "fb-section" }, /* @__PURE__ */ React.createElement("label", { className: "fb-label" }, t.catLabel), /* @__PURE__ */ React.createElement("div", { className: "fb-cats" }, t.cats.map((c) => /* @__PURE__ */ React.createElement("button", { key: c, className: `fb-cat ${cat === c ? "active" : ""}`, onClick: () => setCat(c === cat ? "" : c) }, c)))), /* @__PURE__ */ React.createElement("div", { className: "fb-section" }, /* @__PURE__ */ React.createElement("label", { className: "fb-label" }, t.commentLabel), /* @__PURE__ */ React.createElement(
+      "textarea",
+      {
+        className: "fb-textarea",
+        placeholder: t.commentPh,
+        maxLength: 500,
+        value: comment,
+        onChange: (e) => setComment(e.target.value)
+      }
+    ), /* @__PURE__ */ React.createElement("span", { className: "fb-char" }, comment.length, "/500")), error && /* @__PURE__ */ React.createElement("p", { className: "fb-error" }, error), /* @__PURE__ */ React.createElement("button", { className: "fb-submit", onClick: handleSubmit, disabled: loading }, loading ? t.submitting : t.submit)))));
+  };
+  var TICKET_CATS = {
+    fr: ["Commande / livraison", "Produit d\xE9fectueux", "Remboursement", "Compte & connexion", "Programme fid\xE9lit\xE9", "Autre"],
+    ar: ["\u0627\u0644\u0637\u0644\u0628 / \u0627\u0644\u062A\u0648\u0635\u064A\u0644", "\u0645\u0646\u062A\u062C \u0645\u0639\u0637\u0648\u0628", "\u0627\u0633\u062A\u0631\u062F\u0627\u062F \u0627\u0644\u0645\u0628\u0644\u063A", "\u0627\u0644\u062D\u0633\u0627\u0628 \u0648\u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062F\u062E\u0648\u0644", "\u0628\u0631\u0646\u0627\u0645\u062C \u0627\u0644\u0648\u0644\u0627\u0621", "\u0623\u062E\u0631\u0649"],
+    en: ["Order / delivery", "Defective product", "Refund", "Account & login", "Loyalty program", "Other"]
+  };
+  var SupportModal = ({ lang, open, onClose, user }) => {
+    const [mode, setMode] = useState("new");
+    const [step, setStep] = useState(1);
+    const [form, setForm] = useState({ name: user?.name || "", email: user?.email || "", phone: user?.phone || "", subject: "", category: "", priority: "normal", description: "" });
+    const [ref, setRef] = useState("");
+    const [trackRef, setTrackRef] = useState("");
+    const [tracked, setTracked] = useState(null);
+    const [trackError, setTrackError] = useState("");
+    const [myTickets, setMyTickets] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [fieldErr, setFieldErr] = useState({});
+    const T = {
+      fr: {
+        title: "Support client",
+        tabNew: "Nouveau ticket",
+        tabTrack: "Suivre un ticket",
+        tabMine: "Mes tickets",
+        step1: "Vos coordonn\xE9es",
+        step2: "Votre demande",
+        step3: "Confirmation",
+        name: "Nom complet",
+        email: "Email",
+        phone: "T\xE9l\xE9phone",
+        subject: "Sujet",
+        catLabel: "Cat\xE9gorie",
+        prioLabel: "Priorit\xE9",
+        desc: "Description d\xE9taill\xE9e",
+        descPh: "D\xE9crivez votre probl\xE8me en d\xE9tail\u2026",
+        prios: [{ v: "low", l: "Basse" }, { v: "normal", l: "Normale" }, { v: "high", l: "Haute" }, { v: "urgent", l: "Urgent" }],
+        next: "Suivant",
+        back: "Retour",
+        submit: "Envoyer le ticket",
+        submitting: "Envoi\u2026",
+        doneTitle: "Ticket cr\xE9\xE9 avec succ\xE8s !",
+        doneSub: "R\xE9f\xE9rence de votre ticket :",
+        doneInfo: "Conservez cette r\xE9f\xE9rence pour suivre l'\xE9tat de votre demande.",
+        close: "Fermer",
+        trackLabel: "R\xE9f\xE9rence du ticket",
+        trackPh: "Ex: TKT-XXXXXX",
+        trackBtn: "Rechercher",
+        tracking: "Recherche\u2026",
+        trackNotFound: "Aucun ticket trouv\xE9 avec cette r\xE9f\xE9rence.",
+        stateLabels: { new: "Nouveau", attributed: "Attribu\xE9", pending: "En attente", planned: "Planifi\xE9", in_progress: "En cours", resolved: "R\xE9solu", closed: "Ferm\xE9" },
+        noTickets: "Aucun ticket ouvert.",
+        req: "Champ requis"
+      },
+      ar: {
+        title: "\u062F\u0639\u0645 \u0627\u0644\u0639\u0645\u0644\u0627\u0621",
+        tabNew: "\u062A\u0630\u0643\u0631\u0629 \u062C\u062F\u064A\u062F\u0629",
+        tabTrack: "\u0645\u062A\u0627\u0628\u0639\u0629 \u062A\u0630\u0643\u0631\u0629",
+        tabMine: "\u062A\u0630\u0627\u0643\u0631\u064A",
+        step1: "\u0628\u064A\u0627\u0646\u0627\u062A\u0643",
+        step2: "\u0637\u0644\u0628\u0643",
+        step3: "\u062A\u0623\u0643\u064A\u062F",
+        name: "\u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0643\u0627\u0645\u0644",
+        email: "\u0627\u0644\u0628\u0631\u064A\u062F \u0627\u0644\u0625\u0644\u0643\u062A\u0631\u0648\u0646\u064A",
+        phone: "\u0627\u0644\u0647\u0627\u062A\u0641",
+        subject: "\u0627\u0644\u0645\u0648\u0636\u0648\u0639",
+        catLabel: "\u0627\u0644\u0641\u0626\u0629",
+        prioLabel: "\u0627\u0644\u0623\u0648\u0644\u0648\u064A\u0629",
+        desc: "\u0648\u0635\u0641 \u062A\u0641\u0635\u064A\u0644\u064A",
+        descPh: "\u0635\u0641 \u0645\u0634\u0643\u0644\u062A\u0643 \u0628\u0627\u0644\u062A\u0641\u0635\u064A\u0644\u2026",
+        prios: [{ v: "low", l: "\u0645\u0646\u062E\u0641\u0636\u0629" }, { v: "normal", l: "\u0639\u0627\u062F\u064A\u0629" }, { v: "high", l: "\u0639\u0627\u0644\u064A\u0629" }, { v: "urgent", l: "\u0639\u0627\u062C\u0644" }],
+        next: "\u0627\u0644\u062A\u0627\u0644\u064A",
+        back: "\u0631\u062C\u0648\u0639",
+        submit: "\u0625\u0631\u0633\u0627\u0644 \u0627\u0644\u062A\u0630\u0643\u0631\u0629",
+        submitting: "\u062C\u0627\u0631\u064D \u0627\u0644\u0625\u0631\u0633\u0627\u0644\u2026",
+        doneTitle: "\u062A\u0645 \u0625\u0646\u0634\u0627\u0621 \u0627\u0644\u062A\u0630\u0643\u0631\u0629 \u0628\u0646\u062C\u0627\u062D!",
+        doneSub: "\u0645\u0631\u062C\u0639 \u062A\u0630\u0643\u0631\u062A\u0643:",
+        doneInfo: "\u0627\u062D\u062A\u0641\u0638 \u0628\u0647\u0630\u0627 \u0627\u0644\u0645\u0631\u062C\u0639 \u0644\u0645\u062A\u0627\u0628\u0639\u0629 \u062D\u0627\u0644\u0629 \u0637\u0644\u0628\u0643.",
+        close: "\u0625\u063A\u0644\u0627\u0642",
+        trackLabel: "\u0645\u0631\u062C\u0639 \u0627\u0644\u062A\u0630\u0643\u0631\u0629",
+        trackPh: "\u0645\u062B\u0627\u0644: TKT-XXXXXX",
+        trackBtn: "\u0628\u062D\u062B",
+        tracking: "\u062C\u0627\u0631\u064D \u0627\u0644\u0628\u062D\u062B\u2026",
+        trackNotFound: "\u0644\u0645 \u064A\u062A\u0645 \u0627\u0644\u0639\u062B\u0648\u0631 \u0639\u0644\u0649 \u0623\u064A \u062A\u0630\u0643\u0631\u0629 \u0628\u0647\u0630\u0627 \u0627\u0644\u0645\u0631\u062C\u0639.",
+        stateLabels: { new: "\u062C\u062F\u064A\u062F\u0629", attributed: "\u0645\u0646\u0633\u0648\u0628\u0629", pending: "\u0645\u0639\u0644\u0642\u0629", planned: "\u0645\u062C\u062F\u0648\u0644\u0629", in_progress: "\u062C\u0627\u0631\u064D", resolved: "\u0645\u062D\u0644\u0648\u0644\u0629", closed: "\u0645\u063A\u0644\u0642\u0629" },
+        noTickets: "\u0644\u0627 \u062A\u0648\u062C\u062F \u062A\u0630\u0627\u0643\u0631 \u0645\u0641\u062A\u0648\u062D\u0629.",
+        req: "\u062D\u0642\u0644 \u0645\u0637\u0644\u0648\u0628"
+      },
+      en: {
+        title: "Customer support",
+        tabNew: "New ticket",
+        tabTrack: "Track ticket",
+        tabMine: "My tickets",
+        step1: "Contact info",
+        step2: "Your request",
+        step3: "Confirmation",
+        name: "Full name",
+        email: "Email",
+        phone: "Phone",
+        subject: "Subject",
+        catLabel: "Category",
+        prioLabel: "Priority",
+        desc: "Detailed description",
+        descPh: "Describe your issue in detail\u2026",
+        prios: [{ v: "low", l: "Low" }, { v: "normal", l: "Normal" }, { v: "high", l: "High" }, { v: "urgent", l: "Urgent" }],
+        next: "Next",
+        back: "Back",
+        submit: "Submit ticket",
+        submitting: "Sending\u2026",
+        doneTitle: "Ticket created successfully!",
+        doneSub: "Your ticket reference:",
+        doneInfo: "Keep this reference to track your request status.",
+        close: "Close",
+        trackLabel: "Ticket reference",
+        trackPh: "e.g. TKT-XXXXXX",
+        trackBtn: "Search",
+        tracking: "Searching\u2026",
+        trackNotFound: "No ticket found with this reference.",
+        stateLabels: { new: "New", attributed: "Attributed", pending: "Pending", planned: "Planned", in_progress: "In progress", resolved: "Resolved", closed: "Closed" },
+        noTickets: "No open tickets.",
+        req: "Required field"
+      }
+    };
+    const t = T[lang] || T.fr;
+    const cats = TICKET_CATS[lang] || TICKET_CATS.fr;
+    useEffect(() => {
+      if (open && mode === "mine" && user) {
+        window.latinaApi.getMyTickets().then((d) => setMyTickets(d.data || d || [])).catch(() => {
+        });
+      }
+    }, [open, mode, user]);
+    const reset = () => {
+      setStep(1);
+      setRef("");
+      setTrackRef("");
+      setTracked(null);
+      setTrackError("");
+      setError("");
+      setFieldErr({});
+      setForm({ name: user?.name || "", email: user?.email || "", phone: user?.phone || "", subject: "", category: "", priority: "normal", description: "" });
+    };
+    if (!open) return null;
+    const handleClose = () => {
+      reset();
+      onClose();
+    };
+    const setF = (k, v) => {
+      setForm((p) => ({ ...p, [k]: v }));
+      setFieldErr((p) => ({ ...p, [k]: "" }));
+    };
+    const validateStep1 = () => {
+      const errs = {};
+      if (!form.name.trim()) errs.name = t.req;
+      if (!form.email.trim() && !form.phone.trim()) errs.email = t.req;
+      setFieldErr(errs);
+      return Object.keys(errs).length === 0;
+    };
+    const validateStep2 = () => {
+      const errs = {};
+      if (!form.subject.trim()) errs.subject = t.req;
+      if (!form.description.trim()) errs.description = t.req;
+      setFieldErr(errs);
+      return Object.keys(errs).length === 0;
+    };
+    const handleTrack = async () => {
+      if (!trackRef.trim()) return;
+      setLoading(true);
+      setTrackError("");
+      setTracked(null);
+      try {
+        const d = await window.latinaApi.trackTicket(trackRef.trim());
+        setTracked(d.data || d);
+      } catch {
+        setTrackError(t.trackNotFound);
+      } finally {
+        setLoading(false);
+      }
+    };
+    const handleSubmit = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const res = await window.latinaApi.createTicket({ ...form, lang });
+        setRef((res.data || res).reference || (res.data || res).ref || "TKT-??????");
+        setStep(3);
+      } catch (e) {
+        setError(e.message || "Erreur r\xE9seau.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    const stateColor = (s) => ({ new: "#60A5FA", attributed: "#A78BFA", pending: "#FCD34D", planned: "#67E8F9", in_progress: "#E2B8A2", resolved: "#34D399", closed: "#9A9590" })[s] || "#9A9590";
+    return /* @__PURE__ */ React.createElement("div", { className: "modal-backdrop", onClick: handleClose }, /* @__PURE__ */ React.createElement("div", { className: "support-modal", onClick: (e) => e.stopPropagation() }, /* @__PURE__ */ React.createElement("button", { className: "modal-close", onClick: handleClose }, "\u2715"), /* @__PURE__ */ React.createElement("h2", { className: "sup-title" }, t.title), /* @__PURE__ */ React.createElement("div", { className: "sup-tabs" }, ["new", "track", "mine"].map((m, i) => /* @__PURE__ */ React.createElement("button", { key: m, className: `sup-tab ${mode === m ? "active" : ""}`, onClick: () => {
+      setMode(m);
+      reset();
+    } }, [t.tabNew, t.tabTrack, t.tabMine][i]))), mode === "new" && !user && /* @__PURE__ */ React.createElement("div", { className: "sup-login-wall" }, /* @__PURE__ */ React.createElement("div", { className: "fb-login-icon" }, "\u{1F512}"), /* @__PURE__ */ React.createElement("p", { className: "fb-login-msg" }, lang === "ar" ? "\u0633\u062C\u0644\u064A \u0627\u0644\u062F\u062E\u0648\u0644 \u0644\u0641\u062A\u062D \u062A\u0630\u0643\u0631\u0629 \u062F\u0639\u0645." : lang === "en" ? "Sign in to open a support ticket." : "Connectez-vous pour cr\xE9er un ticket de support.")), mode === "new" && user && /* @__PURE__ */ React.createElement(React.Fragment, null, step < 3 && /* @__PURE__ */ React.createElement("div", { className: "sup-steps" }, [t.step1, t.step2].map((label, i) => /* @__PURE__ */ React.createElement("div", { key: i, className: `sup-step ${step === i + 1 ? "active" : step > i + 1 ? "done" : ""}` }, /* @__PURE__ */ React.createElement("div", { className: "sup-step-dot" }, step > i + 1 ? "\u2713" : i + 1), /* @__PURE__ */ React.createElement("span", null, label)))), /* @__PURE__ */ React.createElement("div", { className: "sup-body" }, step === 1 && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { className: "sup-field" }, /* @__PURE__ */ React.createElement("label", { className: "sup-label" }, t.name), /* @__PURE__ */ React.createElement("input", { className: `sup-input ${fieldErr.name ? "err" : ""}`, value: form.name, onChange: (e) => setF("name", e.target.value), placeholder: t.name }), fieldErr.name && /* @__PURE__ */ React.createElement("span", { className: "sup-error" }, fieldErr.name)), /* @__PURE__ */ React.createElement("div", { className: "sup-field" }, /* @__PURE__ */ React.createElement("label", { className: "sup-label" }, t.email), /* @__PURE__ */ React.createElement("input", { className: `sup-input ${fieldErr.email ? "err" : ""}`, type: "email", value: form.email, onChange: (e) => setF("email", e.target.value), placeholder: t.email }), fieldErr.email && /* @__PURE__ */ React.createElement("span", { className: "sup-error" }, fieldErr.email)), /* @__PURE__ */ React.createElement("div", { className: "sup-field" }, /* @__PURE__ */ React.createElement("label", { className: "sup-label" }, t.phone), /* @__PURE__ */ React.createElement("input", { className: "sup-input", type: "tel", value: form.phone, onChange: (e) => setF("phone", e.target.value), placeholder: "0XXXXXXXXX" })), /* @__PURE__ */ React.createElement("div", { className: "sup-btn-row" }, /* @__PURE__ */ React.createElement("button", { className: "sup-btn-primary", onClick: () => {
+      if (validateStep1()) setStep(2);
+    } }, t.next))), step === 2 && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { className: "sup-field" }, /* @__PURE__ */ React.createElement("label", { className: "sup-label" }, t.subject), /* @__PURE__ */ React.createElement("input", { className: `sup-input ${fieldErr.subject ? "err" : ""}`, value: form.subject, onChange: (e) => setF("subject", e.target.value), placeholder: t.subject }), fieldErr.subject && /* @__PURE__ */ React.createElement("span", { className: "sup-error" }, fieldErr.subject)), /* @__PURE__ */ React.createElement("div", { className: "sup-field" }, /* @__PURE__ */ React.createElement("label", { className: "sup-label" }, t.catLabel), /* @__PURE__ */ React.createElement("div", { className: "sup-cat-grid" }, cats.map((c) => /* @__PURE__ */ React.createElement("button", { key: c, className: `sup-cat-btn ${form.category === c ? "active" : ""}`, onClick: () => setF("category", c) }, c)))), /* @__PURE__ */ React.createElement("div", { className: "sup-field" }, /* @__PURE__ */ React.createElement("label", { className: "sup-label" }, t.prioLabel), /* @__PURE__ */ React.createElement("div", { className: "sup-prio-row" }, t.prios.map((p) => /* @__PURE__ */ React.createElement("button", { key: p.v, className: `sup-prio-btn ${form.priority === p.v ? "active" : ""}`, onClick: () => setF("priority", p.v) }, p.l)))), /* @__PURE__ */ React.createElement("div", { className: "sup-field" }, /* @__PURE__ */ React.createElement("label", { className: "sup-label" }, t.desc), /* @__PURE__ */ React.createElement("textarea", { className: `sup-textarea ${fieldErr.description ? "err" : ""}`, rows: 4, value: form.description, onChange: (e) => setF("description", e.target.value), placeholder: t.descPh }), fieldErr.description && /* @__PURE__ */ React.createElement("span", { className: "sup-error" }, fieldErr.description)), error && /* @__PURE__ */ React.createElement("p", { className: "sup-error" }, error), /* @__PURE__ */ React.createElement("div", { className: "sup-btn-row" }, /* @__PURE__ */ React.createElement("button", { className: "sup-btn-ghost", onClick: () => setStep(1) }, t.back), /* @__PURE__ */ React.createElement("button", { className: "sup-btn-primary", onClick: () => {
+      if (validateStep2()) handleSubmit();
+    }, disabled: loading }, loading ? t.submitting : t.submit))), step === 3 && /* @__PURE__ */ React.createElement("div", { className: "sup-success" }, /* @__PURE__ */ React.createElement("div", { className: "sup-success-icon" }, "\u2726"), /* @__PURE__ */ React.createElement("h3", null, t.doneTitle), /* @__PURE__ */ React.createElement("p", { className: "sup-success-sub" }, t.doneSub), /* @__PURE__ */ React.createElement("div", { className: "sup-ref-badge" }, ref), /* @__PURE__ */ React.createElement("p", { className: "sup-success-info" }, t.doneInfo), /* @__PURE__ */ React.createElement("button", { className: "sup-btn-primary", onClick: handleClose }, t.close)))), mode === "track" && /* @__PURE__ */ React.createElement("div", { className: "sup-body" }, /* @__PURE__ */ React.createElement("div", { className: "sup-field" }, /* @__PURE__ */ React.createElement("label", { className: "sup-label" }, t.trackLabel), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px" } }, /* @__PURE__ */ React.createElement("input", { className: "sup-input", value: trackRef, onChange: (e) => setTrackRef(e.target.value), placeholder: t.trackPh, onKeyDown: (e) => e.key === "Enter" && handleTrack() }), /* @__PURE__ */ React.createElement("button", { className: "sup-btn-primary", style: { flexShrink: 0 }, onClick: handleTrack, disabled: loading }, loading ? t.tracking : t.trackBtn)), trackError && /* @__PURE__ */ React.createElement("span", { className: "sup-error" }, trackError)), tracked && /* @__PURE__ */ React.createElement("div", { className: "sup-tracked" }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" } }, /* @__PURE__ */ React.createElement("span", { className: "sup-ref-badge" }, tracked.reference || tracked.ref), /* @__PURE__ */ React.createElement("span", { style: { padding: "3px 12px", borderRadius: "20px", fontSize: "12px", fontWeight: 600, background: `${stateColor(tracked.status)}22`, color: stateColor(tracked.status) } }, t.stateLabels[tracked.status] || tracked.status)), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "13px", fontWeight: 600, marginBottom: "6px" } }, tracked.subject), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "12px", color: "var(--text-muted)" } }, tracked.category), tracked.created_at && /* @__PURE__ */ React.createElement("p", { style: { fontSize: "11px", color: "var(--text-muted)", marginTop: "8px" } }, "Cr\xE9\xE9 le ", new Date(tracked.created_at).toLocaleDateString()))), mode === "mine" && /* @__PURE__ */ React.createElement("div", { className: "sup-body" }, !user ? /* @__PURE__ */ React.createElement("p", { style: { textAlign: "center", color: "var(--text-muted)", padding: "24px 0" } }, "Connectez-vous pour voir vos tickets.") : myTickets.length === 0 ? /* @__PURE__ */ React.createElement("p", { style: { textAlign: "center", color: "var(--text-muted)", padding: "24px 0" } }, t.noTickets) : myTickets.map((tk) => /* @__PURE__ */ React.createElement("div", { key: tk.id || tk.reference, className: "my-ticket-row" }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" } }, /* @__PURE__ */ React.createElement("span", { className: "sup-ref-badge" }, tk.reference || tk.ref), /* @__PURE__ */ React.createElement("span", { style: { padding: "2px 10px", borderRadius: "12px", fontSize: "11px", fontWeight: 600, background: `${stateColor(tk.status)}22`, color: stateColor(tk.status) } }, t.stateLabels[tk.status] || tk.status)), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "13px", fontWeight: 500, marginTop: "6px" } }, tk.subject), /* @__PURE__ */ React.createElement("p", { style: { fontSize: "11px", color: "var(--text-muted)", marginTop: "4px" } }, tk.category, " \xB7 ", tk.priority))))));
+  };
+  Object.assign(window, { AuthModal, CartDrawer, CheckoutPage, AccountPage, OrderTracker, FeedbackModal, SupportModal });
+})();
