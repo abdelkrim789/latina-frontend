@@ -484,15 +484,15 @@
         " \u2713"
       )
     ));
-    const PrivacyCheckbox = () => /* @__PURE__ */ React.createElement("label", { style: { display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--ts-0)", color: "var(--text-2)", cursor: "pointer", lineHeight: 1.4 } }, /* @__PURE__ */ React.createElement(
+    const PrivacyCheckbox = () => /* @__PURE__ */ React.createElement("label", { style: { display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--ts-0)", color: "var(--text-2)", cursor: "pointer", lineHeight: 1.5, width: "100%", marginTop: 4 } }, /* @__PURE__ */ React.createElement(
       "input",
       {
         type: "checkbox",
         checked: privacyAccepted,
         onChange: (e) => setPrivacyAccepted(e.target.checked),
-        style: { marginTop: 2, accentColor: "var(--rose-500)", flexShrink: 0 }
+        style: { marginTop: 3, accentColor: "var(--rose-500)", flexShrink: 0 }
       }
-    ), /* @__PURE__ */ React.createElement("span", null, T.privacyCheckLabel, " ", /* @__PURE__ */ React.createElement(
+    ), /* @__PURE__ */ React.createElement("span", { style: { flex: 1, minWidth: 0 } }, T.privacyCheckLabel, " ", /* @__PURE__ */ React.createElement(
       "button",
       {
         type: "button",

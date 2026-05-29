@@ -549,10 +549,10 @@ const AuthModal = ({ lang, open, onClose, onLogin, initialStep, resetData }) => 
   );
 
   const PrivacyCheckbox = () => (
-    <label style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--ts-0)", color: "var(--text-2)", cursor: "pointer", lineHeight: 1.4 }}>
+    <label style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--ts-0)", color: "var(--text-2)", cursor: "pointer", lineHeight: 1.5, width: "100%", marginTop: 4 }}>
       <input type="checkbox" checked={privacyAccepted} onChange={e => setPrivacyAccepted(e.target.checked)}
-        style={{ marginTop: 2, accentColor: "var(--rose-500)", flexShrink: 0 }} />
-      <span>
+        style={{ marginTop: 3, accentColor: "var(--rose-500)", flexShrink: 0 }} />
+      <span style={{ flex: 1, minWidth: 0 }}>
         {T.privacyCheckLabel}{" "}
         <button type="button" onClick={() => setShowPrivacy(true)}
           style={{ background: "none", border: "none", color: "var(--rose-500)", cursor: "pointer", fontSize: "inherit", textDecoration: "underline", padding: 0 }}>
