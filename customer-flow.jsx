@@ -718,7 +718,7 @@ const CrossSellSection = ({ cart, lang, onClose }) => {
         {suggestions.map(p => {
           const name = p[`name_${lang}`] || p.name_fr;
           const price = Number(p.effective_price ?? p.price);
-          const img   = p.primary_image?.url || p.media?.[0]?.url || null;
+          const img   = window.mediaUrl(p.primary_image?.url || p.media?.[0]?.url) || null;
           const hasDiscount = p.compare_price && p.compare_price > price;
           return (
             <div key={p.id} className="cs-cx-card" onClick={onClose}>

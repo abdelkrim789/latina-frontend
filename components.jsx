@@ -1394,8 +1394,8 @@ const RecentlyViewedStrip = ({ items, onAdd, onQuickView, lang = "fr" }) => {
           {items.map(p => (
             <div key={p.sku} className="recent-item" onClick={() => onQuickView?.(p)}>
               <div className="recent-thumb">
-                {p.image
-                  ? <img src={p.image} alt={p.name} loading="lazy" />
+                {(p.img || p.image)
+                  ? <img src={p.img || p.image} alt={p.name} loading="lazy" />
                   : <span className="ph-label">{p.cat}</span>
                 }
               </div>
