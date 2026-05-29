@@ -1,6 +1,105 @@
 (() => {
   // customer-flow.jsx
   var { useState, useEffect, useRef, useCallback, useMemo } = React;
+  var PP_STYLE = { fontSize: "var(--ts-0)", color: "var(--text-2)", lineHeight: 1.7 };
+  var PPS = ({ children }) => React.createElement("p", { style: { margin: "0 0 10px", ...PP_STYLE } }, children);
+  var PPH = ({ children }) => React.createElement("p", { style: { margin: "14px 0 4px", fontWeight: 600, color: "var(--text-1)", fontSize: "var(--ts-1)" } }, children);
+  var PrivacyFr = () => React.createElement(
+    "div",
+    null,
+    React.createElement(PPS, null, "Derni\xE8re mise \xE0 jour : Mai 2026"),
+    React.createElement(PPH, null, "1. Qui sommes-nous ?"),
+    React.createElement(PPS, null, "Latina est une boutique de mode alg\xE9rienne (latinadz.com) proposant des chaussures et accessoires pour femmes. Contact : noreply@latina.dz"),
+    React.createElement(PPH, null, "2. Donn\xE9es collect\xE9es"),
+    React.createElement(PPS, null, "\u2022 Compte : nom, t\xE9l\xE9phone, email, mot de passe (chiffr\xE9 bcrypt), segment client, wilaya."),
+    React.createElement(PPS, null, "\u2022 Commandes : d\xE9tails de commande, adresse de livraison, historique d'achat, statut."),
+    React.createElement(PPS, null, "\u2022 Fid\xE9lit\xE9 : points accumul\xE9s et niveau (Petal, Lotus, Amber)."),
+    React.createElement(PPS, null, "\u2022 Concours : nom, t\xE9l\xE9phone, photos soumises volontairement."),
+    React.createElement(PPS, null, "\u2022 Support : messages, tickets d'assistance, priorit\xE9."),
+    React.createElement(PPS, null, "\u2022 Navigation : panier, liste de souhaits et session (stock\xE9s localement dans votre navigateur)."),
+    React.createElement(PPS, null, "\u2022 Technique : adresse IP (formulaires de feedback et journaux de s\xE9curit\xE9)."),
+    React.createElement(PPH, null, "3. Utilisation des donn\xE9es"),
+    React.createElement(PPS, null, "Traitement et livraison de commandes \xB7 Gestion du compte et programme de fid\xE9lit\xE9 \xB7 Notifications par email \xB7 OTP par SMS pour la v\xE9rification du num\xE9ro \xB7 Organisation des concours \xB7 Am\xE9lioration de nos services \xB7 Pr\xE9vention des fraudes."),
+    React.createElement(PPH, null, "4. Services tiers"),
+    React.createElement(PPS, null, "\u2022 Google Sign-In (Google LLC, USA) \u2014 authentification via compte Google."),
+    React.createElement(PPS, null, "\u2022 Gmail SMTP (Google LLC, USA) \u2014 emails transactionnels."),
+    React.createElement(PPS, null, "\u2022 SMS.to \u2014 SMS de v\xE9rification et notifications."),
+    React.createElement(PPS, null, "\u2022 WhatsApp (+213563335642) \u2014 support client."),
+    React.createElement(PPS, null, "\u2022 Google Fonts & unpkg/Cloudflare CDN \u2014 polices et biblioth\xE8ques JS (React, GSAP, Three.js)."),
+    React.createElement(PPS, null, "Ces services traitent vos donn\xE9es selon leurs propres politiques de confidentialit\xE9."),
+    React.createElement(PPH, null, "5. Conservation"),
+    React.createElement(PPS, null, "Donn\xE9es conserv\xE9es tant que le compte est actif. L'historique de commandes est conserv\xE9 apr\xE8s suppression \xE0 des fins l\xE9gales et commerciales."),
+    React.createElement(PPH, null, "6. Vos droits"),
+    React.createElement(PPS, null, "Droit d'acc\xE8s, de rectification et de suppression de vos donn\xE9es. Contactez-nous : noreply@latina.dz"),
+    React.createElement(PPH, null, "7. S\xE9curit\xE9"),
+    React.createElement(PPS, null, "Mots de passe chiffr\xE9s (bcrypt) \xB7 Communications s\xE9curis\xE9es HTTPS \xB7 Aucune donn\xE9e bancaire collect\xE9e (paiement \xE0 la livraison uniquement)."),
+    React.createElement(PPH, null, "8. Stockage local"),
+    React.createElement(PPS, null, "Nous utilisons localStorage/sessionStorage de votre navigateur pour le panier, les favoris et la session. Aucun cookie de suivi tiers n'est utilis\xE9.")
+  );
+  var PrivacyAr = () => React.createElement(
+    "div",
+    { dir: "rtl" },
+    React.createElement(PPS, null, "\u0622\u062E\u0631 \u062A\u062D\u062F\u064A\u062B : \u0645\u0627\u064A\u0648 2026"),
+    React.createElement(PPH, null, "1. \u0645\u0646 \u0646\u062D\u0646\u061F"),
+    React.createElement(PPS, null, "\u0644\u0627\u062A\u064A\u0646\u0627 \u0647\u064A \u0645\u062A\u062C\u0631 \u0623\u0632\u064A\u0627\u0621 \u062C\u0632\u0627\u0626\u0631\u064A (latinadz.com) \u0644\u0644\u0623\u062D\u0630\u064A\u0629 \u0648\u0627\u0644\u0625\u0643\u0633\u0633\u0648\u0627\u0631\u0627\u062A \u0627\u0644\u0646\u0633\u0627\u0626\u064A\u0629. \u0644\u0644\u062A\u0648\u0627\u0635\u0644: noreply@latina.dz"),
+    React.createElement(PPH, null, "2. \u0627\u0644\u0628\u064A\u0627\u0646\u0627\u062A \u0627\u0644\u062A\u064A \u0646\u062C\u0645\u0639\u0647\u0627"),
+    React.createElement(PPS, null, "\u2022 \u0627\u0644\u062D\u0633\u0627\u0628: \u0627\u0644\u0627\u0633\u0645\u060C \u0627\u0644\u0647\u0627\u062A\u0641\u060C \u0627\u0644\u0628\u0631\u064A\u062F \u0627\u0644\u0625\u0644\u0643\u062A\u0631\u0648\u0646\u064A\u060C \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631 (\u0645\u0634\u0641\u0631\u0629 bcrypt)\u060C \u0627\u0644\u0648\u0644\u0627\u064A\u0629."),
+    React.createElement(PPS, null, "\u2022 \u0627\u0644\u0637\u0644\u0628\u0627\u062A: \u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u0637\u0644\u0628\u060C \u0639\u0646\u0648\u0627\u0646 \u0627\u0644\u062A\u0633\u0644\u064A\u0645\u060C \u0633\u062C\u0644 \u0627\u0644\u0634\u0631\u0627\u0621\u060C \u0627\u0644\u062D\u0627\u0644\u0629."),
+    React.createElement(PPS, null, "\u2022 \u0627\u0644\u0648\u0644\u0627\u0621: \u0627\u0644\u0646\u0642\u0627\u0637 \u0627\u0644\u0645\u062A\u0631\u0627\u0643\u0645\u0629 \u0648\u0627\u0644\u0645\u0633\u062A\u0648\u0649 (Petal\u060C Lotus\u060C Amber)."),
+    React.createElement(PPS, null, "\u2022 \u0627\u0644\u0645\u0633\u0627\u0628\u0642\u0627\u062A: \u0627\u0644\u0627\u0633\u0645\u060C \u0627\u0644\u0647\u0627\u062A\u0641\u060C \u0627\u0644\u0635\u0648\u0631 \u0627\u0644\u0645\u0642\u062F\u0645\u0629 \u0637\u0648\u0639\u0627\u064B."),
+    React.createElement(PPS, null, "\u2022 \u0627\u0644\u062F\u0639\u0645: \u0627\u0644\u0631\u0633\u0627\u0626\u0644 \u0648\u062A\u0630\u0627\u0643\u0631 \u0627\u0644\u062F\u0639\u0645."),
+    React.createElement(PPS, null, "\u2022 \u0627\u0644\u062A\u0635\u0641\u062D: \u0633\u0644\u0629 \u0627\u0644\u062A\u0633\u0648\u0642 \u0648\u0642\u0627\u0626\u0645\u0629 \u0627\u0644\u0631\u063A\u0628\u0627\u062A \u0648\u0627\u0644\u062C\u0644\u0633\u0629 (\u0645\u062E\u0632\u0646\u0629 \u0645\u062D\u0644\u064A\u0627\u064B \u0641\u064A \u0645\u062A\u0635\u0641\u062D\u0643)."),
+    React.createElement(PPS, null, "\u2022 \u062A\u0642\u0646\u064A: \u0639\u0646\u0648\u0627\u0646 IP (\u0646\u0645\u0627\u0630\u062C \u0627\u0644\u062A\u0639\u0644\u064A\u0642\u0627\u062A \u0648\u0633\u062C\u0644\u0627\u062A \u0627\u0644\u0623\u0645\u0627\u0646)."),
+    React.createElement(PPH, null, "3. \u0627\u0633\u062A\u062E\u062F\u0627\u0645 \u0627\u0644\u0628\u064A\u0627\u0646\u0627\u062A"),
+    React.createElement(PPS, null, "\u0645\u0639\u0627\u0644\u062C\u0629 \u0627\u0644\u0637\u0644\u0628\u0627\u062A \u0648\u062A\u0633\u0644\u064A\u0645\u0647\u0627 \xB7 \u0625\u062F\u0627\u0631\u0629 \u0627\u0644\u062D\u0633\u0627\u0628 \u0648\u0628\u0631\u0646\u0627\u0645\u062C \u0627\u0644\u0648\u0644\u0627\u0621 \xB7 \u0625\u0634\u0639\u0627\u0631\u0627\u062A \u0627\u0644\u0628\u0631\u064A\u062F \u0627\u0644\u0625\u0644\u0643\u062A\u0631\u0648\u0646\u064A \xB7 \u0631\u0645\u0648\u0632 OTP \u0644\u0644\u062A\u062D\u0642\u0642 \u0645\u0646 \u0627\u0644\u0647\u0627\u062A\u0641 \xB7 \u062A\u0646\u0638\u064A\u0645 \u0627\u0644\u0645\u0633\u0627\u0628\u0642\u0627\u062A \xB7 \u062A\u062D\u0633\u064A\u0646 \u0627\u0644\u062E\u062F\u0645\u0627\u062A \xB7 \u0645\u0646\u0639 \u0627\u0644\u0627\u062D\u062A\u064A\u0627\u0644."),
+    React.createElement(PPH, null, "4. \u062E\u062F\u0645\u0627\u062A \u0627\u0644\u0623\u0637\u0631\u0627\u0641 \u0627\u0644\u062B\u0627\u0644\u062B\u0629"),
+    React.createElement(PPS, null, "\u2022 Google Sign-In (Google LLC\u060C USA) \u2014 \u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062F\u062E\u0648\u0644 \u0628\u062D\u0633\u0627\u0628 Google."),
+    React.createElement(PPS, null, "\u2022 Gmail SMTP (Google LLC\u060C USA) \u2014 \u0631\u0633\u0627\u0626\u0644 \u0627\u0644\u0628\u0631\u064A\u062F \u0627\u0644\u062A\u062D\u0648\u064A\u0644\u064A\u0629."),
+    React.createElement(PPS, null, "\u2022 SMS.to \u2014 \u0631\u0633\u0627\u0626\u0644 \u0627\u0644\u062A\u062D\u0642\u0642 \u0648\u0627\u0644\u0625\u0634\u0639\u0627\u0631\u0627\u062A."),
+    React.createElement(PPS, null, "\u2022 \u0648\u0627\u062A\u0633\u0627\u0628 (+213563335642) \u2014 \u062F\u0639\u0645 \u0627\u0644\u0639\u0645\u0644\u0627\u0621."),
+    React.createElement(PPS, null, "\u2022 Google Fonts \u0648 unpkg/Cloudflare CDN \u2014 \u0627\u0644\u062E\u0637\u0648\u0637 \u0648\u0645\u0643\u062A\u0628\u0627\u062A JS."),
+    React.createElement(PPS, null, "\u062A\u0639\u0627\u0644\u062C \u0647\u0630\u0647 \u0627\u0644\u062E\u062F\u0645\u0627\u062A \u0628\u064A\u0627\u0646\u0627\u062A\u0643 \u0648\u0641\u0642 \u0633\u064A\u0627\u0633\u0627\u062A \u0627\u0644\u062E\u0635\u0648\u0635\u064A\u0629 \u0627\u0644\u062E\u0627\u0635\u0629 \u0628\u0647\u0627."),
+    React.createElement(PPH, null, "5. \u0627\u0644\u0627\u062D\u062A\u0641\u0627\u0638 \u0628\u0627\u0644\u0628\u064A\u0627\u0646\u0627\u062A"),
+    React.createElement(PPS, null, "\u064A\u062A\u0645 \u0627\u0644\u0627\u062D\u062A\u0641\u0627\u0638 \u0628\u0627\u0644\u0628\u064A\u0627\u0646\u0627\u062A \u0637\u0627\u0644\u0645\u0627 \u0627\u0644\u062D\u0633\u0627\u0628 \u0646\u0634\u0637. \u064A\u064F\u062D\u062A\u0641\u0638 \u0628\u0633\u062C\u0644 \u0627\u0644\u0637\u0644\u0628\u0627\u062A \u0628\u0639\u062F \u0627\u0644\u062D\u0630\u0641 \u0644\u0623\u063A\u0631\u0627\u0636 \u0642\u0627\u0646\u0648\u0646\u064A\u0629 \u0648\u062A\u062C\u0627\u0631\u064A\u0629."),
+    React.createElement(PPH, null, "6. \u062D\u0642\u0648\u0642\u0643"),
+    React.createElement(PPS, null, "\u062D\u0642 \u0627\u0644\u0648\u0635\u0648\u0644 \u0648\u0627\u0644\u062A\u0635\u062D\u064A\u062D \u0648\u0627\u0644\u062D\u0630\u0641. \u0644\u0644\u062A\u0648\u0627\u0635\u0644: noreply@latina.dz"),
+    React.createElement(PPH, null, "7. \u0627\u0644\u0623\u0645\u0627\u0646"),
+    React.createElement(PPS, null, "\u062A\u0634\u0641\u064A\u0631 \u0643\u0644\u0645\u0627\u062A \u0627\u0644\u0645\u0631\u0648\u0631 (bcrypt) \xB7 \u0627\u062A\u0635\u0627\u0644\u0627\u062A \u0645\u0624\u0645\u0646\u0629 HTTPS \xB7 \u0644\u0627 \u064A\u062A\u0645 \u062C\u0645\u0639 \u0628\u064A\u0627\u0646\u0627\u062A \u0645\u0635\u0631\u0641\u064A\u0629 (\u0627\u0644\u062F\u0641\u0639 \u0639\u0646\u062F \u0627\u0644\u0627\u0633\u062A\u0644\u0627\u0645 \u0641\u0642\u0637)."),
+    React.createElement(PPH, null, "8. \u0627\u0644\u062A\u062E\u0632\u064A\u0646 \u0627\u0644\u0645\u062D\u0644\u064A"),
+    React.createElement(PPS, null, "\u0646\u0633\u062A\u062E\u062F\u0645 localStorage/sessionStorage \u0644\u0633\u0644\u0629 \u0627\u0644\u062A\u0633\u0648\u0642 \u0648\u0627\u0644\u0645\u0641\u0636\u0644\u0629 \u0648\u0627\u0644\u062C\u0644\u0633\u0629. \u0644\u0627 \u064A\u062A\u0645 \u0627\u0633\u062A\u062E\u062F\u0627\u0645 \u0645\u0644\u0641\u0627\u062A \u062A\u062A\u0628\u0639 \u062E\u0627\u0631\u062C\u064A\u0629.")
+  );
+  var PrivacyEn = () => React.createElement(
+    "div",
+    null,
+    React.createElement(PPS, null, "Last updated: May 2026"),
+    React.createElement(PPH, null, "1. Who we are"),
+    React.createElement(PPS, null, "Latina is an Algerian fashion boutique (latinadz.com) offering shoes and accessories for women. Contact: noreply@latina.dz"),
+    React.createElement(PPH, null, "2. Data we collect"),
+    React.createElement(PPS, null, "\u2022 Account: name, phone, email, password (bcrypt-encrypted), customer segment, wilaya."),
+    React.createElement(PPS, null, "\u2022 Orders: order details, delivery address, purchase history, status."),
+    React.createElement(PPS, null, "\u2022 Loyalty: accumulated points and tier (Petal, Lotus, Amber)."),
+    React.createElement(PPS, null, "\u2022 Contests: name, phone, voluntarily submitted photos."),
+    React.createElement(PPS, null, "\u2022 Support: messages and support tickets."),
+    React.createElement(PPS, null, "\u2022 Browsing: cart, wishlist and session (stored locally in your browser)."),
+    React.createElement(PPS, null, "\u2022 Technical: IP address (feedback forms and security logs)."),
+    React.createElement(PPH, null, "3. How we use your data"),
+    React.createElement(PPS, null, "Order processing and delivery \xB7 Account management and loyalty program \xB7 Email notifications \xB7 OTP SMS for phone verification \xB7 Contests and giveaways \xB7 Service improvement \xB7 Fraud prevention."),
+    React.createElement(PPH, null, "4. Third-party services"),
+    React.createElement(PPS, null, "\u2022 Google Sign-In (Google LLC, USA) \u2014 authentication via Google account."),
+    React.createElement(PPS, null, "\u2022 Gmail SMTP (Google LLC, USA) \u2014 transactional emails."),
+    React.createElement(PPS, null, "\u2022 SMS.to \u2014 verification SMS and notifications."),
+    React.createElement(PPS, null, "\u2022 WhatsApp (+213563335642) \u2014 customer support."),
+    React.createElement(PPS, null, "\u2022 Google Fonts & unpkg/Cloudflare CDN \u2014 fonts and JS libraries (React, GSAP, Three.js)."),
+    React.createElement(PPS, null, "These services process your data according to their own privacy policies."),
+    React.createElement(PPH, null, "5. Data retention"),
+    React.createElement(PPS, null, "Data retained while account is active. Order history is kept after deletion for legal and commercial purposes."),
+    React.createElement(PPH, null, "6. Your rights"),
+    React.createElement(PPS, null, "Right to access, correct or delete your personal data. Contact us: noreply@latina.dz"),
+    React.createElement(PPH, null, "7. Security"),
+    React.createElement(PPS, null, "Passwords encrypted (bcrypt) \xB7 HTTPS-secured communications \xB7 No banking data collected (cash on delivery only)."),
+    React.createElement(PPH, null, "8. Cookies and local storage"),
+    React.createElement(PPS, null, "We use your browser's localStorage/sessionStorage for cart, wishlist and login session. No third-party tracking cookies are used.")
+  );
   var AuthModal = ({ lang, open, onClose, onLogin, initialStep, resetData }) => {
     const [tab, setTab] = useState("login");
     const [form, setForm] = useState({ name: "", login: "", phone: "", email: "", password: "", confirm: "" });
@@ -11,6 +110,8 @@
     const [forgotEmail, setForgotEmail] = useState("");
     const [resetPw, setResetPw] = useState({ password: "", confirm: "" });
     const [resendSuccess, setResendSuccess] = useState(false);
+    const [privacyAccepted, setPrivacyAccepted] = useState(false);
+    const [showPrivacy, setShowPrivacy] = useState(false);
     const api = window.latinaApi;
     const googleBtnRef = useRef(null);
     const googleCbRef = useRef(null);
@@ -54,7 +155,13 @@
         verifiedTitle: "Email v\xE9rifi\xE9 !",
         verifiedMsg: "Votre adresse email a bien \xE9t\xE9 confirm\xE9e. Vous pouvez maintenant vous connecter.",
         verifiedLoginBtn: "Se connecter",
-        forgotLink: "Mot de passe oubli\xE9 ?"
+        forgotLink: "Mot de passe oubli\xE9 ?",
+        privacyCheckLabel: "J'ai lu et j'accepte la",
+        privacyLinkText: "politique de confidentialit\xE9",
+        privacyRequired: "Vous devez accepter la politique de confidentialit\xE9 pour continuer.",
+        privacyCancelWarning: "Si vous fermez cette fen\xEAtre, votre compte sera supprim\xE9. Continuer ?",
+        privacyModalTitle: "Politique de confidentialit\xE9",
+        privacyModalClose: "Fermer"
       },
       ar: {
         login: "\u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062F\u062E\u0648\u0644",
@@ -94,7 +201,13 @@
         verifiedTitle: "\u062A\u0645 \u0627\u0644\u062A\u062D\u0642\u0642 !",
         verifiedMsg: "\u062A\u0645 \u062A\u0623\u0643\u064A\u062F \u0628\u0631\u064A\u062F\u0643 \u0627\u0644\u0625\u0644\u0643\u062A\u0631\u0648\u0646\u064A. \u064A\u0645\u0643\u0646\u0643 \u0627\u0644\u0622\u0646 \u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062F\u062E\u0648\u0644.",
         verifiedLoginBtn: "\u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062F\u062E\u0648\u0644",
-        forgotLink: "\u0646\u0633\u064A\u062A \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631\u061F"
+        forgotLink: "\u0646\u0633\u064A\u062A \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631\u061F",
+        privacyCheckLabel: "\u0644\u0642\u062F \u0642\u0631\u0623\u062A \u0648\u0623\u0648\u0627\u0641\u0642 \u0639\u0644\u0649",
+        privacyLinkText: "\u0633\u064A\u0627\u0633\u0629 \u0627\u0644\u062E\u0635\u0648\u0635\u064A\u0629",
+        privacyRequired: "\u064A\u062C\u0628 \u0642\u0628\u0648\u0644 \u0633\u064A\u0627\u0633\u0629 \u0627\u0644\u062E\u0635\u0648\u0635\u064A\u0629 \u0644\u0644\u0645\u062A\u0627\u0628\u0639\u0629.",
+        privacyCancelWarning: "\u0625\u0630\u0627 \u0623\u063A\u0644\u0642\u062A \u0647\u0630\u0647 \u0627\u0644\u0646\u0627\u0641\u0630\u0629\u060C \u0633\u064A\u062A\u0645 \u062D\u0630\u0641 \u062D\u0633\u0627\u0628\u0643. \u0647\u0644 \u062A\u0631\u064A\u062F \u0627\u0644\u0645\u062A\u0627\u0628\u0639\u0629\u061F",
+        privacyModalTitle: "\u0633\u064A\u0627\u0633\u0629 \u0627\u0644\u062E\u0635\u0648\u0635\u064A\u0629",
+        privacyModalClose: "\u0625\u063A\u0644\u0627\u0642"
       },
       en: {
         login: "Sign In",
@@ -134,7 +247,13 @@
         verifiedTitle: "Email verified!",
         verifiedMsg: "Your email address has been confirmed. You can now sign in.",
         verifiedLoginBtn: "Sign in",
-        forgotLink: "Forgot password?"
+        forgotLink: "Forgot password?",
+        privacyCheckLabel: "I have read and accept the",
+        privacyLinkText: "privacy policy",
+        privacyRequired: "You must accept the privacy policy to continue.",
+        privacyCancelWarning: "If you close this window your account will be deleted. Continue?",
+        privacyModalTitle: "Privacy Policy",
+        privacyModalClose: "Close"
       }
     }[lang] || {};
     useEffect(() => {
@@ -156,6 +275,8 @@
         setForgotEmail("");
         setResetPw({ password: "", confirm: "" });
         setResendSuccess(false);
+        setPrivacyAccepted(false);
+        setShowPrivacy(false);
         pendingUserRef.current = null;
       }
     }, [open]);
@@ -180,9 +301,13 @@
     const handleProfileSubmit = async (e) => {
       e.preventDefault();
       setError("");
+      if (!privacyAccepted) {
+        setError(T.privacyRequired);
+        return;
+      }
       setLoading(true);
       try {
-        const data = await api.updateProfile({ phone: profilePhone });
+        const data = await api.updateProfile({ phone: profilePhone, privacy_accepted: true });
         onLogin(data.user);
         onClose();
       } catch (err) {
@@ -191,6 +316,11 @@
       } finally {
         setLoading(false);
       }
+    };
+    const handleCancelGoogleRegistration = async () => {
+      if (!window.confirm(T.privacyCancelWarning)) return;
+      await api.cancelRegistration();
+      onClose();
     };
     useEffect(() => {
       if (!open || !window.GOOGLE_CLIENT_ID || window.GOOGLE_CLIENT_ID === "YOUR_GOOGLE_CLIENT_ID_HERE") return;
@@ -222,6 +352,10 @@
         setError("Les mots de passe ne correspondent pas.");
         return;
       }
+      if (tab === "register" && !privacyAccepted) {
+        setError(T.privacyRequired);
+        return;
+      }
       setLoading(true);
       try {
         let data;
@@ -230,7 +364,7 @@
           onLogin(data.user || data.data?.user);
           onClose();
         } else {
-          data = await api.register({ name: form.name, phone: form.phone, email: form.email, password: form.password });
+          data = await api.register({ name: form.name, phone: form.phone, email: form.email, password: form.password, privacy_accepted: true });
           if (data.needs_verification) {
             pendingUserRef.current = data.user || data.data?.user;
             setStep("verify-sent");
@@ -325,8 +459,50 @@
     if (step === "reset-done") {
       return /* @__PURE__ */ React.createElement(ModalShell, { closeable: true }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", padding: "8px 0 16px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 40, marginBottom: 12 } }, "\u2705"), /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 10px", fontSize: "var(--ts-4)", fontFamily: "var(--display)", color: "#10B981" } }, lang === "ar" ? "\u062A\u0645 \u0628\u0646\u062C\u0627\u062D!" : lang === "en" ? "Done!" : "C'est fait !"), /* @__PURE__ */ React.createElement("p", { className: "auth-tagline" }, lang === "ar" ? "\u062A\u0645 \u062A\u063A\u064A\u064A\u0631 \u0643\u0644\u0645\u0629 \u0645\u0631\u0648\u0631\u0643." : lang === "en" ? "Your password has been changed." : "Votre mot de passe a bien \xE9t\xE9 modifi\xE9."), /* @__PURE__ */ React.createElement("button", { className: "btn-primary auth-submit", style: { marginTop: 16, width: "100%" }, onClick: () => setStep("form") }, T.verifiedLoginBtn)));
     }
+    const PrivacyPolicyModal = () => /* @__PURE__ */ React.createElement("div", { className: "modal-backdrop", style: { zIndex: 9999 }, onClick: () => setShowPrivacy(false) }, /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        className: "auth-modal",
+        onClick: (e) => e.stopPropagation(),
+        dir: lang === "ar" ? "rtl" : "ltr",
+        style: { maxHeight: "80vh", overflowY: "auto", maxWidth: 560 }
+      },
+      /* @__PURE__ */ React.createElement("button", { className: "modal-close", onClick: () => setShowPrivacy(false) }, "\u2715"),
+      /* @__PURE__ */ React.createElement("h3", { style: { fontFamily: "var(--display)", fontSize: "var(--ts-4)", margin: "0 0 16px" } }, T.privacyModalTitle),
+      lang === "ar" ? /* @__PURE__ */ React.createElement(PrivacyAr, null) : lang === "en" ? /* @__PURE__ */ React.createElement(PrivacyEn, null) : /* @__PURE__ */ React.createElement(PrivacyFr, null),
+      /* @__PURE__ */ React.createElement(
+        "button",
+        {
+          className: "btn-primary auth-submit",
+          style: { marginTop: 20, width: "100%" },
+          onClick: () => {
+            setPrivacyAccepted(true);
+            setShowPrivacy(false);
+          }
+        },
+        T.privacyCheckLabel,
+        " \u2713"
+      )
+    ));
+    const PrivacyCheckbox = () => /* @__PURE__ */ React.createElement("label", { style: { display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--ts-0)", color: "var(--text-2)", cursor: "pointer", lineHeight: 1.4 } }, /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        type: "checkbox",
+        checked: privacyAccepted,
+        onChange: (e) => setPrivacyAccepted(e.target.checked),
+        style: { marginTop: 2, accentColor: "var(--rose-500)", flexShrink: 0 }
+      }
+    ), /* @__PURE__ */ React.createElement("span", null, T.privacyCheckLabel, " ", /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        type: "button",
+        onClick: () => setShowPrivacy(true),
+        style: { background: "none", border: "none", color: "var(--rose-500)", cursor: "pointer", fontSize: "inherit", textDecoration: "underline", padding: 0 }
+      },
+      T.privacyLinkText
+    )));
     if (step === "complete-profile") {
-      return /* @__PURE__ */ React.createElement(ModalShell, null, /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 8px", fontSize: "var(--ts-4)", fontFamily: "var(--display)" } }, T.completeTitle), /* @__PURE__ */ React.createElement("p", { className: "auth-tagline" }, T.completeMsg), /* @__PURE__ */ React.createElement("form", { className: "auth-form", onSubmit: handleProfileSubmit }, /* @__PURE__ */ React.createElement(
+      return /* @__PURE__ */ React.createElement(React.Fragment, null, showPrivacy && /* @__PURE__ */ React.createElement(PrivacyPolicyModal, null), /* @__PURE__ */ React.createElement("div", { className: "modal-backdrop" }, /* @__PURE__ */ React.createElement("div", { className: "auth-modal", onClick: (e) => e.stopPropagation(), dir: lang === "ar" ? "rtl" : "ltr" }, /* @__PURE__ */ React.createElement("button", { className: "modal-close", onClick: handleCancelGoogleRegistration }, "\u2715"), /* @__PURE__ */ React.createElement("div", { className: "auth-brand" }, /* @__PURE__ */ React.createElement(LotusMark, { size: 32, color: "var(--rose-500)" }), /* @__PURE__ */ React.createElement("span", { className: "brand-name" }, "Latina")), /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 8px", fontSize: "var(--ts-4)", fontFamily: "var(--display)" } }, T.completeTitle), /* @__PURE__ */ React.createElement("p", { className: "auth-tagline" }, T.completeMsg), /* @__PURE__ */ React.createElement("form", { className: "auth-form", onSubmit: handleProfileSubmit }, /* @__PURE__ */ React.createElement(
         "input",
         {
           type: "tel",
@@ -337,9 +513,9 @@
           pattern: "0[5-7][0-9]{8}",
           autoFocus: true
         }
-      ), error && /* @__PURE__ */ React.createElement("div", { className: "auth-error" }, error), /* @__PURE__ */ React.createElement("button", { type: "submit", className: "btn-primary auth-submit", disabled: loading }, loading ? /* @__PURE__ */ React.createElement("span", { className: "btn-spinner" }) : T.saveBtn)));
+      ), /* @__PURE__ */ React.createElement(PrivacyCheckbox, null), error && /* @__PURE__ */ React.createElement("div", { className: "auth-error" }, error), /* @__PURE__ */ React.createElement("button", { type: "submit", className: "btn-primary auth-submit", disabled: loading }, loading ? /* @__PURE__ */ React.createElement("span", { className: "btn-spinner" }) : T.saveBtn)))));
     }
-    return /* @__PURE__ */ React.createElement("div", { className: "modal-backdrop", onClick: onClose }, /* @__PURE__ */ React.createElement("div", { className: "auth-modal", onClick: (e) => e.stopPropagation(), dir: lang === "ar" ? "rtl" : "ltr" }, /* @__PURE__ */ React.createElement("button", { className: "modal-close", onClick: onClose }, "\u2715"), /* @__PURE__ */ React.createElement("div", { className: "auth-brand" }, /* @__PURE__ */ React.createElement(LotusMark, { size: 32, color: "var(--rose-500)" }), /* @__PURE__ */ React.createElement("span", { className: "brand-name" }, "Latina")), /* @__PURE__ */ React.createElement("div", { className: "auth-tabs" }, /* @__PURE__ */ React.createElement("button", { className: tab === "login" ? "active" : "", onClick: () => setTab("login") }, T.login), /* @__PURE__ */ React.createElement("button", { className: tab === "register" ? "active" : "", onClick: () => setTab("register") }, T.register)), tab === "register" && /* @__PURE__ */ React.createElement("p", { className: "auth-tagline" }, T.joinMsg), /* @__PURE__ */ React.createElement("form", { className: "auth-form", onSubmit: handleSubmit }, tab === "register" && /* @__PURE__ */ React.createElement("input", { type: "text", placeholder: T.name, value: form.name, onChange: (e) => set("name", e.target.value), required: true }), tab === "login" ? /* @__PURE__ */ React.createElement("input", { type: "text", placeholder: T.loginField, value: form.login, onChange: (e) => set("login", e.target.value), required: true, autoComplete: "username" }) : /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("input", { type: "tel", placeholder: T.phone, value: form.phone, onChange: (e) => set("phone", e.target.value), required: true, pattern: "0[5-7][0-9]{8}" }), /* @__PURE__ */ React.createElement("input", { type: "email", placeholder: T.email, value: form.email, onChange: (e) => set("email", e.target.value), required: true })), /* @__PURE__ */ React.createElement("input", { type: "password", placeholder: T.password, value: form.password, onChange: (e) => set("password", e.target.value), required: true, minLength: 8 }), tab === "register" && /* @__PURE__ */ React.createElement("input", { type: "password", placeholder: T.confirm, value: form.confirm, onChange: (e) => set("confirm", e.target.value), required: true, minLength: 8 }), tab === "login" && /* @__PURE__ */ React.createElement("div", { style: { textAlign: lang === "ar" ? "left" : "right", marginTop: -4 } }, /* @__PURE__ */ React.createElement("button", { type: "button", onClick: () => setStep("forgot"), style: { background: "none", border: "none", color: "var(--rose-500)", cursor: "pointer", fontSize: "var(--ts-0)", textDecoration: "underline" } }, T.forgotLink)), error && /* @__PURE__ */ React.createElement("div", { className: "auth-error" }, error), /* @__PURE__ */ React.createElement("button", { type: "submit", className: "btn-primary auth-submit", disabled: loading }, loading ? /* @__PURE__ */ React.createElement("span", { className: "btn-spinner" }) : tab === "login" ? T.loginBtn : T.registerBtn)), window.GOOGLE_CLIENT_ID && window.GOOGLE_CLIENT_ID !== "YOUR_GOOGLE_CLIENT_ID_HERE" && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { className: "auth-divider" }, /* @__PURE__ */ React.createElement("span", null, lang === "ar" ? "\u0623\u0648" : lang === "en" ? "or" : "ou")), /* @__PURE__ */ React.createElement("div", { ref: googleBtnRef, className: "google-btn-wrap" })), /* @__PURE__ */ React.createElement("div", { className: "auth-switch" }, /* @__PURE__ */ React.createElement("span", null, tab === "login" ? T.noAccount : T.hasAccount), /* @__PURE__ */ React.createElement("button", { onClick: () => setTab(tab === "login" ? "register" : "login") }, tab === "login" ? T.register : T.login))));
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, showPrivacy && /* @__PURE__ */ React.createElement(PrivacyPolicyModal, null), /* @__PURE__ */ React.createElement("div", { className: "modal-backdrop", onClick: onClose }, /* @__PURE__ */ React.createElement("div", { className: "auth-modal", onClick: (e) => e.stopPropagation(), dir: lang === "ar" ? "rtl" : "ltr" }, /* @__PURE__ */ React.createElement("button", { className: "modal-close", onClick: onClose }, "\u2715"), /* @__PURE__ */ React.createElement("div", { className: "auth-brand" }, /* @__PURE__ */ React.createElement(LotusMark, { size: 32, color: "var(--rose-500)" }), /* @__PURE__ */ React.createElement("span", { className: "brand-name" }, "Latina")), /* @__PURE__ */ React.createElement("div", { className: "auth-tabs" }, /* @__PURE__ */ React.createElement("button", { className: tab === "login" ? "active" : "", onClick: () => setTab("login") }, T.login), /* @__PURE__ */ React.createElement("button", { className: tab === "register" ? "active" : "", onClick: () => setTab("register") }, T.register)), tab === "register" && /* @__PURE__ */ React.createElement("p", { className: "auth-tagline" }, T.joinMsg), /* @__PURE__ */ React.createElement("form", { className: "auth-form", onSubmit: handleSubmit }, tab === "register" && /* @__PURE__ */ React.createElement("input", { type: "text", placeholder: T.name, value: form.name, onChange: (e) => set("name", e.target.value), required: true }), tab === "login" ? /* @__PURE__ */ React.createElement("input", { type: "text", placeholder: T.loginField, value: form.login, onChange: (e) => set("login", e.target.value), required: true, autoComplete: "username" }) : /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("input", { type: "tel", placeholder: T.phone, value: form.phone, onChange: (e) => set("phone", e.target.value), required: true, pattern: "0[5-7][0-9]{8}" }), /* @__PURE__ */ React.createElement("input", { type: "email", placeholder: T.email, value: form.email, onChange: (e) => set("email", e.target.value), required: true })), /* @__PURE__ */ React.createElement("input", { type: "password", placeholder: T.password, value: form.password, onChange: (e) => set("password", e.target.value), required: true, minLength: 8 }), tab === "register" && /* @__PURE__ */ React.createElement("input", { type: "password", placeholder: T.confirm, value: form.confirm, onChange: (e) => set("confirm", e.target.value), required: true, minLength: 8 }), tab === "login" && /* @__PURE__ */ React.createElement("div", { style: { textAlign: lang === "ar" ? "left" : "right", marginTop: -4 } }, /* @__PURE__ */ React.createElement("button", { type: "button", onClick: () => setStep("forgot"), style: { background: "none", border: "none", color: "var(--rose-500)", cursor: "pointer", fontSize: "var(--ts-0)", textDecoration: "underline" } }, T.forgotLink)), tab === "register" && /* @__PURE__ */ React.createElement(PrivacyCheckbox, null), error && /* @__PURE__ */ React.createElement("div", { className: "auth-error" }, error), /* @__PURE__ */ React.createElement("button", { type: "submit", className: "btn-primary auth-submit", disabled: loading }, loading ? /* @__PURE__ */ React.createElement("span", { className: "btn-spinner" }) : tab === "login" ? T.loginBtn : T.registerBtn)), window.GOOGLE_CLIENT_ID && window.GOOGLE_CLIENT_ID !== "YOUR_GOOGLE_CLIENT_ID_HERE" && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { className: "auth-divider" }, /* @__PURE__ */ React.createElement("span", null, lang === "ar" ? "\u0623\u0648" : lang === "en" ? "or" : "ou")), /* @__PURE__ */ React.createElement("div", { ref: googleBtnRef, className: "google-btn-wrap" })), /* @__PURE__ */ React.createElement("div", { className: "auth-switch" }, /* @__PURE__ */ React.createElement("span", null, tab === "login" ? T.noAccount : T.hasAccount), /* @__PURE__ */ React.createElement("button", { onClick: () => setTab(tab === "login" ? "register" : "login") }, tab === "login" ? T.register : T.login)))));
   };
   var CartDrawer = ({ lang, open, onClose, cart, onUpdateCart, onCheckout, user }) => {
     const [couponCode, setCouponCode] = useState("");

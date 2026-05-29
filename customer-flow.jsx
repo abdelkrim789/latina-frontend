@@ -2,6 +2,112 @@
 const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
 /* ============================================================
+   PRIVACY POLICY CONTENT (FR / AR / EN)
+   ============================================================ */
+const PP_STYLE = { fontSize: "var(--ts-0)", color: "var(--text-2)", lineHeight: 1.7 };
+const PPS = ({ children }) => React.createElement("p", { style: { margin: "0 0 10px", ...PP_STYLE } }, children);
+const PPH = ({ children }) => React.createElement("p", { style: { margin: "14px 0 4px", fontWeight: 600, color: "var(--text-1)", fontSize: "var(--ts-1)" } }, children);
+
+const PrivacyFr = () => (
+  React.createElement("div", null,
+    React.createElement(PPS, null, "Dernière mise à jour : Mai 2026"),
+    React.createElement(PPH, null, "1. Qui sommes-nous ?"),
+    React.createElement(PPS, null, "Latina est une boutique de mode algérienne (latinadz.com) proposant des chaussures et accessoires pour femmes. Contact : noreply@latina.dz"),
+    React.createElement(PPH, null, "2. Données collectées"),
+    React.createElement(PPS, null, "• Compte : nom, téléphone, email, mot de passe (chiffré bcrypt), segment client, wilaya."),
+    React.createElement(PPS, null, "• Commandes : détails de commande, adresse de livraison, historique d'achat, statut."),
+    React.createElement(PPS, null, "• Fidélité : points accumulés et niveau (Petal, Lotus, Amber)."),
+    React.createElement(PPS, null, "• Concours : nom, téléphone, photos soumises volontairement."),
+    React.createElement(PPS, null, "• Support : messages, tickets d'assistance, priorité."),
+    React.createElement(PPS, null, "• Navigation : panier, liste de souhaits et session (stockés localement dans votre navigateur)."),
+    React.createElement(PPS, null, "• Technique : adresse IP (formulaires de feedback et journaux de sécurité)."),
+    React.createElement(PPH, null, "3. Utilisation des données"),
+    React.createElement(PPS, null, "Traitement et livraison de commandes · Gestion du compte et programme de fidélité · Notifications par email · OTP par SMS pour la vérification du numéro · Organisation des concours · Amélioration de nos services · Prévention des fraudes."),
+    React.createElement(PPH, null, "4. Services tiers"),
+    React.createElement(PPS, null, "• Google Sign-In (Google LLC, USA) — authentification via compte Google."),
+    React.createElement(PPS, null, "• Gmail SMTP (Google LLC, USA) — emails transactionnels."),
+    React.createElement(PPS, null, "• SMS.to — SMS de vérification et notifications."),
+    React.createElement(PPS, null, "• WhatsApp (+213563335642) — support client."),
+    React.createElement(PPS, null, "• Google Fonts & unpkg/Cloudflare CDN — polices et bibliothèques JS (React, GSAP, Three.js)."),
+    React.createElement(PPS, null, "Ces services traitent vos données selon leurs propres politiques de confidentialité."),
+    React.createElement(PPH, null, "5. Conservation"),
+    React.createElement(PPS, null, "Données conservées tant que le compte est actif. L'historique de commandes est conservé après suppression à des fins légales et commerciales."),
+    React.createElement(PPH, null, "6. Vos droits"),
+    React.createElement(PPS, null, "Droit d'accès, de rectification et de suppression de vos données. Contactez-nous : noreply@latina.dz"),
+    React.createElement(PPH, null, "7. Sécurité"),
+    React.createElement(PPS, null, "Mots de passe chiffrés (bcrypt) · Communications sécurisées HTTPS · Aucune donnée bancaire collectée (paiement à la livraison uniquement)."),
+    React.createElement(PPH, null, "8. Stockage local"),
+    React.createElement(PPS, null, "Nous utilisons localStorage/sessionStorage de votre navigateur pour le panier, les favoris et la session. Aucun cookie de suivi tiers n'est utilisé.")
+  )
+);
+
+const PrivacyAr = () => (
+  React.createElement("div", { dir: "rtl" },
+    React.createElement(PPS, null, "آخر تحديث : مايو 2026"),
+    React.createElement(PPH, null, "1. من نحن؟"),
+    React.createElement(PPS, null, "لاتينا هي متجر أزياء جزائري (latinadz.com) للأحذية والإكسسوارات النسائية. للتواصل: noreply@latina.dz"),
+    React.createElement(PPH, null, "2. البيانات التي نجمعها"),
+    React.createElement(PPS, null, "• الحساب: الاسم، الهاتف، البريد الإلكتروني، كلمة المرور (مشفرة bcrypt)، الولاية."),
+    React.createElement(PPS, null, "• الطلبات: تفاصيل الطلب، عنوان التسليم، سجل الشراء، الحالة."),
+    React.createElement(PPS, null, "• الولاء: النقاط المتراكمة والمستوى (Petal، Lotus، Amber)."),
+    React.createElement(PPS, null, "• المسابقات: الاسم، الهاتف، الصور المقدمة طوعاً."),
+    React.createElement(PPS, null, "• الدعم: الرسائل وتذاكر الدعم."),
+    React.createElement(PPS, null, "• التصفح: سلة التسوق وقائمة الرغبات والجلسة (مخزنة محلياً في متصفحك)."),
+    React.createElement(PPS, null, "• تقني: عنوان IP (نماذج التعليقات وسجلات الأمان)."),
+    React.createElement(PPH, null, "3. استخدام البيانات"),
+    React.createElement(PPS, null, "معالجة الطلبات وتسليمها · إدارة الحساب وبرنامج الولاء · إشعارات البريد الإلكتروني · رموز OTP للتحقق من الهاتف · تنظيم المسابقات · تحسين الخدمات · منع الاحتيال."),
+    React.createElement(PPH, null, "4. خدمات الأطراف الثالثة"),
+    React.createElement(PPS, null, "• Google Sign-In (Google LLC، USA) — تسجيل الدخول بحساب Google."),
+    React.createElement(PPS, null, "• Gmail SMTP (Google LLC، USA) — رسائل البريد التحويلية."),
+    React.createElement(PPS, null, "• SMS.to — رسائل التحقق والإشعارات."),
+    React.createElement(PPS, null, "• واتساب (+213563335642) — دعم العملاء."),
+    React.createElement(PPS, null, "• Google Fonts و unpkg/Cloudflare CDN — الخطوط ومكتبات JS."),
+    React.createElement(PPS, null, "تعالج هذه الخدمات بياناتك وفق سياسات الخصوصية الخاصة بها."),
+    React.createElement(PPH, null, "5. الاحتفاظ بالبيانات"),
+    React.createElement(PPS, null, "يتم الاحتفاظ بالبيانات طالما الحساب نشط. يُحتفظ بسجل الطلبات بعد الحذف لأغراض قانونية وتجارية."),
+    React.createElement(PPH, null, "6. حقوقك"),
+    React.createElement(PPS, null, "حق الوصول والتصحيح والحذف. للتواصل: noreply@latina.dz"),
+    React.createElement(PPH, null, "7. الأمان"),
+    React.createElement(PPS, null, "تشفير كلمات المرور (bcrypt) · اتصالات مؤمنة HTTPS · لا يتم جمع بيانات مصرفية (الدفع عند الاستلام فقط)."),
+    React.createElement(PPH, null, "8. التخزين المحلي"),
+    React.createElement(PPS, null, "نستخدم localStorage/sessionStorage لسلة التسوق والمفضلة والجلسة. لا يتم استخدام ملفات تتبع خارجية.")
+  )
+);
+
+const PrivacyEn = () => (
+  React.createElement("div", null,
+    React.createElement(PPS, null, "Last updated: May 2026"),
+    React.createElement(PPH, null, "1. Who we are"),
+    React.createElement(PPS, null, "Latina is an Algerian fashion boutique (latinadz.com) offering shoes and accessories for women. Contact: noreply@latina.dz"),
+    React.createElement(PPH, null, "2. Data we collect"),
+    React.createElement(PPS, null, "• Account: name, phone, email, password (bcrypt-encrypted), customer segment, wilaya."),
+    React.createElement(PPS, null, "• Orders: order details, delivery address, purchase history, status."),
+    React.createElement(PPS, null, "• Loyalty: accumulated points and tier (Petal, Lotus, Amber)."),
+    React.createElement(PPS, null, "• Contests: name, phone, voluntarily submitted photos."),
+    React.createElement(PPS, null, "• Support: messages and support tickets."),
+    React.createElement(PPS, null, "• Browsing: cart, wishlist and session (stored locally in your browser)."),
+    React.createElement(PPS, null, "• Technical: IP address (feedback forms and security logs)."),
+    React.createElement(PPH, null, "3. How we use your data"),
+    React.createElement(PPS, null, "Order processing and delivery · Account management and loyalty program · Email notifications · OTP SMS for phone verification · Contests and giveaways · Service improvement · Fraud prevention."),
+    React.createElement(PPH, null, "4. Third-party services"),
+    React.createElement(PPS, null, "• Google Sign-In (Google LLC, USA) — authentication via Google account."),
+    React.createElement(PPS, null, "• Gmail SMTP (Google LLC, USA) — transactional emails."),
+    React.createElement(PPS, null, "• SMS.to — verification SMS and notifications."),
+    React.createElement(PPS, null, "• WhatsApp (+213563335642) — customer support."),
+    React.createElement(PPS, null, "• Google Fonts & unpkg/Cloudflare CDN — fonts and JS libraries (React, GSAP, Three.js)."),
+    React.createElement(PPS, null, "These services process your data according to their own privacy policies."),
+    React.createElement(PPH, null, "5. Data retention"),
+    React.createElement(PPS, null, "Data retained while account is active. Order history is kept after deletion for legal and commercial purposes."),
+    React.createElement(PPH, null, "6. Your rights"),
+    React.createElement(PPS, null, "Right to access, correct or delete your personal data. Contact us: noreply@latina.dz"),
+    React.createElement(PPH, null, "7. Security"),
+    React.createElement(PPS, null, "Passwords encrypted (bcrypt) · HTTPS-secured communications · No banking data collected (cash on delivery only)."),
+    React.createElement(PPH, null, "8. Cookies and local storage"),
+    React.createElement(PPS, null, "We use your browser's localStorage/sessionStorage for cart, wishlist and login session. No third-party tracking cookies are used.")
+  )
+);
+
+/* ============================================================
    AUTH MODAL — Login / Register
    ============================================================ */
 const AuthModal = ({ lang, open, onClose, onLogin, initialStep, resetData }) => {
@@ -14,6 +120,8 @@ const AuthModal = ({ lang, open, onClose, onLogin, initialStep, resetData }) => 
   const [forgotEmail, setForgotEmail] = useState("");
   const [resetPw, setResetPw] = useState({ password: "", confirm: "" });
   const [resendSuccess, setResendSuccess] = useState(false);
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
   const api = window.latinaApi;
   const googleBtnRef = useRef(null);
   const googleCbRef = useRef(null);
@@ -53,6 +161,12 @@ const AuthModal = ({ lang, open, onClose, onLogin, initialStep, resetData }) => 
       verifiedMsg: "Votre adresse email a bien été confirmée. Vous pouvez maintenant vous connecter.",
       verifiedLoginBtn: "Se connecter",
       forgotLink: "Mot de passe oublié ?",
+      privacyCheckLabel: "J'ai lu et j'accepte la",
+      privacyLinkText: "politique de confidentialité",
+      privacyRequired: "Vous devez accepter la politique de confidentialité pour continuer.",
+      privacyCancelWarning: "Si vous fermez cette fenêtre, votre compte sera supprimé. Continuer ?",
+      privacyModalTitle: "Politique de confidentialité",
+      privacyModalClose: "Fermer",
     },
     ar: {
       login: "تسجيل الدخول", register: "إنشاء حساب",
@@ -87,6 +201,12 @@ const AuthModal = ({ lang, open, onClose, onLogin, initialStep, resetData }) => 
       verifiedMsg: "تم تأكيد بريدك الإلكتروني. يمكنك الآن تسجيل الدخول.",
       verifiedLoginBtn: "تسجيل الدخول",
       forgotLink: "نسيت كلمة المرور؟",
+      privacyCheckLabel: "لقد قرأت وأوافق على",
+      privacyLinkText: "سياسة الخصوصية",
+      privacyRequired: "يجب قبول سياسة الخصوصية للمتابعة.",
+      privacyCancelWarning: "إذا أغلقت هذه النافذة، سيتم حذف حسابك. هل تريد المتابعة؟",
+      privacyModalTitle: "سياسة الخصوصية",
+      privacyModalClose: "إغلاق",
     },
     en: {
       login: "Sign In", register: "Create Account",
@@ -121,6 +241,12 @@ const AuthModal = ({ lang, open, onClose, onLogin, initialStep, resetData }) => 
       verifiedMsg: "Your email address has been confirmed. You can now sign in.",
       verifiedLoginBtn: "Sign in",
       forgotLink: "Forgot password?",
+      privacyCheckLabel: "I have read and accept the",
+      privacyLinkText: "privacy policy",
+      privacyRequired: "You must accept the privacy policy to continue.",
+      privacyCancelWarning: "If you close this window your account will be deleted. Continue?",
+      privacyModalTitle: "Privacy Policy",
+      privacyModalClose: "Close",
     }
   }[lang] || {};
 
@@ -138,7 +264,7 @@ const AuthModal = ({ lang, open, onClose, onLogin, initialStep, resetData }) => 
       }
     } else {
       setStep("form"); setProfilePhone(""); setForgotEmail(""); setResetPw({ password: "", confirm: "" });
-      setResendSuccess(false); pendingUserRef.current = null;
+      setResendSuccess(false); setPrivacyAccepted(false); setShowPrivacy(false); pendingUserRef.current = null;
     }
   }, [open]);
 
@@ -165,9 +291,10 @@ const AuthModal = ({ lang, open, onClose, onLogin, initialStep, resetData }) => 
   const handleProfileSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    if (!privacyAccepted) { setError(T.privacyRequired); return; }
     setLoading(true);
     try {
-      const data = await api.updateProfile({ phone: profilePhone });
+      const data = await api.updateProfile({ phone: profilePhone, privacy_accepted: true });
       onLogin(data.user);
       onClose();
     } catch (err) {
@@ -176,6 +303,12 @@ const AuthModal = ({ lang, open, onClose, onLogin, initialStep, resetData }) => 
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCancelGoogleRegistration = async () => {
+    if (!window.confirm(T.privacyCancelWarning)) return;
+    await api.cancelRegistration();
+    onClose();
   };
 
   useEffect(() => {
@@ -210,6 +343,10 @@ const AuthModal = ({ lang, open, onClose, onLogin, initialStep, resetData }) => 
       setError("Les mots de passe ne correspondent pas.");
       return;
     }
+    if (tab === "register" && !privacyAccepted) {
+      setError(T.privacyRequired);
+      return;
+    }
     setLoading(true);
     try {
       let data;
@@ -218,7 +355,7 @@ const AuthModal = ({ lang, open, onClose, onLogin, initialStep, resetData }) => 
         onLogin(data.user || data.data?.user);
         onClose();
       } else {
-        data = await api.register({ name: form.name, phone: form.phone, email: form.email, password: form.password });
+        data = await api.register({ name: form.name, phone: form.phone, email: form.email, password: form.password, privacy_accepted: true });
         if (data.needs_verification) {
           pendingUserRef.current = data.user || data.data?.user;
           setStep("verify-sent");
@@ -396,31 +533,73 @@ const AuthModal = ({ lang, open, onClose, onLogin, initialStep, resetData }) => 
     );
   }
 
+  const PrivacyPolicyModal = () => (
+    <div className="modal-backdrop" style={{ zIndex: 9999 }} onClick={() => setShowPrivacy(false)}>
+      <div className="auth-modal" onClick={e => e.stopPropagation()} dir={lang === "ar" ? "rtl" : "ltr"}
+        style={{ maxHeight: "80vh", overflowY: "auto", maxWidth: 560 }}>
+        <button className="modal-close" onClick={() => setShowPrivacy(false)}>✕</button>
+        <h3 style={{ fontFamily: "var(--display)", fontSize: "var(--ts-4)", margin: "0 0 16px" }}>{T.privacyModalTitle}</h3>
+        {lang === "ar" ? <PrivacyAr /> : lang === "en" ? <PrivacyEn /> : <PrivacyFr />}
+        <button className="btn-primary auth-submit" style={{ marginTop: 20, width: "100%" }}
+          onClick={() => { setPrivacyAccepted(true); setShowPrivacy(false); }}>
+          {T.privacyCheckLabel} ✓
+        </button>
+      </div>
+    </div>
+  );
+
+  const PrivacyCheckbox = () => (
+    <label style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--ts-0)", color: "var(--text-2)", cursor: "pointer", lineHeight: 1.4 }}>
+      <input type="checkbox" checked={privacyAccepted} onChange={e => setPrivacyAccepted(e.target.checked)}
+        style={{ marginTop: 2, accentColor: "var(--rose-500)", flexShrink: 0 }} />
+      <span>
+        {T.privacyCheckLabel}{" "}
+        <button type="button" onClick={() => setShowPrivacy(true)}
+          style={{ background: "none", border: "none", color: "var(--rose-500)", cursor: "pointer", fontSize: "inherit", textDecoration: "underline", padding: 0 }}>
+          {T.privacyLinkText}
+        </button>
+      </span>
+    </label>
+  );
+
   if (step === "complete-profile") {
     return (
-      <ModalShell>
-          <h3 style={{ margin: "0 0 8px", fontSize: "var(--ts-4)", fontFamily: "var(--display)" }}>{T.completeTitle}</h3>
-          <p className="auth-tagline">{T.completeMsg}</p>
-          <form className="auth-form" onSubmit={handleProfileSubmit}>
-            <input
-              type="tel"
-              placeholder={T.phone}
-              value={profilePhone}
-              onChange={e => setProfilePhone(e.target.value)}
-              required
-              pattern="0[5-7][0-9]{8}"
-              autoFocus
-            />
-            {error && <div className="auth-error">{error}</div>}
-            <button type="submit" className="btn-primary auth-submit" disabled={loading}>
-              {loading ? <span className="btn-spinner" /> : T.saveBtn}
-            </button>
-          </form>
-      </ModalShell>
+      <>
+        {showPrivacy && <PrivacyPolicyModal />}
+        <div className="modal-backdrop">
+          <div className="auth-modal" onClick={e => e.stopPropagation()} dir={lang === "ar" ? "rtl" : "ltr"}>
+            <button className="modal-close" onClick={handleCancelGoogleRegistration}>✕</button>
+            <div className="auth-brand">
+              <LotusMark size={32} color="var(--rose-500)" />
+              <span className="brand-name">Latina</span>
+            </div>
+            <h3 style={{ margin: "0 0 8px", fontSize: "var(--ts-4)", fontFamily: "var(--display)" }}>{T.completeTitle}</h3>
+            <p className="auth-tagline">{T.completeMsg}</p>
+            <form className="auth-form" onSubmit={handleProfileSubmit}>
+              <input
+                type="tel"
+                placeholder={T.phone}
+                value={profilePhone}
+                onChange={e => setProfilePhone(e.target.value)}
+                required
+                pattern="0[5-7][0-9]{8}"
+                autoFocus
+              />
+              <PrivacyCheckbox />
+              {error && <div className="auth-error">{error}</div>}
+              <button type="submit" className="btn-primary auth-submit" disabled={loading}>
+                {loading ? <span className="btn-spinner" /> : T.saveBtn}
+              </button>
+            </form>
+          </div>
+        </div>
+      </>
     );
   }
 
   return (
+    <>
+    {showPrivacy && <PrivacyPolicyModal />}
     <div className="modal-backdrop" onClick={onClose}>
       <div className="auth-modal" onClick={e => e.stopPropagation()} dir={lang === "ar" ? "rtl" : "ltr"}>
         <button className="modal-close" onClick={onClose}>✕</button>
@@ -464,6 +643,8 @@ const AuthModal = ({ lang, open, onClose, onLogin, initialStep, resetData }) => 
             </div>
           )}
 
+          {tab === "register" && <PrivacyCheckbox />}
+
           {error && <div className="auth-error">{error}</div>}
 
           <button type="submit" className="btn-primary auth-submit" disabled={loading}>
@@ -488,6 +669,7 @@ const AuthModal = ({ lang, open, onClose, onLogin, initialStep, resetData }) => 
         </div>
       </div>
     </div>
+    </>
   );
 };
 
