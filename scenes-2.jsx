@@ -1540,7 +1540,7 @@ const StoryScene = ({ lang }) => {
   }[lang];
 
   return (
-    <section ref={sceneRef} className="scene scene-story" data-screen-label="05b Story">
+    <section ref={sceneRef} className="scene scene-story" id="our-story" data-screen-label="05b Story">
       <div className="story-inner">
 
         {/* ── Cinematic header ── */}
