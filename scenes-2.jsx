@@ -1574,4 +1574,115 @@ const StoryScene = ({ lang }) => {
   );
 };
 
-Object.assign(window, { RewardsScene, TrustScene, StoryScene, Footer });
+/* ============================================================
+   PACK SCENE — curated outfits / التنسيقات
+   ============================================================ */
+const PackScene = ({ lang, onAddToCart }) => {
+  const [packs, setPacks]   = useState([]);
+  const [loaded, setLoaded] = useState(false);
+  const sceneRef = useRef(null);
+  useSceneProgress(sceneRef);
+
+  useEffect(() => {
+    window.latinaApi.getPacks()
+      .then(data => { setPacks(Array.isArray(data) ? data : []); setLoaded(true); })
+      .catch(() => setLoaded(true));
+  }, []);
+
+  if (!loaded || packs.length === 0) return null;
+
+  const txt = {
+    fr: { eyebrow: "Sélection exclusive", title: "Nos Tenues",  subtitle: "Des ensembles curatés pour vous", save: "Vous économisez", add: "Ajouter le pack", da: "DA" },
+    ar: { eyebrow: "اختيار حصري",        title: "تنسيقاتنا",   subtitle: "مجموعات منتقاة بعناية لك",    save: "توفير",          add: "إضافة التنسيق",   da: "دج" },
+    en: { eyebrow: "Exclusive picks",    title: "Our Sets",    subtitle: "Curated looks, just for you",  save: "You save",       add: "Add to cart",     da: "DA" },
+  }[lang] || { eyebrow: "Sélection exclusive", title: "Nos Tenues", subtitle: "Des ensembles curatés pour vous", save: "Vous économisez", add: "Ajouter le pack", da: "DA" };
+
+  const addPack = (pack) => {
+    if (!pack.items?.length || !onAddToCart) return;
+    pack.items.forEach(item => {
+      const product = {
+        id: item.product_id,
+        name_fr: item.product_name || `Produit ${item.product_id}`,
+        name_ar: item.product_name || `Produit ${item.product_id}`,
+        name_en: item.product_name || `Produit ${item.product_id}`,
+        img: item.image_url,
+      };
+      for (let q = 0; q < (item.quantity || 1); q++) {
+        onAddToCart(product, null, null, item.product_price || 0);
+      }
+    });
+  };
+
+  return (
+    <section className="scene-packs" ref={sceneRef} id="packs">
+      <div className="packs-inner">
+        <div className="packs-header reveal">
+          <span className="packs-eyebrow">{txt.eyebrow}</span>
+          <h2 className="packs-title">{txt.title}</h2>
+          <p className="packs-subtitle">{txt.subtitle}</p>
+        </div>
+        <div className="packs-grid">
+          {packs.map(pack => {
+            const savings  = pack.compare_price ? pack.compare_price - pack.price : 0;
+            const imgs     = (pack.items || []).map(i => i.image_url).filter(Boolean);
+            const packName = lang === "ar" ? (pack.name_ar || pack.name_fr) : pack.name_fr;
+            const packDesc = lang === "ar" ? (pack.description_ar || pack.description_fr) : pack.description_fr;
+            return (
+              <div key={pack.id} className="pack-card reveal">
+                {/* ── image collage ── */}
+                <div className="pack-card-images" data-count={Math.min(imgs.length, 3) || 1}>
+                  {imgs.length === 0
+                    ? <div className="pack-img-placeholder" />
+                    : imgs.slice(0, 3).map((src, idx) => (
+                        <img
+                          key={idx}
+                          src={window.mediaUrl?.(src) || src}
+                          alt=""
+                          className={`pack-img pack-img--${idx}`}
+                        />
+                      ))
+                  }
+                  {savings > 0 && (
+                    <span className="pack-savings-badge">−{savings.toLocaleString()} {txt.da}</span>
+                  )}
+                </div>
+
+                {/* ── body ── */}
+                <div className="pack-card-body">
+                  <h3 className="pack-card-name">{packName}</h3>
+                  {packDesc && <p className="pack-card-desc">{packDesc}</p>}
+
+                  <div className="pack-chips">
+                    {(pack.items || []).map((item, i) => (
+                      <span key={i} className="pack-chip">
+                        {item.product_name || `P${item.product_id}`}
+                        {item.quantity > 1 && <em> ×{item.quantity}</em>}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="pack-card-foot">
+                    <div className="pack-price-block">
+                      <span className="pack-price">{(pack.price || 0).toLocaleString()} {txt.da}</span>
+                      {pack.compare_price > 0 && (
+                        <span className="pack-old-price">{pack.compare_price.toLocaleString()} {txt.da}</span>
+                      )}
+                      {savings > 0 && (
+                        <span className="pack-save-tag">{txt.save} {savings.toLocaleString()} {txt.da}</span>
+                      )}
+                    </div>
+                    <button className="btn-pack-add" onClick={() => addPack(pack)}>
+                      {txt.add}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+Object.assign(window, { RewardsScene, TrustScene, StoryScene, PackScene, Footer });

@@ -308,6 +308,7 @@ const App = () => {
           onProductView={pushRecent}
         />
         <ManifestoScene lang={lang} />
+        <PackScene lang={lang} onAddToCart={handleAddProduct} />
         <SegmentsScene
           lang={lang}
           onEnterSegment={(seg) => {

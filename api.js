@@ -205,6 +205,8 @@ const api = (() => {
   const getRelated    = (id)   => cached(`related:${id}`,   () => get(`/products/${id}/related`), TTL.PRODUCTS);
   const getCategories = ()     => cached("categories",       () => get("/categories"),             TTL.CATEGORY);
   const getReviews    = (pid)  => cached(`reviews:${pid}`,  () => get(`/reviews/${pid}`),         TTL.REVIEW);
+  const getPacks      = () => cached("packs", () => get("/packs"), 2 * 60_000);
+
   const getContest    = (voterToken = null) => {
     const qs   = voterToken ? `?voter_token=${encodeURIComponent(voterToken)}` : "";
     const ckey = `contest:${voterToken || "anon"}`;
@@ -405,7 +407,7 @@ const api = (() => {
     // geo
     getWilayas, getCommunes, getShippingRate,
     // catalogue
-    getProducts, getProduct, getRelated, getCategories, getReviews, getContest,
+    getProducts, getProduct, getRelated, getCategories, getReviews, getPacks, getContest,
     // auth
     register, login, loginGoogle, logout,
     getMe, updateProfile, cancelRegistration, resendVerification, forgotPassword, resetPassword, getProfile,

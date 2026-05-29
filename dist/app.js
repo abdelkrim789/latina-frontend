@@ -263,7 +263,7 @@
         onWishlist: toggleWishlist,
         onProductView: pushRecent
       }
-    ), /* @__PURE__ */ React.createElement(ManifestoScene, { lang }), /* @__PURE__ */ React.createElement(
+    ), /* @__PURE__ */ React.createElement(ManifestoScene, { lang }), /* @__PURE__ */ React.createElement(PackScene, { lang, onAddToCart: handleAddProduct }), /* @__PURE__ */ React.createElement(
       SegmentsScene,
       {
         lang,

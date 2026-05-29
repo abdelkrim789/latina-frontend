@@ -358,6 +358,7 @@ const NAV_ITEMS = [
   { id: "customers",   label: "Clients",      section: null,        icon: <SvgIcon><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></SvgIcon> },
   { id: "coupons",     label: "Coupons",      section: "OFFRES",    icon: <SvgIcon><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></SvgIcon> },
   { id: "flash_sales", label: "Flash Sales",  section: null,        icon: <SvgIcon><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></SvgIcon> },
+  { id: "packs",       label: "Packs",        section: null,        icon: <SvgIcon><rect x="2" y="3" width="9" height="9" rx="1"/><rect x="13" y="3" width="9" height="9" rx="1"/><rect x="2" y="14" width="9" height="9" rx="1"/><rect x="13" y="14" width="9" height="9" rx="1"/></SvgIcon> },
   { id: "contests",    label: "Concours",     section: null,        icon: <SvgIcon><polyline points="8 6 12 2 16 6"/><path d="M8 6H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-3"/><line x1="12" y1="2" x2="12" y2="15"/></SvgIcon> },
   { id: "inventory",   label: "Inventaire",   section: "GESTION",   icon: <SvgIcon><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></SvgIcon> },
   { id: "team",        label: "Équipe",       section: null,        icon: <SvgIcon><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></SvgIcon> },
@@ -4914,10 +4915,295 @@ const Exchanges = () => {
   );
 };
 
+/* ============================================================
+   PACKS — التنسيقات
+   ============================================================ */
+const Packs = () => {
+  const { t } = useLang();
+  const toast = useToast();
+  const [packs, setPacks]       = useState([]);
+  const [loading, setLoading]   = useState(true);
+  const [modal, setModal]       = useState(null); // null | {} (new) | pack (edit)
+  const [saving, setSaving]     = useState(false);
+  const [productSearch, setProductSearch] = useState("");
+  const [productResults, setProductResults] = useState([]);
+  const [searchLoading, setSearchLoading]   = useState(false);
+
+  const emptyForm = { name_fr:"", name_ar:"", name_en:"", description_fr:"", description_ar:"",
+    price:"", compare_price:"", is_active:false, sort_order:0, items:[] };
+  const [form, setForm] = useState(emptyForm);
+  const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+
+  const load = async () => {
+    setLoading(true);
+    try { const r = await latinaApi.admin.get("/packs"); setPacks(Array.isArray(r) ? r : r.data || []); }
+    catch { toast("Erreur chargement", "err"); }
+    finally { setLoading(false); }
+  };
+  useEffect(() => { load(); }, []);
+
+  const searchProducts = async (q) => {
+    if (!q.trim()) { setProductResults([]); return; }
+    setSearchLoading(true);
+    try {
+      const r = await latinaApi.admin.get(`/products?search=${encodeURIComponent(q)}&per_page=10`);
+      setProductResults(Array.isArray(r) ? r : r.data || []);
+    } catch { setProductResults([]); }
+    finally { setSearchLoading(false); }
+  };
+
+  useEffect(() => {
+    const id = setTimeout(() => searchProducts(productSearch), 350);
+    return () => clearTimeout(id);
+  }, [productSearch]);
+
+  const addItemToForm = (product) => {
+    if (form.items.find(i => i.product_id === product.id)) return;
+    set("items", [...form.items, { product_id: product.id, quantity: 1, _name: product.name_fr, _price: product.price, _img: product.primary_image?.url }]);
+    setProductSearch("");
+    setProductResults([]);
+  };
+
+  const removeItem = (pid) => set("items", form.items.filter(i => i.product_id !== pid));
+  const setItemQty = (pid, qty) => set("items", form.items.map(i => i.product_id === pid ? { ...i, quantity: Number(qty) } : i));
+
+  const openNew  = () => { setForm(emptyForm); setModal({}); };
+  const openEdit = (p) => {
+    setForm({
+      name_fr: p.name_fr, name_ar: p.name_ar, name_en: p.name_en || "",
+      description_fr: p.description_fr || "", description_ar: p.description_ar || "",
+      price: p.price, compare_price: p.compare_price || "",
+      is_active: p.is_active, sort_order: p.sort_order || 0,
+      items: (p.items || []).map(i => ({
+        product_id: i.product_id, quantity: i.quantity,
+        _name: i.product?.name_fr, _price: i.product?.price,
+        _img: i.product?.primary_image?.url,
+      })),
+    });
+    setModal(p);
+  };
+
+  const save = async () => {
+    if (!form.name_fr || !form.name_ar || !form.price) { toast("Nom (FR+AR) et prix requis", "err"); return; }
+    if (!form.items.length) { toast("Ajoutez au moins un produit", "err"); return; }
+    setSaving(true);
+    try {
+      const payload = { ...form, price: Number(form.price), compare_price: form.compare_price ? Number(form.compare_price) : null,
+        items: form.items.map(i => ({ product_id: i.product_id, quantity: i.quantity })) };
+      if (modal?.id) await latinaApi.admin.put(`/packs/${modal.id}`, payload);
+      else           await latinaApi.admin.post("/packs", payload);
+      toast(modal?.id ? "Pack mis à jour" : "Pack créé", "ok");
+      setModal(null); load();
+    } catch (e) { toast(e.message || "Erreur", "err"); }
+    finally { setSaving(false); }
+  };
+
+  const toggle = async (pack) => {
+    try {
+      await latinaApi.admin.post(`/packs/${pack.id}/toggle`, {});
+      setPacks(ps => ps.map(p => p.id === pack.id ? { ...p, is_active: !p.is_active } : p));
+      toast(pack.is_active ? "Pack désactivé" : "Pack activé", "ok");
+    } catch { toast("Erreur", "err"); }
+  };
+
+  const destroy = async (id) => {
+    if (!confirm("Supprimer ce pack ?")) return;
+    try { await latinaApi.admin.delete(`/packs/${id}`); toast("Supprimé", "ok"); load(); }
+    catch { toast("Erreur", "err"); }
+  };
+
+  const totalProductPrice = form.items.reduce((s, i) => s + (i._price || 0) * i.quantity, 0);
+
+  return (
+    <div>
+      <div className="admin-toolbar">
+        <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>التنسيقات / Packs</h2>
+        <button className="btn btn-rose ml-auto" onClick={openNew}>+ Nouveau pack</button>
+      </div>
+
+      <div className="admin-card">
+        {loading ? <div className="admin-loading"><div className="admin-spinner" /></div> : (
+          packs.length === 0
+            ? <div style={{ padding: 40, textAlign: "center", color: "#8A7464" }}>Aucun pack. Créez le premier.</div>
+            : <div className="admin-table-wrap">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Pack</th><th>Produits</th><th>Prix pack</th><th>Économie</th><th>Statut</th><th style={{ width: 100 }}></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {packs.map(p => {
+                      const savings = p.compare_price ? p.compare_price - p.price : 0;
+                      return (
+                        <tr key={p.id}>
+                          <td className="t-name" data-label="Pack">
+                            <div style={{ fontWeight: 600 }}>{p.name_fr}</div>
+                            <div style={{ fontSize: 12, color: "#8A7464" }}>{p.name_ar}</div>
+                          </td>
+                          <td data-label="Produits">
+                            <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+                              {(p.items || []).map(item => (
+                                <span key={item.id} style={{ fontSize: 12, background: "var(--cream-200)", borderRadius: 4, padding: "2px 6px" }}>
+                                  {item.product?.name_fr || `P${item.product_id}`} ×{item.quantity}
+                                </span>
+                              ))}
+                            </div>
+                          </td>
+                          <td className="mono text-rose" data-label="Prix">{(p.price||0).toLocaleString("fr-DZ")} DA</td>
+                          <td className="mono" data-label="Économie" style={{ color: savings > 0 ? "#16a34a" : "var(--ink-mute)" }}>
+                            {savings > 0 ? `-${savings.toLocaleString("fr-DZ")} DA` : "—"}
+                          </td>
+                          <td data-label="Statut">
+                            <button
+                              className={`badge ${p.is_active ? "badge-active" : "badge-inactive"}`}
+                              onClick={() => toggle(p)}
+                              style={{ cursor: "pointer", border: "none", fontFamily: "inherit" }}
+                            >
+                              {p.is_active ? "Actif" : "Inactif"}
+                            </button>
+                          </td>
+                          <td data-label="">
+                            <div className="row-actions">
+                              <button className="btn btn-ghost btn-sm" onClick={() => openEdit(p)} title="Modifier">✏️</button>
+                              <button className="btn btn-ghost btn-sm" onClick={() => destroy(p.id)} title="Supprimer">🗑️</button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+        )}
+      </div>
+
+      {/* ── Create / Edit modal ── */}
+      {modal !== null && (
+        <div className="admin-modal-overlay" onClick={() => setModal(null)}>
+          <div className="admin-modal" style={{ maxWidth: 680 }} onClick={e => e.stopPropagation()}>
+            <div className="admin-modal-head">
+              <span className="admin-modal-title">{modal?.id ? "Modifier le pack" : "Nouveau pack"}</span>
+              <button className="admin-modal-close" onClick={() => setModal(null)}>✕</button>
+            </div>
+            <div className="admin-modal-body" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+
+              {/* Names */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                <label className="admin-label">Nom FR *
+                  <input className="admin-input" value={form.name_fr} onChange={e => set("name_fr", e.target.value)} placeholder="Pack Soirée" />
+                </label>
+                <label className="admin-label" dir="rtl">الاسم AR *
+                  <input className="admin-input" value={form.name_ar} onChange={e => set("name_ar", e.target.value)} placeholder="تنسيق السهرة" />
+                </label>
+              </div>
+
+              {/* Descriptions */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                <label className="admin-label">Description FR
+                  <textarea className="admin-input" rows={2} value={form.description_fr} onChange={e => set("description_fr", e.target.value)} placeholder="Escarpins + Sac assorti..." style={{ resize: "vertical" }} />
+                </label>
+                <label className="admin-label" dir="rtl">الوصف AR
+                  <textarea className="admin-input" rows={2} value={form.description_ar} onChange={e => set("description_ar", e.target.value)} style={{ resize: "vertical" }} />
+                </label>
+              </div>
+
+              {/* Prices */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
+                <label className="admin-label">Prix du pack (DA) *
+                  <input className="admin-input mono" type="number" value={form.price} onChange={e => set("price", e.target.value)} placeholder="15000" />
+                </label>
+                <label className="admin-label">Prix barré (DA)
+                  <input className="admin-input mono" type="number" value={form.compare_price} onChange={e => set("compare_price", e.target.value)} placeholder={totalProductPrice || "18000"} />
+                  {totalProductPrice > 0 && <span style={{ fontSize: 11, color: "#8A7464" }}>Total produits: {totalProductPrice.toLocaleString()} DA</span>}
+                </label>
+                <label className="admin-label">Ordre d'affichage
+                  <input className="admin-input mono" type="number" min={0} value={form.sort_order} onChange={e => set("sort_order", e.target.value)} />
+                </label>
+              </div>
+
+              {/* Product picker */}
+              <div>
+                <div className="admin-label" style={{ marginBottom: 6 }}>Produits du pack *</div>
+                <div style={{ position: "relative" }}>
+                  <input
+                    className="admin-input"
+                    value={productSearch}
+                    onChange={e => setProductSearch(e.target.value)}
+                    placeholder="Rechercher un produit à ajouter…"
+                  />
+                  {(productResults.length > 0 || searchLoading) && (
+                    <div style={{ position: "absolute", zIndex: 50, top: "100%", left: 0, right: 0, background: "#fff", border: "1px solid var(--cream-300)", borderRadius: 8, boxShadow: "0 4px 16px rgba(0,0,0,.1)", maxHeight: 220, overflowY: "auto" }}>
+                      {searchLoading && <div style={{ padding: "10px 14px", color: "#8A7464", fontSize: 13 }}>Recherche…</div>}
+                      {productResults.map(p => (
+                        <div
+                          key={p.id}
+                          onClick={() => addItemToForm(p)}
+                          style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 14px", cursor: "pointer", borderBottom: "1px solid var(--cream-200)" }}
+                          onMouseEnter={e => e.currentTarget.style.background = "var(--cream-100)"}
+                          onMouseLeave={e => e.currentTarget.style.background = ""}
+                        >
+                          {p.primary_image?.url && <img src={window.mediaUrl?.(p.primary_image.url) || p.primary_image.url} style={{ width: 32, height: 32, objectFit: "cover", borderRadius: 4 }} />}
+                          <div>
+                            <div style={{ fontWeight: 600, fontSize: 13 }}>{p.name_fr}</div>
+                            <div style={{ fontSize: 11, color: "#8A7464" }}>{(p.price||0).toLocaleString()} DA · SKU {p.sku}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Selected items */}
+                {form.items.length > 0 && (
+                  <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 6 }}>
+                    {form.items.map(item => (
+                      <div key={item.product_id} style={{ display: "flex", alignItems: "center", gap: 10, background: "var(--cream-100)", borderRadius: 8, padding: "6px 12px" }}>
+                        {item._img && <img src={window.mediaUrl?.(item._img) || item._img} style={{ width: 36, height: 36, objectFit: "cover", borderRadius: 4 }} />}
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontWeight: 600, fontSize: 13 }}>{item._name}</div>
+                          <div style={{ fontSize: 11, color: "#8A7464" }}>{(item._price||0).toLocaleString()} DA / unité</div>
+                        </div>
+                        <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13 }}>
+                          Qté
+                          <input type="number" min={1} max={10} value={item.quantity}
+                            onChange={e => setItemQty(item.product_id, e.target.value)}
+                            style={{ width: 52, padding: "4px 8px", border: "1px solid var(--cream-300)", borderRadius: 6, fontFamily: "inherit", textAlign: "center" }} />
+                        </label>
+                        <button onClick={() => removeItem(item.product_id)} style={{ background: "none", border: "none", cursor: "pointer", color: "#8A7464", fontSize: 16 }}>✕</button>
+                      </div>
+                    ))}
+                    <div style={{ fontSize: 12, color: "#8A7464", textAlign: "right" }}>
+                      Total produits individuels: <strong>{totalProductPrice.toLocaleString()} DA</strong>
+                      {form.price && Number(form.price) < totalProductPrice && (
+                        <span style={{ color: "#16a34a", marginLeft: 8 }}>→ économie de {(totalProductPrice - Number(form.price)).toLocaleString()} DA</span>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Active toggle */}
+              <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", userSelect: "none" }}>
+                <input type="checkbox" checked={form.is_active} onChange={e => set("is_active", e.target.checked)} style={{ width: 16, height: 16, accentColor: "var(--rose-500)" }} />
+                <span style={{ fontWeight: 600 }}>Activer immédiatement (visible côté client)</span>
+              </label>
+            </div>
+            <div className="admin-modal-foot">
+              <button className="btn btn-ghost" onClick={() => setModal(null)}>Annuler</button>
+              <button className="btn btn-rose" onClick={save} disabled={saving}>{saving ? "Enregistrement…" : (modal?.id ? "Mettre à jour" : "Créer le pack")}</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const PAGE_TITLES_FR = {
   dashboard: "Dashboard", products: "Produits", categories: "Catégories",
   orders: "Commandes", reservations: "Réservations", customers: "Clients", coupons: "Coupons",
-  flash_sales: "Flash Sales", contests: "Concours",
+  flash_sales: "Flash Sales", contests: "Concours", packs: "Packs / التنسيقات",
   inventory: "Inventaire", team: "Équipe",
   reports: "Rapports", audit: "Journal d'audit",
   support: "Support & Tickets",
@@ -4928,7 +5214,7 @@ const getPageTitle = (pageId, t) => t(PAGE_TITLES_FR[pageId] || pageId);
 const PAGE_COMPONENTS = {
   dashboard: Dashboard, products: Products, categories: Categories,
   orders: Orders, reservations: Reservations, customers: Customers, coupons: Coupons,
-  flash_sales: FlashSales, contests: Contests,
+  flash_sales: FlashSales, contests: Contests, packs: Packs,
   inventory: Inventory, team: Team,
   reports: Reports, audit: Audit,
   support: Support,

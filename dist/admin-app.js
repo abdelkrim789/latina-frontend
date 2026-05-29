@@ -448,6 +448,7 @@
     { id: "customers", label: "Clients", section: null, icon: /* @__PURE__ */ React.createElement(SvgIcon, null, /* @__PURE__ */ React.createElement("path", { d: "M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" }), /* @__PURE__ */ React.createElement("circle", { cx: "9", cy: "7", r: "4" }), /* @__PURE__ */ React.createElement("path", { d: "M23 21v-2a4 4 0 00-3-3.87" }), /* @__PURE__ */ React.createElement("path", { d: "M16 3.13a4 4 0 010 7.75" })) },
     { id: "coupons", label: "Coupons", section: "OFFRES", icon: /* @__PURE__ */ React.createElement(SvgIcon, null, /* @__PURE__ */ React.createElement("path", { d: "M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z" }), /* @__PURE__ */ React.createElement("line", { x1: "7", y1: "7", x2: "7.01", y2: "7" })) },
     { id: "flash_sales", label: "Flash Sales", section: null, icon: /* @__PURE__ */ React.createElement(SvgIcon, null, /* @__PURE__ */ React.createElement("polygon", { points: "13 2 3 14 12 14 11 22 21 10 12 10 13 2" })) },
+    { id: "packs", label: "Packs", section: null, icon: /* @__PURE__ */ React.createElement(SvgIcon, null, /* @__PURE__ */ React.createElement("rect", { x: "2", y: "3", width: "9", height: "9", rx: "1" }), /* @__PURE__ */ React.createElement("rect", { x: "13", y: "3", width: "9", height: "9", rx: "1" }), /* @__PURE__ */ React.createElement("rect", { x: "2", y: "14", width: "9", height: "9", rx: "1" }), /* @__PURE__ */ React.createElement("rect", { x: "13", y: "14", width: "9", height: "9", rx: "1" })) },
     { id: "contests", label: "Concours", section: null, icon: /* @__PURE__ */ React.createElement(SvgIcon, null, /* @__PURE__ */ React.createElement("polyline", { points: "8 6 12 2 16 6" }), /* @__PURE__ */ React.createElement("path", { d: "M8 6H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-3" }), /* @__PURE__ */ React.createElement("line", { x1: "12", y1: "2", x2: "12", y2: "15" })) },
     { id: "inventory", label: "Inventaire", section: "GESTION", icon: /* @__PURE__ */ React.createElement(SvgIcon, null, /* @__PURE__ */ React.createElement("line", { x1: "8", y1: "6", x2: "21", y2: "6" }), /* @__PURE__ */ React.createElement("line", { x1: "8", y1: "12", x2: "21", y2: "12" }), /* @__PURE__ */ React.createElement("line", { x1: "8", y1: "18", x2: "21", y2: "18" }), /* @__PURE__ */ React.createElement("line", { x1: "3", y1: "6", x2: "3.01", y2: "6" }), /* @__PURE__ */ React.createElement("line", { x1: "3", y1: "12", x2: "3.01", y2: "12" }), /* @__PURE__ */ React.createElement("line", { x1: "3", y1: "18", x2: "3.01", y2: "18" })) },
     { id: "team", label: "\xC9quipe", section: null, icon: /* @__PURE__ */ React.createElement(SvgIcon, null, /* @__PURE__ */ React.createElement("rect", { x: "3", y: "11", width: "18", height: "11", rx: "2" }), /* @__PURE__ */ React.createElement("path", { d: "M7 11V7a5 5 0 0110 0v4" })) },
@@ -2810,6 +2811,186 @@ Nouveau stock pour "${product.name_fr}":`, String(product.stock));
       }
     ));
   };
+  var Packs = () => {
+    const { t } = useLang();
+    const toast = useToast();
+    const [packs, setPacks] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [modal, setModal] = useState(null);
+    const [saving, setSaving] = useState(false);
+    const [productSearch, setProductSearch] = useState("");
+    const [productResults, setProductResults] = useState([]);
+    const [searchLoading, setSearchLoading] = useState(false);
+    const emptyForm = {
+      name_fr: "",
+      name_ar: "",
+      name_en: "",
+      description_fr: "",
+      description_ar: "",
+      price: "",
+      compare_price: "",
+      is_active: false,
+      sort_order: 0,
+      items: []
+    };
+    const [form, setForm] = useState(emptyForm);
+    const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
+    const load = async () => {
+      setLoading(true);
+      try {
+        const r = await latinaApi.admin.get("/packs");
+        setPacks(Array.isArray(r) ? r : r.data || []);
+      } catch {
+        toast("Erreur chargement", "err");
+      } finally {
+        setLoading(false);
+      }
+    };
+    useEffect(() => {
+      load();
+    }, []);
+    const searchProducts = async (q) => {
+      if (!q.trim()) {
+        setProductResults([]);
+        return;
+      }
+      setSearchLoading(true);
+      try {
+        const r = await latinaApi.admin.get(`/products?search=${encodeURIComponent(q)}&per_page=10`);
+        setProductResults(Array.isArray(r) ? r : r.data || []);
+      } catch {
+        setProductResults([]);
+      } finally {
+        setSearchLoading(false);
+      }
+    };
+    useEffect(() => {
+      const id = setTimeout(() => searchProducts(productSearch), 350);
+      return () => clearTimeout(id);
+    }, [productSearch]);
+    const addItemToForm = (product) => {
+      if (form.items.find((i) => i.product_id === product.id)) return;
+      set("items", [...form.items, { product_id: product.id, quantity: 1, _name: product.name_fr, _price: product.price, _img: product.primary_image?.url }]);
+      setProductSearch("");
+      setProductResults([]);
+    };
+    const removeItem = (pid) => set("items", form.items.filter((i) => i.product_id !== pid));
+    const setItemQty = (pid, qty) => set("items", form.items.map((i) => i.product_id === pid ? { ...i, quantity: Number(qty) } : i));
+    const openNew = () => {
+      setForm(emptyForm);
+      setModal({});
+    };
+    const openEdit = (p) => {
+      setForm({
+        name_fr: p.name_fr,
+        name_ar: p.name_ar,
+        name_en: p.name_en || "",
+        description_fr: p.description_fr || "",
+        description_ar: p.description_ar || "",
+        price: p.price,
+        compare_price: p.compare_price || "",
+        is_active: p.is_active,
+        sort_order: p.sort_order || 0,
+        items: (p.items || []).map((i) => ({
+          product_id: i.product_id,
+          quantity: i.quantity,
+          _name: i.product?.name_fr,
+          _price: i.product?.price,
+          _img: i.product?.primary_image?.url
+        }))
+      });
+      setModal(p);
+    };
+    const save = async () => {
+      if (!form.name_fr || !form.name_ar || !form.price) {
+        toast("Nom (FR+AR) et prix requis", "err");
+        return;
+      }
+      if (!form.items.length) {
+        toast("Ajoutez au moins un produit", "err");
+        return;
+      }
+      setSaving(true);
+      try {
+        const payload = {
+          ...form,
+          price: Number(form.price),
+          compare_price: form.compare_price ? Number(form.compare_price) : null,
+          items: form.items.map((i) => ({ product_id: i.product_id, quantity: i.quantity }))
+        };
+        if (modal?.id) await latinaApi.admin.put(`/packs/${modal.id}`, payload);
+        else await latinaApi.admin.post("/packs", payload);
+        toast(modal?.id ? "Pack mis \xE0 jour" : "Pack cr\xE9\xE9", "ok");
+        setModal(null);
+        load();
+      } catch (e) {
+        toast(e.message || "Erreur", "err");
+      } finally {
+        setSaving(false);
+      }
+    };
+    const toggle = async (pack) => {
+      try {
+        await latinaApi.admin.post(`/packs/${pack.id}/toggle`, {});
+        setPacks((ps) => ps.map((p) => p.id === pack.id ? { ...p, is_active: !p.is_active } : p));
+        toast(pack.is_active ? "Pack d\xE9sactiv\xE9" : "Pack activ\xE9", "ok");
+      } catch {
+        toast("Erreur", "err");
+      }
+    };
+    const destroy = async (id) => {
+      if (!confirm("Supprimer ce pack ?")) return;
+      try {
+        await latinaApi.admin.delete(`/packs/${id}`);
+        toast("Supprim\xE9", "ok");
+        load();
+      } catch {
+        toast("Erreur", "err");
+      }
+    };
+    const totalProductPrice = form.items.reduce((s, i) => s + (i._price || 0) * i.quantity, 0);
+    return /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "admin-toolbar" }, /* @__PURE__ */ React.createElement("h2", { style: { margin: 0, fontSize: 18, fontWeight: 700 } }, "\u0627\u0644\u062A\u0646\u0633\u064A\u0642\u0627\u062A / Packs"), /* @__PURE__ */ React.createElement("button", { className: "btn btn-rose ml-auto", onClick: openNew }, "+ Nouveau pack")), /* @__PURE__ */ React.createElement("div", { className: "admin-card" }, loading ? /* @__PURE__ */ React.createElement("div", { className: "admin-loading" }, /* @__PURE__ */ React.createElement("div", { className: "admin-spinner" })) : packs.length === 0 ? /* @__PURE__ */ React.createElement("div", { style: { padding: 40, textAlign: "center", color: "#8A7464" } }, "Aucun pack. Cr\xE9ez le premier.") : /* @__PURE__ */ React.createElement("div", { className: "admin-table-wrap" }, /* @__PURE__ */ React.createElement("table", { className: "admin-table" }, /* @__PURE__ */ React.createElement("thead", null, /* @__PURE__ */ React.createElement("tr", null, /* @__PURE__ */ React.createElement("th", null, "Pack"), /* @__PURE__ */ React.createElement("th", null, "Produits"), /* @__PURE__ */ React.createElement("th", null, "Prix pack"), /* @__PURE__ */ React.createElement("th", null, "\xC9conomie"), /* @__PURE__ */ React.createElement("th", null, "Statut"), /* @__PURE__ */ React.createElement("th", { style: { width: 100 } }))), /* @__PURE__ */ React.createElement("tbody", null, packs.map((p) => {
+      const savings = p.compare_price ? p.compare_price - p.price : 0;
+      return /* @__PURE__ */ React.createElement("tr", { key: p.id }, /* @__PURE__ */ React.createElement("td", { className: "t-name", "data-label": "Pack" }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: 600 } }, p.name_fr), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, color: "#8A7464" } }, p.name_ar)), /* @__PURE__ */ React.createElement("td", { "data-label": "Produits" }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 4, flexWrap: "wrap" } }, (p.items || []).map((item) => /* @__PURE__ */ React.createElement("span", { key: item.id, style: { fontSize: 12, background: "var(--cream-200)", borderRadius: 4, padding: "2px 6px" } }, item.product?.name_fr || `P${item.product_id}`, " \xD7", item.quantity)))), /* @__PURE__ */ React.createElement("td", { className: "mono text-rose", "data-label": "Prix" }, (p.price || 0).toLocaleString("fr-DZ"), " DA"), /* @__PURE__ */ React.createElement("td", { className: "mono", "data-label": "\xC9conomie", style: { color: savings > 0 ? "#16a34a" : "var(--ink-mute)" } }, savings > 0 ? `-${savings.toLocaleString("fr-DZ")} DA` : "\u2014"), /* @__PURE__ */ React.createElement("td", { "data-label": "Statut" }, /* @__PURE__ */ React.createElement(
+        "button",
+        {
+          className: `badge ${p.is_active ? "badge-active" : "badge-inactive"}`,
+          onClick: () => toggle(p),
+          style: { cursor: "pointer", border: "none", fontFamily: "inherit" }
+        },
+        p.is_active ? "Actif" : "Inactif"
+      )), /* @__PURE__ */ React.createElement("td", { "data-label": "" }, /* @__PURE__ */ React.createElement("div", { className: "row-actions" }, /* @__PURE__ */ React.createElement("button", { className: "btn btn-ghost btn-sm", onClick: () => openEdit(p), title: "Modifier" }, "\u270F\uFE0F"), /* @__PURE__ */ React.createElement("button", { className: "btn btn-ghost btn-sm", onClick: () => destroy(p.id), title: "Supprimer" }, "\u{1F5D1}\uFE0F"))));
+    }))))), modal !== null && /* @__PURE__ */ React.createElement("div", { className: "admin-modal-overlay", onClick: () => setModal(null) }, /* @__PURE__ */ React.createElement("div", { className: "admin-modal", style: { maxWidth: 680 }, onClick: (e) => e.stopPropagation() }, /* @__PURE__ */ React.createElement("div", { className: "admin-modal-head" }, /* @__PURE__ */ React.createElement("span", { className: "admin-modal-title" }, modal?.id ? "Modifier le pack" : "Nouveau pack"), /* @__PURE__ */ React.createElement("button", { className: "admin-modal-close", onClick: () => setModal(null) }, "\u2715")), /* @__PURE__ */ React.createElement("div", { className: "admin-modal-body", style: { display: "flex", flexDirection: "column", gap: 16 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 } }, /* @__PURE__ */ React.createElement("label", { className: "admin-label" }, "Nom FR *", /* @__PURE__ */ React.createElement("input", { className: "admin-input", value: form.name_fr, onChange: (e) => set("name_fr", e.target.value), placeholder: "Pack Soir\xE9e" })), /* @__PURE__ */ React.createElement("label", { className: "admin-label", dir: "rtl" }, "\u0627\u0644\u0627\u0633\u0645 AR *", /* @__PURE__ */ React.createElement("input", { className: "admin-input", value: form.name_ar, onChange: (e) => set("name_ar", e.target.value), placeholder: "\u062A\u0646\u0633\u064A\u0642 \u0627\u0644\u0633\u0647\u0631\u0629" }))), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 } }, /* @__PURE__ */ React.createElement("label", { className: "admin-label" }, "Description FR", /* @__PURE__ */ React.createElement("textarea", { className: "admin-input", rows: 2, value: form.description_fr, onChange: (e) => set("description_fr", e.target.value), placeholder: "Escarpins + Sac assorti...", style: { resize: "vertical" } })), /* @__PURE__ */ React.createElement("label", { className: "admin-label", dir: "rtl" }, "\u0627\u0644\u0648\u0635\u0641 AR", /* @__PURE__ */ React.createElement("textarea", { className: "admin-input", rows: 2, value: form.description_ar, onChange: (e) => set("description_ar", e.target.value), style: { resize: "vertical" } }))), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 } }, /* @__PURE__ */ React.createElement("label", { className: "admin-label" }, "Prix du pack (DA) *", /* @__PURE__ */ React.createElement("input", { className: "admin-input mono", type: "number", value: form.price, onChange: (e) => set("price", e.target.value), placeholder: "15000" })), /* @__PURE__ */ React.createElement("label", { className: "admin-label" }, "Prix barr\xE9 (DA)", /* @__PURE__ */ React.createElement("input", { className: "admin-input mono", type: "number", value: form.compare_price, onChange: (e) => set("compare_price", e.target.value), placeholder: totalProductPrice || "18000" }), totalProductPrice > 0 && /* @__PURE__ */ React.createElement("span", { style: { fontSize: 11, color: "#8A7464" } }, "Total produits: ", totalProductPrice.toLocaleString(), " DA")), /* @__PURE__ */ React.createElement("label", { className: "admin-label" }, "Ordre d'affichage", /* @__PURE__ */ React.createElement("input", { className: "admin-input mono", type: "number", min: 0, value: form.sort_order, onChange: (e) => set("sort_order", e.target.value) }))), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "admin-label", style: { marginBottom: 6 } }, "Produits du pack *"), /* @__PURE__ */ React.createElement("div", { style: { position: "relative" } }, /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        className: "admin-input",
+        value: productSearch,
+        onChange: (e) => setProductSearch(e.target.value),
+        placeholder: "Rechercher un produit \xE0 ajouter\u2026"
+      }
+    ), (productResults.length > 0 || searchLoading) && /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", zIndex: 50, top: "100%", left: 0, right: 0, background: "#fff", border: "1px solid var(--cream-300)", borderRadius: 8, boxShadow: "0 4px 16px rgba(0,0,0,.1)", maxHeight: 220, overflowY: "auto" } }, searchLoading && /* @__PURE__ */ React.createElement("div", { style: { padding: "10px 14px", color: "#8A7464", fontSize: 13 } }, "Recherche\u2026"), productResults.map((p) => /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        key: p.id,
+        onClick: () => addItemToForm(p),
+        style: { display: "flex", alignItems: "center", gap: 10, padding: "8px 14px", cursor: "pointer", borderBottom: "1px solid var(--cream-200)" },
+        onMouseEnter: (e) => e.currentTarget.style.background = "var(--cream-100)",
+        onMouseLeave: (e) => e.currentTarget.style.background = ""
+      },
+      p.primary_image?.url && /* @__PURE__ */ React.createElement("img", { src: window.mediaUrl?.(p.primary_image.url) || p.primary_image.url, style: { width: 32, height: 32, objectFit: "cover", borderRadius: 4 } }),
+      /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: 600, fontSize: 13 } }, p.name_fr), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 11, color: "#8A7464" } }, (p.price || 0).toLocaleString(), " DA \xB7 SKU ", p.sku))
+    )))), form.items.length > 0 && /* @__PURE__ */ React.createElement("div", { style: { marginTop: 10, display: "flex", flexDirection: "column", gap: 6 } }, form.items.map((item) => /* @__PURE__ */ React.createElement("div", { key: item.product_id, style: { display: "flex", alignItems: "center", gap: 10, background: "var(--cream-100)", borderRadius: 8, padding: "6px 12px" } }, item._img && /* @__PURE__ */ React.createElement("img", { src: window.mediaUrl?.(item._img) || item._img, style: { width: 36, height: 36, objectFit: "cover", borderRadius: 4 } }), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: 600, fontSize: 13 } }, item._name), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 11, color: "#8A7464" } }, (item._price || 0).toLocaleString(), " DA / unit\xE9")), /* @__PURE__ */ React.createElement("label", { style: { display: "flex", alignItems: "center", gap: 6, fontSize: 13 } }, "Qt\xE9", /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        type: "number",
+        min: 1,
+        max: 10,
+        value: item.quantity,
+        onChange: (e) => setItemQty(item.product_id, e.target.value),
+        style: { width: 52, padding: "4px 8px", border: "1px solid var(--cream-300)", borderRadius: 6, fontFamily: "inherit", textAlign: "center" }
+      }
+    )), /* @__PURE__ */ React.createElement("button", { onClick: () => removeItem(item.product_id), style: { background: "none", border: "none", cursor: "pointer", color: "#8A7464", fontSize: 16 } }, "\u2715"))), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, color: "#8A7464", textAlign: "right" } }, "Total produits individuels: ", /* @__PURE__ */ React.createElement("strong", null, totalProductPrice.toLocaleString(), " DA"), form.price && Number(form.price) < totalProductPrice && /* @__PURE__ */ React.createElement("span", { style: { color: "#16a34a", marginLeft: 8 } }, "\u2192 \xE9conomie de ", (totalProductPrice - Number(form.price)).toLocaleString(), " DA")))), /* @__PURE__ */ React.createElement("label", { style: { display: "flex", alignItems: "center", gap: 10, cursor: "pointer", userSelect: "none" } }, /* @__PURE__ */ React.createElement("input", { type: "checkbox", checked: form.is_active, onChange: (e) => set("is_active", e.target.checked), style: { width: 16, height: 16, accentColor: "var(--rose-500)" } }), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: 600 } }, "Activer imm\xE9diatement (visible c\xF4t\xE9 client)"))), /* @__PURE__ */ React.createElement("div", { className: "admin-modal-foot" }, /* @__PURE__ */ React.createElement("button", { className: "btn btn-ghost", onClick: () => setModal(null) }, "Annuler"), /* @__PURE__ */ React.createElement("button", { className: "btn btn-rose", onClick: save, disabled: saving }, saving ? "Enregistrement\u2026" : modal?.id ? "Mettre \xE0 jour" : "Cr\xE9er le pack")))));
+  };
   var PAGE_TITLES_FR = {
     dashboard: "Dashboard",
     products: "Produits",
@@ -2820,6 +3001,7 @@ Nouveau stock pour "${product.name_fr}":`, String(product.stock));
     coupons: "Coupons",
     flash_sales: "Flash Sales",
     contests: "Concours",
+    packs: "Packs / \u0627\u0644\u062A\u0646\u0633\u064A\u0642\u0627\u062A",
     inventory: "Inventaire",
     team: "\xC9quipe",
     reports: "Rapports",
@@ -2838,6 +3020,7 @@ Nouveau stock pour "${product.name_fr}":`, String(product.stock));
     coupons: Coupons,
     flash_sales: FlashSales,
     contests: Contests,
+    packs: Packs,
     inventory: Inventory,
     team: Team,
     reports: Reports,

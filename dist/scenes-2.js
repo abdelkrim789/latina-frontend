@@ -1257,5 +1257,53 @@
     }[lang];
     return /* @__PURE__ */ React.createElement("section", { ref: sceneRef, className: "scene scene-story", id: "our-story", "data-screen-label": "05b Story" }, /* @__PURE__ */ React.createElement("div", { className: "story-inner" }, /* @__PURE__ */ React.createElement("div", { className: "story-header reveal" }, /* @__PURE__ */ React.createElement("div", { className: "label", style: { color: "var(--rose-400)", marginBottom: 28 } }, t.label), /* @__PURE__ */ React.createElement("div", { className: "story-hero-count" }, /* @__PURE__ */ React.createElement("span", { ref: numberRef, className: "story-big-number" }, "0"), /* @__PURE__ */ React.createElement("span", { className: "story-years-badge" }, t.yearsLabel)), /* @__PURE__ */ React.createElement("p", { className: "story-sub" }, t.sub)), /* @__PURE__ */ React.createElement("div", { className: "story-timeline" }, /* @__PURE__ */ React.createElement("div", { className: "story-vline" }), t.chapters.map((ch, i) => /* @__PURE__ */ React.createElement("div", { key: i, className: `story-chapter story-chapter--${ch.side}` }, /* @__PURE__ */ React.createElement("div", { className: "story-dot" }), /* @__PURE__ */ React.createElement("div", { className: "story-chapter-inner" }, /* @__PURE__ */ React.createElement("div", { className: "story-chapter-year" }, ch.year), /* @__PURE__ */ React.createElement("h3", { className: "story-chapter-accent" }, '"', ch.accent, '"'), /* @__PURE__ */ React.createElement("p", { className: "story-chapter-body" }, ch.body)))))));
   };
-  Object.assign(window, { RewardsScene, TrustScene, StoryScene, Footer });
+  var PackScene = ({ lang, onAddToCart }) => {
+    const [packs, setPacks] = useState([]);
+    const [loaded, setLoaded] = useState(false);
+    const sceneRef = useRef(null);
+    useSceneProgress(sceneRef);
+    useEffect(() => {
+      window.latinaApi.getPacks().then((data) => {
+        setPacks(Array.isArray(data) ? data : []);
+        setLoaded(true);
+      }).catch(() => setLoaded(true));
+    }, []);
+    if (!loaded || packs.length === 0) return null;
+    const txt = {
+      fr: { eyebrow: "S\xE9lection exclusive", title: "Nos Tenues", subtitle: "Des ensembles curat\xE9s pour vous", save: "Vous \xE9conomisez", add: "Ajouter le pack", da: "DA" },
+      ar: { eyebrow: "\u0627\u062E\u062A\u064A\u0627\u0631 \u062D\u0635\u0631\u064A", title: "\u062A\u0646\u0633\u064A\u0642\u0627\u062A\u0646\u0627", subtitle: "\u0645\u062C\u0645\u0648\u0639\u0627\u062A \u0645\u0646\u062A\u0642\u0627\u0629 \u0628\u0639\u0646\u0627\u064A\u0629 \u0644\u0643", save: "\u062A\u0648\u0641\u064A\u0631", add: "\u0625\u0636\u0627\u0641\u0629 \u0627\u0644\u062A\u0646\u0633\u064A\u0642", da: "\u062F\u062C" },
+      en: { eyebrow: "Exclusive picks", title: "Our Sets", subtitle: "Curated looks, just for you", save: "You save", add: "Add to cart", da: "DA" }
+    }[lang] || { eyebrow: "S\xE9lection exclusive", title: "Nos Tenues", subtitle: "Des ensembles curat\xE9s pour vous", save: "Vous \xE9conomisez", add: "Ajouter le pack", da: "DA" };
+    const addPack = (pack) => {
+      if (!pack.items?.length || !onAddToCart) return;
+      pack.items.forEach((item) => {
+        const product = {
+          id: item.product_id,
+          name_fr: item.product_name || `Produit ${item.product_id}`,
+          name_ar: item.product_name || `Produit ${item.product_id}`,
+          name_en: item.product_name || `Produit ${item.product_id}`,
+          img: item.image_url
+        };
+        for (let q = 0; q < (item.quantity || 1); q++) {
+          onAddToCart(product, null, null, item.product_price || 0);
+        }
+      });
+    };
+    return /* @__PURE__ */ React.createElement("section", { className: "scene-packs", ref: sceneRef, id: "packs" }, /* @__PURE__ */ React.createElement("div", { className: "packs-inner" }, /* @__PURE__ */ React.createElement("div", { className: "packs-header reveal" }, /* @__PURE__ */ React.createElement("span", { className: "packs-eyebrow" }, txt.eyebrow), /* @__PURE__ */ React.createElement("h2", { className: "packs-title" }, txt.title), /* @__PURE__ */ React.createElement("p", { className: "packs-subtitle" }, txt.subtitle)), /* @__PURE__ */ React.createElement("div", { className: "packs-grid" }, packs.map((pack) => {
+      const savings = pack.compare_price ? pack.compare_price - pack.price : 0;
+      const imgs = (pack.items || []).map((i) => i.image_url).filter(Boolean);
+      const packName = lang === "ar" ? pack.name_ar || pack.name_fr : pack.name_fr;
+      const packDesc = lang === "ar" ? pack.description_ar || pack.description_fr : pack.description_fr;
+      return /* @__PURE__ */ React.createElement("div", { key: pack.id, className: "pack-card reveal" }, /* @__PURE__ */ React.createElement("div", { className: "pack-card-images", "data-count": Math.min(imgs.length, 3) || 1 }, imgs.length === 0 ? /* @__PURE__ */ React.createElement("div", { className: "pack-img-placeholder" }) : imgs.slice(0, 3).map((src, idx) => /* @__PURE__ */ React.createElement(
+        "img",
+        {
+          key: idx,
+          src: window.mediaUrl?.(src) || src,
+          alt: "",
+          className: `pack-img pack-img--${idx}`
+        }
+      )), savings > 0 && /* @__PURE__ */ React.createElement("span", { className: "pack-savings-badge" }, "\u2212", savings.toLocaleString(), " ", txt.da)), /* @__PURE__ */ React.createElement("div", { className: "pack-card-body" }, /* @__PURE__ */ React.createElement("h3", { className: "pack-card-name" }, packName), packDesc && /* @__PURE__ */ React.createElement("p", { className: "pack-card-desc" }, packDesc), /* @__PURE__ */ React.createElement("div", { className: "pack-chips" }, (pack.items || []).map((item, i) => /* @__PURE__ */ React.createElement("span", { key: i, className: "pack-chip" }, item.product_name || `P${item.product_id}`, item.quantity > 1 && /* @__PURE__ */ React.createElement("em", null, " \xD7", item.quantity)))), /* @__PURE__ */ React.createElement("div", { className: "pack-card-foot" }, /* @__PURE__ */ React.createElement("div", { className: "pack-price-block" }, /* @__PURE__ */ React.createElement("span", { className: "pack-price" }, (pack.price || 0).toLocaleString(), " ", txt.da), pack.compare_price > 0 && /* @__PURE__ */ React.createElement("span", { className: "pack-old-price" }, pack.compare_price.toLocaleString(), " ", txt.da), savings > 0 && /* @__PURE__ */ React.createElement("span", { className: "pack-save-tag" }, txt.save, " ", savings.toLocaleString(), " ", txt.da)), /* @__PURE__ */ React.createElement("button", { className: "btn-pack-add", onClick: () => addPack(pack) }, txt.add))));
+    }))));
+  };
+  Object.assign(window, { RewardsScene, TrustScene, StoryScene, PackScene, Footer });
 })();
