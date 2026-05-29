@@ -70,7 +70,7 @@ const HeroScene = ({ lang, onAdd }) => {
             </h1>
             <p className="hero-sub">{t.sub}</p>
             <div className="hero-ctas">
-              <button className="btn-primary">{t.cta1}</button>
+              <button className="btn-primary" onClick={() => document.getElementById('collection')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>{t.cta1}</button>
               <button className="btn-ghost" onClick={() => document.getElementById('our-story')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>{t.cta2}</button>
             </div>
             <div className="hero-stat-grid">
