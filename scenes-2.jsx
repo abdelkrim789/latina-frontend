@@ -1464,6 +1464,9 @@ const StoryScene = ({ lang }) => {
   const [counted, setCounted] = useState(false);
   useSceneProgress(sceneRef);
 
+  /* Reset counted when language changes so the counter can re-run */
+  useEffect(() => { setCounted(false); }, [lang]);
+
   /* Count 0 → 22 when the number enters view */
   useEffect(() => {
     const el = numberRef.current;
@@ -1487,7 +1490,8 @@ const StoryScene = ({ lang }) => {
     return () => obs.disconnect();
   }, [counted]);
 
-  /* Slide-in each chapter from its side as it enters the viewport */
+  /* Slide-in each chapter from its side as it enters the viewport.
+     Re-runs on lang change because new DOM nodes are created on re-render. */
   useEffect(() => {
     const chapters = sceneRef.current?.querySelectorAll('.story-chapter');
     if (!chapters?.length) return;
@@ -1498,7 +1502,7 @@ const StoryScene = ({ lang }) => {
     }, { threshold: 0.05, rootMargin: "0px 0px -60px 0px" });
     chapters.forEach(c => obs.observe(c));
     return () => obs.disconnect();
-  }, []);
+  }, [lang]);
 
   const t = {
     fr: {

@@ -1183,6 +1183,9 @@
     const [counted, setCounted] = useState(false);
     useSceneProgress(sceneRef);
     useEffect(() => {
+      setCounted(false);
+    }, [lang]);
+    useEffect(() => {
       const el = numberRef.current;
       if (!el || counted) return;
       const obs = new IntersectionObserver(([entry]) => {
@@ -1216,7 +1219,7 @@
       }, { threshold: 0.05, rootMargin: "0px 0px -60px 0px" });
       chapters.forEach((c) => obs.observe(c));
       return () => obs.disconnect();
-    }, []);
+    }, [lang]);
     const t = {
       fr: {
         label: "Notre histoire",
