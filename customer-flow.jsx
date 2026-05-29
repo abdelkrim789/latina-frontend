@@ -549,17 +549,26 @@ const AuthModal = ({ lang, open, onClose, onLogin, initialStep, resetData }) => 
   );
 
   const PrivacyCheckbox = () => (
-    <label style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--ts-0)", color: "var(--text-2)", cursor: "pointer", lineHeight: 1.5, width: "100%", marginTop: 4 }}>
-      <input type="checkbox" checked={privacyAccepted} onChange={e => setPrivacyAccepted(e.target.checked)}
-        style={{ marginTop: 3, accentColor: "var(--rose-500)", flexShrink: 0 }} />
-      <span style={{ flex: 1, minWidth: 0 }}>
+    <div style={{ display: "flex", alignItems: "flex-start", gap: 8, width: "100%", marginTop: 4 }}>
+      <input
+        type="checkbox"
+        checked={privacyAccepted}
+        onChange={e => setPrivacyAccepted(e.target.checked)}
+        style={{ flexShrink: 0, marginTop: 3, accentColor: "var(--rose-500)", cursor: "pointer", width: 15, height: 15 }}
+      />
+      <p
+        style={{ margin: 0, fontSize: "var(--ts-0)", color: "var(--text-2)", lineHeight: 1.5, cursor: "pointer", flex: 1 }}
+        onClick={() => setPrivacyAccepted(v => !v)}
+      >
         {T.privacyCheckLabel}{" "}
-        <button type="button" onClick={() => setShowPrivacy(true)}
-          style={{ background: "none", border: "none", color: "var(--rose-500)", cursor: "pointer", fontSize: "inherit", textDecoration: "underline", padding: 0 }}>
+        <span
+          style={{ color: "var(--rose-500)", textDecoration: "underline", cursor: "pointer" }}
+          onClick={e => { e.stopPropagation(); setShowPrivacy(true); }}
+        >
           {T.privacyLinkText}
-        </button>
-      </span>
-    </label>
+        </span>
+      </p>
+    </div>
   );
 
   if (step === "complete-profile") {

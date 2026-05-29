@@ -484,23 +484,34 @@
         " \u2713"
       )
     ));
-    const PrivacyCheckbox = () => /* @__PURE__ */ React.createElement("label", { style: { display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--ts-0)", color: "var(--text-2)", cursor: "pointer", lineHeight: 1.5, width: "100%", marginTop: 4 } }, /* @__PURE__ */ React.createElement(
+    const PrivacyCheckbox = () => /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "flex-start", gap: 8, width: "100%", marginTop: 4 } }, /* @__PURE__ */ React.createElement(
       "input",
       {
         type: "checkbox",
         checked: privacyAccepted,
         onChange: (e) => setPrivacyAccepted(e.target.checked),
-        style: { marginTop: 3, accentColor: "var(--rose-500)", flexShrink: 0 }
+        style: { flexShrink: 0, marginTop: 3, accentColor: "var(--rose-500)", cursor: "pointer", width: 15, height: 15 }
       }
-    ), /* @__PURE__ */ React.createElement("span", { style: { flex: 1, minWidth: 0 } }, T.privacyCheckLabel, " ", /* @__PURE__ */ React.createElement(
-      "button",
+    ), /* @__PURE__ */ React.createElement(
+      "p",
       {
-        type: "button",
-        onClick: () => setShowPrivacy(true),
-        style: { background: "none", border: "none", color: "var(--rose-500)", cursor: "pointer", fontSize: "inherit", textDecoration: "underline", padding: 0 }
+        style: { margin: 0, fontSize: "var(--ts-0)", color: "var(--text-2)", lineHeight: 1.5, cursor: "pointer", flex: 1 },
+        onClick: () => setPrivacyAccepted((v) => !v)
       },
-      T.privacyLinkText
-    )));
+      T.privacyCheckLabel,
+      " ",
+      /* @__PURE__ */ React.createElement(
+        "span",
+        {
+          style: { color: "var(--rose-500)", textDecoration: "underline", cursor: "pointer" },
+          onClick: (e) => {
+            e.stopPropagation();
+            setShowPrivacy(true);
+          }
+        },
+        T.privacyLinkText
+      )
+    ));
     if (step === "complete-profile") {
       return /* @__PURE__ */ React.createElement(React.Fragment, null, showPrivacy && /* @__PURE__ */ React.createElement(PrivacyPolicyModal, null), /* @__PURE__ */ React.createElement("div", { className: "modal-backdrop" }, /* @__PURE__ */ React.createElement("div", { className: "auth-modal", onClick: (e) => e.stopPropagation(), dir: lang === "ar" ? "rtl" : "ltr" }, /* @__PURE__ */ React.createElement("button", { className: "modal-close", onClick: handleCancelGoogleRegistration }, "\u2715"), /* @__PURE__ */ React.createElement("div", { className: "auth-brand" }, /* @__PURE__ */ React.createElement(LotusMark, { size: 32, color: "var(--rose-500)" }), /* @__PURE__ */ React.createElement("span", { className: "brand-name" }, "Latina")), /* @__PURE__ */ React.createElement("h3", { style: { margin: "0 0 8px", fontSize: "var(--ts-4)", fontFamily: "var(--display)" } }, T.completeTitle), /* @__PURE__ */ React.createElement("p", { className: "auth-tagline" }, T.completeMsg), /* @__PURE__ */ React.createElement("form", { className: "auth-form", onSubmit: handleProfileSubmit }, /* @__PURE__ */ React.createElement(
         "input",
