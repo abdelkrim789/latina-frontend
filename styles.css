@@ -1939,10 +1939,10 @@ html, body {
   margin-bottom: 80px;
   opacity: 0;
   will-change: transform, opacity;
-  transition: opacity 0.8s var(--ease-cinema), transform 0.85s var(--ease-petal);
+  transition: opacity 0.5s ease, transform 0.55s var(--ease-petal);
 }
-.story-chapter--left  { transform: translateX(-48px); }
-.story-chapter--right { transform: translateX(48px); }
+.story-chapter--left  { transform: translateX(-28px); }
+.story-chapter--right { transform: translateX(28px); }
 .story-chapter.in     { opacity: 1; transform: translateX(0); }
 
 /* Dot (always in the center column) */
@@ -2043,7 +2043,7 @@ html, body {
     gap: 0 20px;
   }
   .story-chapter--left,
-  .story-chapter--right { transform: translateY(28px); }
+  .story-chapter--right { transform: translateY(20px); }
 
   .story-dot {
     grid-column: 1 !important;
