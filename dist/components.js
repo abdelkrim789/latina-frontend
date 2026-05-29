@@ -806,11 +806,11 @@
   };
   var CodTrustStrip = ({ lang = "fr" }) => {
     const t = {
-      fr: ["Paiement \xE0 la livraison", "Retour gratuit 7 jours", "Livraison 58 wilayas", "SMS de confirmation"],
-      ar: ["\u0627\u0644\u062F\u0641\u0639 \u0639\u0646\u062F \u0627\u0644\u0627\u0633\u062A\u0644\u0627\u0645", "\u0625\u0631\u062C\u0627\u0639 \u0645\u062C\u0627\u0646\u064A \u062E\u0644\u0627\u0644 7 \u0623\u064A\u0627\u0645", "\u062A\u0648\u0635\u064A\u0644 58 \u0648\u0644\u0627\u064A\u0629", "\u0631\u0633\u0627\u0644\u0629 \u062A\u0623\u0643\u064A\u062F"],
-      en: ["Pay on delivery", "Free returns 7 days", "All 58 wilayas", "SMS confirmation"]
+      fr: ["Paiement \xE0 la livraison", "Livraison 69 wilayas", "S\xE9lection v\xE9rifi\xE9e", "Emballage signature"],
+      ar: ["\u0627\u0644\u062F\u0641\u0639 \u0639\u0646\u062F \u0627\u0644\u0627\u0633\u062A\u0644\u0627\u0645", "\u062A\u0648\u0635\u064A\u0644 69 \u0648\u0644\u0627\u064A\u0629", "\u0627\u062E\u062A\u064A\u0627\u0631 \u0645\u0648\u062B\u0648\u0642", "\u062A\u063A\u0644\u064A\u0641 \u0645\u0645\u064A\u0632"],
+      en: ["Pay on delivery", "All 69 wilayas", "Vetted selection", "Signature packaging"]
     }[lang] || [];
-    const icons = [/* @__PURE__ */ React.createElement(IconCash, { key: "c", width: 14, height: 14 }), /* @__PURE__ */ React.createElement(IconReturn, { key: "r", width: 14, height: 14 }), /* @__PURE__ */ React.createElement(IconTruck, { key: "t", width: 14, height: 14 }), /* @__PURE__ */ React.createElement(IconShield, { key: "s", width: 14, height: 14 })];
+    const icons = [/* @__PURE__ */ React.createElement(IconCash, { key: "c", width: 14, height: 14 }), /* @__PURE__ */ React.createElement(IconTruck, { key: "t", width: 14, height: 14 }), /* @__PURE__ */ React.createElement(IconShield, { key: "s", width: 14, height: 14 }), /* @__PURE__ */ React.createElement(IconShield, { key: "s2", width: 14, height: 14 })];
     return /* @__PURE__ */ React.createElement("div", { className: "cod-strip", dir: lang === "ar" ? "rtl" : "ltr" }, /* @__PURE__ */ React.createElement("div", { className: "cod-strip-track" }, [...t, ...t].map((label, i) => /* @__PURE__ */ React.createElement("span", { className: "cod-pill t-mono", key: i }, icons[i % icons.length], " ", label))));
   };
   var useRecentlyViewed = () => {

@@ -1347,11 +1347,11 @@ const WhatsAppFloat = ({ lang = "fr", phone = "+213500000000" }) => {
 
 const CodTrustStrip = ({ lang = "fr" }) => {
   const t = {
-    fr: ["Paiement à la livraison", "Retour gratuit 7 jours", "Livraison 58 wilayas", "SMS de confirmation"],
-    ar: ["الدفع عند الاستلام",       "إرجاع مجاني خلال 7 أيام", "توصيل 58 ولاية",     "رسالة تأكيد"],
-    en: ["Pay on delivery",           "Free returns 7 days",       "All 58 wilayas",      "SMS confirmation"]
+    fr: ["Paiement à la livraison", "Livraison 69 wilayas", "Sélection vérifiée", "Emballage signature"],
+    ar: ["الدفع عند الاستلام",       "توصيل 69 ولاية",     "اختيار موثوق",        "تغليف مميز"],
+    en: ["Pay on delivery",           "All 69 wilayas",      "Vetted selection",    "Signature packaging"]
   }[lang] || [];
-  const icons = [<IconCash key="c" width={14} height={14} />, <IconReturn key="r" width={14} height={14} />, <IconTruck key="t" width={14} height={14} />, <IconShield key="s" width={14} height={14} />];
+  const icons = [<IconCash key="c" width={14} height={14} />, <IconTruck key="t" width={14} height={14} />, <IconShield key="s" width={14} height={14} />, <IconShield key="s2" width={14} height={14} />];
   return (
     <div className="cod-strip" dir={lang === "ar" ? "rtl" : "ltr"}>
       <div className="cod-strip-track">
