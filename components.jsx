@@ -669,15 +669,16 @@ const Nav = ({ lang, setLang, cartCount, hidden, user, onAuthOpen, onCartOpen, o
   const close = () => setMobileOpen(false);
 
   const t = {
-    fr: { chaussures: "Chaussures", sacs: "Sacs", access: "Accessoires", concours: "Concours", fid: "Fidélité", panier: "Panier", login: "Connexion", account: "Mon compte" },
-    ar: { chaussures: "الأحذية", sacs: "الحقائب", access: "الإكسسوارات", concours: "المسابقة", fid: "الولاء", panier: "السلة", login: "دخول", account: "حسابي" },
-    en: { chaussures: "Shoes", sacs: "Bags", access: "Accessories", concours: "Contest", fid: "Loyalty", panier: "Cart", login: "Sign in", account: "Account" }
+    fr: { chaussures: "Chaussures", sacs: "Sacs", access: "Accessoires", packs: "Tenues", concours: "Concours", fid: "Fidélité", panier: "Panier", login: "Connexion", account: "Mon compte" },
+    ar: { chaussures: "الأحذية", sacs: "الحقائب", access: "الإكسسوارات", packs: "التنسيقات", concours: "المسابقة", fid: "الولاء", panier: "السلة", login: "دخول", account: "حسابي" },
+    en: { chaussures: "Shoes", sacs: "Bags", access: "Accessories", packs: "Sets", concours: "Contest", fid: "Loyalty", panier: "Cart", login: "Sign in", account: "Account" }
   }[lang] || {};
 
   const navLinks = [
     { href: "#collection", label: t.chaussures },
     { href: "#collection", label: t.sacs },
     { href: "#collection", label: t.access },
+    { href: "#packs",      label: t.packs, highlight: true },
     { href: "#concours",   label: t.concours },
     { href: "#fidelite",   label: t.fid },
   ];
@@ -693,8 +694,8 @@ const Nav = ({ lang, setLang, cartCount, hidden, user, onAuthOpen, onCartOpen, o
           </div>
 
           <div className="nav-links">
-            {navLinks.map(({ href, label }) => (
-              <a key={label} href={href} className="nav-link">
+            {navLinks.map(({ href, label, highlight }) => (
+              <a key={label} href={href} className={`nav-link${highlight ? " nav-link--highlight" : ""}`}>
                 <span className="nav-link-text">{label}</span>
                 <span className="nav-link-line" aria-hidden="true" />
               </a>

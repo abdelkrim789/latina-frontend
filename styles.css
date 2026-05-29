@@ -1040,6 +1040,27 @@ html, body {
 
 .hero-ctas { display: flex; gap: 16px; align-items: center; }
 
+.hero-packs-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--rose-500);
+  letter-spacing: .04em;
+  padding: 0;
+  transition: opacity .2s, transform .2s;
+  text-decoration: underline;
+  text-decoration-color: rgba(192,57,43,.3);
+  text-underline-offset: 3px;
+}
+.hero-packs-pill:hover { opacity: .75; transform: translateX(3px); }
+
 .btn-primary {
   background: var(--rose-500);
   color: var(--cream-50);
@@ -3494,6 +3515,22 @@ html[dir="rtl"] body { font-family: var(--sans); }
 }
 
 .nav-link:hover { color: var(--rose-600); }
+
+/* Packs nav link — rose pill highlight */
+.nav-link--highlight {
+  color: var(--rose-500);
+  font-weight: 600;
+}
+.nav-link--highlight .nav-link-text {
+  background: rgba(192,57,43,.08);
+  padding: 3px 10px;
+  border-radius: 100px;
+  transition: background .2s;
+}
+.nav-link--highlight:hover .nav-link-text {
+  background: rgba(192,57,43,.15);
+}
+.nav-link--highlight .nav-link-line { background: var(--rose-500); }
 
 .nav-link-text { display: block; }
 

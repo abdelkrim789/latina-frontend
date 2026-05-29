@@ -17,6 +17,7 @@ const HeroScene = ({ lang, onAdd }) => {
       sub: "Chaussures, sacs et accessoires pour la femme algérienne. Une boutique pensée comme un écrin — où chaque pièce arrive emballée avec soin, livrée chez vous, payée à la livraison.",
       cta1: "Découvrir la collection",
       cta2: "Notre histoire",
+      cta3: "✦ Voir nos tenues exclusives",
       stats: [
         { num: "2 400+", lbl: "Clientes confiantes" },
         { num: "69", lbl: "Wilayas livrées" },
@@ -32,6 +33,7 @@ const HeroScene = ({ lang, onAdd }) => {
       sub: "أحذية، حقائب، وإكسسوارات للمرأة الجزائرية. متجر مصمم ليكون كصندوق هدية — كل قطعة مغلفة بعناية، تصلك أينما كنت، الدفع عند الاستلام.",
       cta1: "اكتشفي المجموعة",
       cta2: "قصتنا",
+      cta3: "✦ اكتشفي تنسيقاتنا الحصرية",
       stats: [
         { num: "+2400", lbl: "زبونة سعيدة" },
         { num: "69", lbl: "ولاية" },
@@ -47,6 +49,7 @@ const HeroScene = ({ lang, onAdd }) => {
       sub: "Shoes, bags and accessories for the Algerian woman. A boutique built like a jewel box — every piece wrapped with care, delivered to your door, paid on arrival.",
       cta1: "Discover the collection",
       cta2: "Our story",
+      cta3: "✦ See our exclusive sets",
       stats: [
         { num: "2,400+", lbl: "Happy clients" },
         { num: "69", lbl: "Wilayas delivered" },
@@ -73,6 +76,7 @@ const HeroScene = ({ lang, onAdd }) => {
               <button className="btn-primary" onClick={() => document.getElementById('collection')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>{t.cta1}</button>
               <button className="btn-ghost" onClick={() => document.getElementById('our-story')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>{t.cta2}</button>
             </div>
+            <button className="hero-packs-pill" onClick={() => document.getElementById('packs')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>{t.cta3}</button>
             <div className="hero-stat-grid">
               {t.stats.map((s, i) => (
                 <div className="hero-stat" key={i}>
