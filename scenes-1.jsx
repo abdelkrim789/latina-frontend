@@ -19,7 +19,7 @@ const HeroScene = ({ lang, onAdd }) => {
       cta2: "Notre histoire",
       stats: [
         { num: "2 400+", lbl: "Clientes confiantes" },
-        { num: "58", lbl: "Wilayas livrées" },
+        { num: "69", lbl: "Wilayas livrées" },
         { num: "4.9", lbl: "Note moyenne ★" }
       ],
       scroll: "Faites défiler"
@@ -34,7 +34,7 @@ const HeroScene = ({ lang, onAdd }) => {
       cta2: "قصتنا",
       stats: [
         { num: "+2400", lbl: "زبونة سعيدة" },
-        { num: "58", lbl: "ولاية" },
+        { num: "69", lbl: "ولاية" },
         { num: "4.9", lbl: "تقييم ★" }
       ],
       scroll: "تمريرة"
@@ -49,7 +49,7 @@ const HeroScene = ({ lang, onAdd }) => {
       cta2: "Our story",
       stats: [
         { num: "2,400+", lbl: "Happy clients" },
-        { num: "58", lbl: "Wilayas delivered" },
+        { num: "69", lbl: "Wilayas delivered" },
         { num: "4.9", lbl: "Avg rating ★" }
       ],
       scroll: "Scroll"

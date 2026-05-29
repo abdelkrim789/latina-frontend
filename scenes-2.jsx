@@ -1283,9 +1283,8 @@ const TrustScene = ({ lang }) => {
       title2: "qui mérite",
       title3: "votre confiance.",
       cells: [
-        { icon: <IconTruck width={28} height={28} />, h: "Livraison 58 wilayas", p: "De Tamanrasset à Annaba, partout en Algérie. Délais affichés à la commande." },
+        { icon: <IconTruck width={28} height={28} />, h: "Livraison 69 wilayas", p: "De Tamanrasset à Annaba, partout en Algérie. Délais affichés à la commande." },
         { icon: <IconCash width={28} height={28} />, h: "Paiement à la livraison", p: "Vous payez quand vous recevez. Vous voyez avant de décider." },
-        { icon: <IconReturn width={28} height={28} />, h: "Retour sous 7 jours", p: "Une pointure ne va pas ? On reprend gratuitement, sans question." },
         { icon: <IconShield width={28} height={28} />, h: "Sélection vérifiée", p: "Chaque pièce contrôlée par notre équipe avant emballage." }
       ],
       news: { title1: "Recevez les", title2: "nouveautés", title3: "en avant-première.", placeholder: "Votre adresse email", cta: "S'inscrire", tiny: "Aucun spam · Désabonnement en un clic", ok: "Merci ! Vous recevrez nos nouveautés en avant-première.", already: "Vous êtes déjà abonnée. À bientôt !", err: "Erreur, veuillez réessayer." }
@@ -1296,9 +1295,8 @@ const TrustScene = ({ lang }) => {
       title2: "يستحق",
       title3: "ثقتك.",
       cells: [
-        { icon: <IconTruck width={28} height={28} />, h: "توصيل 58 ولاية", p: "من تمنراست إلى عنابة. كل المدد معروضة عند الطلب." },
+        { icon: <IconTruck width={28} height={28} />, h: "توصيل 69 ولاية", p: "من تمنراست إلى عنابة. كل المدد معروضة عند الطلب." },
         { icon: <IconCash width={28} height={28} />, h: "الدفع عند الاستلام", p: "تدفعين عند الاستلام. ترين قبل أن تقرري." },
-        { icon: <IconReturn width={28} height={28} />, h: "إرجاع خلال 7 أيام", p: "المقاس لا يناسب؟ نسترجعه مجاناً بدون أسئلة." },
         { icon: <IconShield width={28} height={28} />, h: "اختيار موثوق", p: "كل قطعة يتحقق منها فريقنا قبل التغليف." }
       ],
       news: { title1: "استلمي", title2: "الجديد", title3: "قبل الجميع.", placeholder: "بريدك الإلكتروني", cta: "اشتركي", tiny: "بدون إزعاج · إلغاء الاشتراك بنقرة واحدة", ok: "شكرًا! ستصلكِ أخبارنا.", already: "أنتِ مشتركة بالفعل.", err: "خطأ، حاولي مجددًا." }
@@ -1309,9 +1307,8 @@ const TrustScene = ({ lang }) => {
       title2: "that earns",
       title3: "your trust.",
       cells: [
-        { icon: <IconTruck width={28} height={28} />, h: "All 58 wilayas", p: "From Tamanrasset to Annaba — Algeria-wide. ETA shown at checkout." },
+        { icon: <IconTruck width={28} height={28} />, h: "All 69 wilayas", p: "From Tamanrasset to Annaba — Algeria-wide. ETA shown at checkout." },
         { icon: <IconCash width={28} height={28} />, h: "Cash on delivery", p: "Pay when you receive. See before you decide." },
-        { icon: <IconReturn width={28} height={28} />, h: "7-day returns", p: "Wrong size? We take it back free, no questions asked." },
         { icon: <IconShield width={28} height={28} />, h: "Vetted selection", p: "Every piece checked by our team before packing." }
       ],
       news: { title1: "Get the", title2: "newness", title3: "first.", placeholder: "Your email address", cta: "Subscribe", tiny: "No spam · One-click unsubscribe", ok: "Thank you! You'll receive our updates.", already: "You're already subscribed!", err: "Error, please try again." }
@@ -1335,7 +1332,7 @@ const TrustScene = ({ lang }) => {
   return (
     <section ref={sceneRef} className="scene scene-trust" data-screen-label="06 Trust">
       <div className="container">
-        <SceneMarker num="06" label="Trust" meta="58 WILAYAS · COD" />
+        <SceneMarker num="06" label="Trust" meta="69 WILAYAS · COD" />
         <div className="reveal" style={{ marginBottom: 80 }}>
           <div className="label" style={{ marginBottom: 16 }}>{t.eyebrow}</div>
           <h2 className="display" style={{ fontSize: "clamp(40px,5.5vw,72px)", color: "var(--ink)", maxWidth: 760, lineHeight: 1, letterSpacing: "-0.015em" }}>
@@ -1513,7 +1510,7 @@ const StoryScene = ({ lang }) => {
         { year: "2003",              side: "left",  accent: "Une femme. Une vision.", body: "Un samedi matin à Alger, la première vitrine a ouvert ses portes. Pas de publicité, pas de budget — juste une obsession pour la qualité et un bouche-à-oreille qui s'est embrasé dans tout le quartier." },
         { year: "Les premières années", side: "right", accent: "Chaque cliente connue par son prénom.", body: "On choisissait à la main, on emballait avec soin. Chaque pièce avait une histoire. Les clientes revenaient — pas seulement pour les chaussures, mais pour l'expérience." },
         { year: "La boîte signature", side: "left", accent: "Parce qu'une belle pièce mérite une belle première impression.", body: "La boîte Latina est née de ce principe simple. Reconnaissable entre mille. Aujourd'hui, nos clientes la gardent longtemps après avoir usé les chaussures." },
-        { year: "58 wilayas",        side: "right", accent: "D'Alger à Tamanrasset.", body: "Ce qui a commencé dans une rue d'Alger traverse aujourd'hui tout le pays. La même sélection, le même emballage, la même promesse — peu importe où vous êtes." },
+        { year: "69 wilayas",        side: "right", accent: "D'Alger à Tamanrasset.", body: "Ce qui a commencé dans une rue d'Alger traverse aujourd'hui tout le pays. La même sélection, le même emballage, la même promesse — peu importe où vous êtes." },
         { year: "Aujourd'hui",       side: "left",  accent: "22 ans plus tard — toujours la même promesse.", body: "Des milliers de femmes à travers l'Algérie. Des milliers de boîtes ouvertes avec sourire. Et une boutique qui n'a jamais arrêté de choisir avec soin, pour vous." },
       ]
     },
@@ -1525,7 +1522,7 @@ const StoryScene = ({ lang }) => {
         { year: "2003",             side: "right", accent: "امرأة واحدة. رؤية واحدة.", body: "صباح سبت في الجزائر العاصمة، فُتحت أول واجهة. لا إعلانات، لا ميزانية — فقط هوس بالجودة وكلمة شفهية اشتعلت وانتشرت في كل الحي." },
         { year: "السنوات الأولى",  side: "left",  accent: "كل زبونة تُعرف باسمها.", body: "كنّا نختار باليد ونُغلّف باهتمام. كل قطعة لها قصّة. الزبونات عُدن — ليس فقط للأحذية، بل للتجربة بأكملها." },
         { year: "العلبة الخاصة",  side: "right", accent: "لأن القطعة الجميلة تستحق انطباعاً أول لا يُنسى.", body: "وُلدت علبة Latina من هذا المبدأ البسيط. لا تُنسى. اليوم، تُبقي عليها زبوناتنا طويلاً بعد أن تبلى الأحذية." },
-        { year: "58 ولاية",        side: "left",  accent: "من الجزائر إلى تمنراست.", body: "ما بدأ في شارع بالجزائر العاصمة يعبر اليوم كل البلاد. نفس الاختيار، نفس التغليف، نفس الوعد — أينما كنتِ." },
+        { year: "69 ولاية",        side: "left",  accent: "من الجزائر إلى تمنراست.", body: "ما بدأ في شارع بالجزائر العاصمة يعبر اليوم كل البلاد. نفس الاختيار، نفس التغليف، نفس الوعد — أينما كنتِ." },
         { year: "اليوم",           side: "right", accent: ".22 عاماً لاحقاً — نفس الوعد دائماً", body: "آلاف النساء عبر الجزائر. آلاف العلب فُتحت بابتسامة. ومتجر لم يتوقف عن الاختيار بعناية، من أجلك أنتِ." },
       ]
     },
@@ -1537,7 +1534,7 @@ const StoryScene = ({ lang }) => {
         { year: "2003",              side: "left",  accent: "One woman. One vision.", body: "A Saturday morning in Algiers, the first window opened. No advertising, no budget — just an obsession with quality and a word-of-mouth that caught fire across the entire neighbourhood." },
         { year: "The early years",   side: "right", accent: "Every customer known by her first name.", body: "We hand-picked everything, wrapped with care. Every piece came with a story. Customers came back — not just for the shoes, but for the experience." },
         { year: "The signature box", side: "left",  accent: "Because a beautiful piece deserves a beautiful first impression.", body: "The Latina box was born from this simple principle. Unmistakable. Today, our customers keep it long after the shoes are worn out." },
-        { year: "58 wilayas",        side: "right", accent: "From Algiers to Tamanrasset.", body: "What started in one Algiers street now crosses the entire country. Same curation, same packaging, same promise — wherever you are." },
+        { year: "69 wilayas",        side: "right", accent: "From Algiers to Tamanrasset.", body: "What started in one Algiers street now crosses the entire country. Same curation, same packaging, same promise — wherever you are." },
         { year: "Today",             side: "left",  accent: "22 years later — the same promise.", body: "Thousands of women across Algeria. Thousands of boxes opened with a smile. A boutique that never stopped choosing with care, for you." },
       ]
     }

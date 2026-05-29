@@ -15,7 +15,7 @@
         cta2: "Notre histoire",
         stats: [
           { num: "2 400+", lbl: "Clientes confiantes" },
-          { num: "58", lbl: "Wilayas livr\xE9es" },
+          { num: "69", lbl: "Wilayas livr\xE9es" },
           { num: "4.9", lbl: "Note moyenne \u2605" }
         ],
         scroll: "Faites d\xE9filer"
@@ -30,7 +30,7 @@
         cta2: "\u0642\u0635\u062A\u0646\u0627",
         stats: [
           { num: "+2400", lbl: "\u0632\u0628\u0648\u0646\u0629 \u0633\u0639\u064A\u062F\u0629" },
-          { num: "58", lbl: "\u0648\u0644\u0627\u064A\u0629" },
+          { num: "69", lbl: "\u0648\u0644\u0627\u064A\u0629" },
           { num: "4.9", lbl: "\u062A\u0642\u064A\u064A\u0645 \u2605" }
         ],
         scroll: "\u062A\u0645\u0631\u064A\u0631\u0629"
@@ -45,7 +45,7 @@
         cta2: "Our story",
         stats: [
           { num: "2,400+", lbl: "Happy clients" },
-          { num: "58", lbl: "Wilayas delivered" },
+          { num: "69", lbl: "Wilayas delivered" },
           { num: "4.9", lbl: "Avg rating \u2605" }
         ],
         scroll: "Scroll"
