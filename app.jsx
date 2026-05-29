@@ -315,6 +315,7 @@ const App = () => {
             document.getElementById("collection")?.scrollIntoView({ behavior: "smooth", block: "start" });
           }}
         />
+        <StoryScene lang={lang} />
         <RewardsScene lang={lang} user={user} onOpenAuth={() => setAuthOpen(true)} />
         <TrustScene lang={lang} />
         <RecentlyViewedStrip items={recent} onQuickView={openQuickView} lang={lang} />

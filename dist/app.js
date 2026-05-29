@@ -272,7 +272,7 @@
           document.getElementById("collection")?.scrollIntoView({ behavior: "smooth", block: "start" });
         }
       }
-    ), /* @__PURE__ */ React.createElement(RewardsScene, { lang, user, onOpenAuth: () => setAuthOpen(true) }), /* @__PURE__ */ React.createElement(TrustScene, { lang }), /* @__PURE__ */ React.createElement(RecentlyViewedStrip, { items: recent, onQuickView: openQuickView, lang }), /* @__PURE__ */ React.createElement(Footer, { lang })), quickView && /* @__PURE__ */ React.createElement(
+    ), /* @__PURE__ */ React.createElement(StoryScene, { lang }), /* @__PURE__ */ React.createElement(RewardsScene, { lang, user, onOpenAuth: () => setAuthOpen(true) }), /* @__PURE__ */ React.createElement(TrustScene, { lang }), /* @__PURE__ */ React.createElement(RecentlyViewedStrip, { items: recent, onQuickView: openQuickView, lang }), /* @__PURE__ */ React.createElement(Footer, { lang })), quickView && /* @__PURE__ */ React.createElement(
       QuickView,
       {
         product: quickView.product,
