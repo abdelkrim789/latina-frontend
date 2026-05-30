@@ -50,9 +50,10 @@
       return map;
     }, [product.media, product.variants]);
     const allMediaUrls = useMemo(() => {
-      const media = product.media || [];
-      if (media.length) return media.map((m) => m.url).filter(Boolean);
-      return product.img ? [product.img] : [];
+      const extras = (product.media || []).map((m) => m.url).filter(Boolean);
+      const primary = product.img || null;
+      const urls = primary ? [primary, ...extras.filter((u) => u !== primary)] : extras;
+      return urls;
     }, [product.media, product.img]);
     const currentImg = selectedColor ? variantImageMap[selectedColor] || product.img || allMediaUrls[0] || null : allMediaUrls[slideIdx] || product.img || null;
     useEffect(() => {
