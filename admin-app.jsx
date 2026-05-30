@@ -4928,6 +4928,8 @@ const Packs = () => {
   const [productSearch, setProductSearch] = useState("");
   const [productResults, setProductResults] = useState([]);
   const [searchLoading, setSearchLoading]   = useState(false);
+  const [imageFile, setImageFile]           = useState(null);
+  const [imagePreview, setImagePreview]     = useState("");
 
   const emptyForm = { name_fr:"", name_ar:"", name_en:"", description_fr:"", description_ar:"",
     price:"", compare_price:"", is_active:false, sort_order:0, items:[] };
@@ -4967,7 +4969,7 @@ const Packs = () => {
   const removeItem = (pid) => set("items", form.items.filter(i => i.product_id !== pid));
   const setItemQty = (pid, qty) => set("items", form.items.map(i => i.product_id === pid ? { ...i, quantity: Number(qty) } : i));
 
-  const openNew  = () => { setForm(emptyForm); setModal({}); };
+  const openNew  = () => { setForm(emptyForm); setImageFile(null); setImagePreview(""); setModal({}); };
   const openEdit = (p) => {
     setForm({
       name_fr: p.name_fr, name_ar: p.name_ar, name_en: p.name_en || "",
@@ -4980,6 +4982,8 @@ const Packs = () => {
         _img: i.product?.primary_image?.url,
       })),
     });
+    setImageFile(null);
+    setImagePreview(p.image_url || "");
     setModal(p);
   };
 
@@ -4990,8 +4994,25 @@ const Packs = () => {
     try {
       const payload = { ...form, price: Number(form.price), compare_price: form.compare_price ? Number(form.compare_price) : null,
         items: form.items.map(i => ({ product_id: i.product_id, quantity: i.quantity })) };
-      if (modal?.id) await latinaApi.admin.put(`/packs/${modal.id}`, payload);
-      else           await latinaApi.admin.post("/packs", payload);
+      let saved;
+      if (modal?.id) saved = await latinaApi.admin.put(`/packs/${modal.id}`, payload);
+      else           saved = await latinaApi.admin.post("/packs", payload);
+
+      // Upload image if one was selected
+      if (imageFile) {
+        const packId = saved?.id || modal?.id;
+        if (packId) {
+          const fd = new FormData();
+          fd.append("image", imageFile);
+          const token = localStorage.getItem("latina-admin-token");
+          await fetch(`${window.LATINA_API_BASE}/admin/packs/${packId}/image`, {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+            body: fd,
+          });
+        }
+      }
+
       toast(modal?.id ? "Pack mis à jour" : "Pack créé", "ok");
       setModal(null); load();
     } catch (e) { toast(e.message || "Erreur", "err"); }
@@ -5181,6 +5202,34 @@ const Packs = () => {
                     </div>
                   </div>
                 )}
+              </div>
+
+              {/* Pack image upload */}
+              <div>
+                <div className="admin-label" style={{ marginBottom: 8 }}>Image du pack (optionnel)</div>
+                <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
+                  {imagePreview && (
+                    <div style={{ position: "relative", flexShrink: 0 }}>
+                      <img src={imagePreview} style={{ width: 90, height: 90, objectFit: "cover", borderRadius: 10, border: "1px solid var(--cream-300)" }} />
+                      <button onClick={() => { setImageFile(null); setImagePreview(""); }}
+                        style={{ position: "absolute", top: -6, right: -6, background: "var(--rose-500)", color: "#fff", border: "none", borderRadius: "50%", width: 20, height: 20, cursor: "pointer", fontSize: 11, lineHeight: 1 }}>✕</button>
+                    </div>
+                  )}
+                  <div style={{ flex: 1 }}>
+                    <input type="file" accept="image/*"
+                      onChange={e => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        setImageFile(file);
+                        setImagePreview(URL.createObjectURL(file));
+                      }}
+                      style={{ fontSize: 13, display: "block", marginBottom: 6 }}
+                    />
+                    <div style={{ fontSize: 11, color: "#8A7464", lineHeight: 1.5 }}>
+                      Si aucune image — les photos des produits défilent automatiquement côté client.
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Active toggle */}

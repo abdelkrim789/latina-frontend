@@ -1257,6 +1257,24 @@
     }[lang];
     return /* @__PURE__ */ React.createElement("section", { ref: sceneRef, className: "scene scene-story", id: "our-story", "data-screen-label": "05b Story" }, /* @__PURE__ */ React.createElement("div", { className: "story-inner" }, /* @__PURE__ */ React.createElement("div", { className: "story-header reveal" }, /* @__PURE__ */ React.createElement("div", { className: "label", style: { color: "var(--rose-400)", marginBottom: 28 } }, t.label), /* @__PURE__ */ React.createElement("div", { className: "story-hero-count" }, /* @__PURE__ */ React.createElement("span", { ref: numberRef, className: "story-big-number" }, "0"), /* @__PURE__ */ React.createElement("span", { className: "story-years-badge" }, t.yearsLabel)), /* @__PURE__ */ React.createElement("p", { className: "story-sub" }, t.sub)), /* @__PURE__ */ React.createElement("div", { className: "story-timeline" }, /* @__PURE__ */ React.createElement("div", { className: "story-vline" }), t.chapters.map((ch, i) => /* @__PURE__ */ React.createElement("div", { key: i, className: `story-chapter story-chapter--${ch.side}` }, /* @__PURE__ */ React.createElement("div", { className: "story-dot" }), /* @__PURE__ */ React.createElement("div", { className: "story-chapter-inner" }, /* @__PURE__ */ React.createElement("div", { className: "story-chapter-year" }, ch.year), /* @__PURE__ */ React.createElement("h3", { className: "story-chapter-accent" }, '"', ch.accent, '"'), /* @__PURE__ */ React.createElement("p", { className: "story-chapter-body" }, ch.body)))))));
   };
+  var PackSlider = ({ images }) => {
+    const [idx, setIdx] = useState(0);
+    const total = images.length;
+    useEffect(() => {
+      if (total <= 1) return;
+      const iv = setInterval(() => setIdx((i) => (i + 1) % total), 3e3);
+      return () => clearInterval(iv);
+    }, [total]);
+    return /* @__PURE__ */ React.createElement("div", { className: "pack-slider" }, images.map((src, i) => /* @__PURE__ */ React.createElement(
+      "img",
+      {
+        key: i,
+        src: window.mediaUrl?.(src) || src,
+        alt: "",
+        className: `pack-slider-img${i === idx ? " active" : ""}`
+      }
+    )), total > 1 && /* @__PURE__ */ React.createElement("div", { className: "pack-slider-dots" }, images.map((_, i) => /* @__PURE__ */ React.createElement("span", { key: i, className: `pack-dot${i === idx ? " active" : ""}`, onClick: () => setIdx(i) }))));
+  };
   var PackScene = ({ lang, onAddToCart }) => {
     const [packs, setPacks] = useState([]);
     const [loaded, setLoaded] = useState(false);
@@ -1293,15 +1311,7 @@
       const imgs = (pack.items || []).map((i) => i.image_url).filter(Boolean);
       const packName = lang === "ar" ? pack.name_ar || pack.name_fr : pack.name_fr;
       const packDesc = lang === "ar" ? pack.description_ar || pack.description_fr : pack.description_fr;
-      return /* @__PURE__ */ React.createElement("div", { key: pack.id, className: "pack-card reveal" }, /* @__PURE__ */ React.createElement("div", { className: "pack-card-images", "data-count": Math.min(imgs.length, 3) || 1 }, imgs.length === 0 ? /* @__PURE__ */ React.createElement("div", { className: "pack-img-placeholder" }) : imgs.slice(0, 3).map((src, idx) => /* @__PURE__ */ React.createElement(
-        "img",
-        {
-          key: idx,
-          src: window.mediaUrl?.(src) || src,
-          alt: "",
-          className: `pack-img pack-img--${idx}`
-        }
-      )), savings > 0 && /* @__PURE__ */ React.createElement("span", { className: "pack-savings-badge" }, "\u2212", savings.toLocaleString(), " ", txt.da)), /* @__PURE__ */ React.createElement("div", { className: "pack-card-body" }, /* @__PURE__ */ React.createElement("h3", { className: "pack-card-name" }, packName), packDesc && /* @__PURE__ */ React.createElement("p", { className: "pack-card-desc" }, packDesc), /* @__PURE__ */ React.createElement("div", { className: "pack-chips" }, (pack.items || []).map((item, i) => /* @__PURE__ */ React.createElement("span", { key: i, className: "pack-chip" }, item.product_name || `P${item.product_id}`, item.quantity > 1 && /* @__PURE__ */ React.createElement("em", null, " \xD7", item.quantity)))), /* @__PURE__ */ React.createElement("div", { className: "pack-card-foot" }, /* @__PURE__ */ React.createElement("div", { className: "pack-price-block" }, /* @__PURE__ */ React.createElement("span", { className: "pack-price" }, (pack.price || 0).toLocaleString(), " ", txt.da), pack.compare_price > 0 && /* @__PURE__ */ React.createElement("span", { className: "pack-old-price" }, pack.compare_price.toLocaleString(), " ", txt.da), savings > 0 && /* @__PURE__ */ React.createElement("span", { className: "pack-save-tag" }, txt.save, " ", savings.toLocaleString(), " ", txt.da)), /* @__PURE__ */ React.createElement("button", { className: "btn-pack-add", onClick: () => addPack(pack) }, txt.add))));
+      return /* @__PURE__ */ React.createElement("div", { key: pack.id, className: "pack-card reveal" }, /* @__PURE__ */ React.createElement("div", { className: "pack-card-images" }, pack.image_url ? /* @__PURE__ */ React.createElement("img", { src: window.mediaUrl?.(pack.image_url) || pack.image_url, alt: packName, className: "pack-cover-img" }) : imgs.length === 0 ? /* @__PURE__ */ React.createElement("div", { className: "pack-img-placeholder" }) : /* @__PURE__ */ React.createElement(PackSlider, { images: imgs }), savings > 0 && /* @__PURE__ */ React.createElement("span", { className: "pack-savings-badge" }, "\u2212", savings.toLocaleString(), " ", txt.da)), /* @__PURE__ */ React.createElement("div", { className: "pack-card-body" }, /* @__PURE__ */ React.createElement("h3", { className: "pack-card-name" }, packName), packDesc && /* @__PURE__ */ React.createElement("p", { className: "pack-card-desc" }, packDesc), /* @__PURE__ */ React.createElement("div", { className: "pack-chips" }, (pack.items || []).map((item, i) => /* @__PURE__ */ React.createElement("span", { key: i, className: "pack-chip" }, item.product_name || `P${item.product_id}`, item.quantity > 1 && /* @__PURE__ */ React.createElement("em", null, " \xD7", item.quantity)))), /* @__PURE__ */ React.createElement("div", { className: "pack-card-foot" }, /* @__PURE__ */ React.createElement("div", { className: "pack-price-block" }, /* @__PURE__ */ React.createElement("span", { className: "pack-price" }, (pack.price || 0).toLocaleString(), " ", txt.da), pack.compare_price > 0 && /* @__PURE__ */ React.createElement("span", { className: "pack-old-price" }, pack.compare_price.toLocaleString(), " ", txt.da), savings > 0 && /* @__PURE__ */ React.createElement("span", { className: "pack-save-tag" }, txt.save, " ", savings.toLocaleString(), " ", txt.da)), /* @__PURE__ */ React.createElement("button", { className: "btn-pack-add", onClick: () => addPack(pack) }, txt.add))));
     }))));
   };
   Object.assign(window, { RewardsScene, TrustScene, StoryScene, PackScene, Footer });

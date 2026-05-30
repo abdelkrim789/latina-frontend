@@ -2821,6 +2821,8 @@ Nouveau stock pour "${product.name_fr}":`, String(product.stock));
     const [productSearch, setProductSearch] = useState("");
     const [productResults, setProductResults] = useState([]);
     const [searchLoading, setSearchLoading] = useState(false);
+    const [imageFile, setImageFile] = useState(null);
+    const [imagePreview, setImagePreview] = useState("");
     const emptyForm = {
       name_fr: "",
       name_ar: "",
@@ -2878,6 +2880,8 @@ Nouveau stock pour "${product.name_fr}":`, String(product.stock));
     const setItemQty = (pid, qty) => set("items", form.items.map((i) => i.product_id === pid ? { ...i, quantity: Number(qty) } : i));
     const openNew = () => {
       setForm(emptyForm);
+      setImageFile(null);
+      setImagePreview("");
       setModal({});
     };
     const openEdit = (p) => {
@@ -2899,6 +2903,8 @@ Nouveau stock pour "${product.name_fr}":`, String(product.stock));
           _img: i.product?.primary_image?.url
         }))
       });
+      setImageFile(null);
+      setImagePreview(p.image_url || "");
       setModal(p);
     };
     const save = async () => {
@@ -2918,8 +2924,22 @@ Nouveau stock pour "${product.name_fr}":`, String(product.stock));
           compare_price: form.compare_price ? Number(form.compare_price) : null,
           items: form.items.map((i) => ({ product_id: i.product_id, quantity: i.quantity }))
         };
-        if (modal?.id) await latinaApi.admin.put(`/packs/${modal.id}`, payload);
-        else await latinaApi.admin.post("/packs", payload);
+        let saved;
+        if (modal?.id) saved = await latinaApi.admin.put(`/packs/${modal.id}`, payload);
+        else saved = await latinaApi.admin.post("/packs", payload);
+        if (imageFile) {
+          const packId = saved?.id || modal?.id;
+          if (packId) {
+            const fd = new FormData();
+            fd.append("image", imageFile);
+            const token = localStorage.getItem("latina-admin-token");
+            await fetch(`${window.LATINA_API_BASE}/admin/packs/${packId}/image`, {
+              method: "POST",
+              headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+              body: fd
+            });
+          }
+        }
         toast(modal?.id ? "Pack mis \xE0 jour" : "Pack cr\xE9\xE9", "ok");
         setModal(null);
         load();
@@ -2989,7 +3009,30 @@ Nouveau stock pour "${product.name_fr}":`, String(product.stock));
         onChange: (e) => setItemQty(item.product_id, e.target.value),
         style: { width: 52, padding: "4px 8px", border: "1px solid var(--cream-300)", borderRadius: 6, fontFamily: "inherit", textAlign: "center" }
       }
-    )), /* @__PURE__ */ React.createElement("button", { onClick: () => removeItem(item.product_id), style: { background: "none", border: "none", cursor: "pointer", color: "#8A7464", fontSize: 16 } }, "\u2715"))), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, color: "#8A7464", textAlign: "right" } }, "Total produits individuels: ", /* @__PURE__ */ React.createElement("strong", null, totalProductPrice.toLocaleString(), " DA"), form.price && Number(form.price) < totalProductPrice && /* @__PURE__ */ React.createElement("span", { style: { color: "#16a34a", marginLeft: 8 } }, "\u2192 \xE9conomie de ", (totalProductPrice - Number(form.price)).toLocaleString(), " DA")))), /* @__PURE__ */ React.createElement("label", { style: { display: "flex", alignItems: "center", gap: 10, cursor: "pointer", userSelect: "none" } }, /* @__PURE__ */ React.createElement("input", { type: "checkbox", checked: form.is_active, onChange: (e) => set("is_active", e.target.checked), style: { width: 16, height: 16, accentColor: "var(--rose-500)" } }), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: 600 } }, "Activer imm\xE9diatement (visible c\xF4t\xE9 client)"))), /* @__PURE__ */ React.createElement("div", { className: "admin-modal-foot" }, /* @__PURE__ */ React.createElement("button", { className: "btn btn-ghost", onClick: () => setModal(null) }, "Annuler"), /* @__PURE__ */ React.createElement("button", { className: "btn btn-rose", onClick: save, disabled: saving }, saving ? "Enregistrement\u2026" : modal?.id ? "Mettre \xE0 jour" : "Cr\xE9er le pack")))));
+    )), /* @__PURE__ */ React.createElement("button", { onClick: () => removeItem(item.product_id), style: { background: "none", border: "none", cursor: "pointer", color: "#8A7464", fontSize: 16 } }, "\u2715"))), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, color: "#8A7464", textAlign: "right" } }, "Total produits individuels: ", /* @__PURE__ */ React.createElement("strong", null, totalProductPrice.toLocaleString(), " DA"), form.price && Number(form.price) < totalProductPrice && /* @__PURE__ */ React.createElement("span", { style: { color: "#16a34a", marginLeft: 8 } }, "\u2192 \xE9conomie de ", (totalProductPrice - Number(form.price)).toLocaleString(), " DA")))), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "admin-label", style: { marginBottom: 8 } }, "Image du pack (optionnel)"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 14, alignItems: "flex-start" } }, imagePreview && /* @__PURE__ */ React.createElement("div", { style: { position: "relative", flexShrink: 0 } }, /* @__PURE__ */ React.createElement("img", { src: imagePreview, style: { width: 90, height: 90, objectFit: "cover", borderRadius: 10, border: "1px solid var(--cream-300)" } }), /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => {
+          setImageFile(null);
+          setImagePreview("");
+        },
+        style: { position: "absolute", top: -6, right: -6, background: "var(--rose-500)", color: "#fff", border: "none", borderRadius: "50%", width: 20, height: 20, cursor: "pointer", fontSize: 11, lineHeight: 1 }
+      },
+      "\u2715"
+    )), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        type: "file",
+        accept: "image/*",
+        onChange: (e) => {
+          const file = e.target.files?.[0];
+          if (!file) return;
+          setImageFile(file);
+          setImagePreview(URL.createObjectURL(file));
+        },
+        style: { fontSize: 13, display: "block", marginBottom: 6 }
+      }
+    ), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 11, color: "#8A7464", lineHeight: 1.5 } }, "Si aucune image \u2014 les photos des produits d\xE9filent automatiquement c\xF4t\xE9 client.")))), /* @__PURE__ */ React.createElement("label", { style: { display: "flex", alignItems: "center", gap: 10, cursor: "pointer", userSelect: "none" } }, /* @__PURE__ */ React.createElement("input", { type: "checkbox", checked: form.is_active, onChange: (e) => set("is_active", e.target.checked), style: { width: 16, height: 16, accentColor: "var(--rose-500)" } }), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: 600 } }, "Activer imm\xE9diatement (visible c\xF4t\xE9 client)"))), /* @__PURE__ */ React.createElement("div", { className: "admin-modal-foot" }, /* @__PURE__ */ React.createElement("button", { className: "btn btn-ghost", onClick: () => setModal(null) }, "Annuler"), /* @__PURE__ */ React.createElement("button", { className: "btn btn-rose", onClick: save, disabled: saving }, saving ? "Enregistrement\u2026" : modal?.id ? "Mettre \xE0 jour" : "Cr\xE9er le pack")))));
   };
   var PAGE_TITLES_FR = {
     dashboard: "Dashboard",

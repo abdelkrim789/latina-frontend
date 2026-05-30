@@ -1967,6 +1967,45 @@ html, body {
   height: 100%;
   background: var(--cream-200, #E8D9CA);
 }
+/* custom cover image */
+.pack-cover-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* product image slider */
+.pack-slider { position: absolute; inset: 0; }
+.pack-slider-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity .7s ease;
+}
+.pack-slider-img.active { opacity: 1; }
+.pack-slider-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 5;
+}
+.pack-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.5);
+  cursor: pointer;
+  transition: background .2s, transform .2s;
+  display: inline-block;
+}
+.pack-dot.active { background: #fff; transform: scale(1.35); }
 .pack-savings-badge {
   position: absolute;
   top: 12px;

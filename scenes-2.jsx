@@ -1574,6 +1574,32 @@ const StoryScene = ({ lang }) => {
   );
 };
 
+/* ── Pack image slider (shown when no custom cover image) ── */
+const PackSlider = ({ images }) => {
+  const [idx, setIdx] = useState(0);
+  const total = images.length;
+  useEffect(() => {
+    if (total <= 1) return;
+    const iv = setInterval(() => setIdx(i => (i + 1) % total), 3000);
+    return () => clearInterval(iv);
+  }, [total]);
+  return (
+    <div className="pack-slider">
+      {images.map((src, i) => (
+        <img key={i} src={window.mediaUrl?.(src) || src} alt=""
+          className={`pack-slider-img${i === idx ? " active" : ""}`} />
+      ))}
+      {total > 1 && (
+        <div className="pack-slider-dots">
+          {images.map((_, i) => (
+            <span key={i} className={`pack-dot${i === idx ? " active" : ""}`} onClick={() => setIdx(i)} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 /* ============================================================
    PACK SCENE — curated outfits / التنسيقات
    ============================================================ */
@@ -1627,18 +1653,13 @@ const PackScene = ({ lang, onAddToCart }) => {
             const packDesc = lang === "ar" ? (pack.description_ar || pack.description_fr) : pack.description_fr;
             return (
               <div key={pack.id} className="pack-card reveal">
-                {/* ── image collage ── */}
-                <div className="pack-card-images" data-count={Math.min(imgs.length, 3) || 1}>
-                  {imgs.length === 0
-                    ? <div className="pack-img-placeholder" />
-                    : imgs.slice(0, 3).map((src, idx) => (
-                        <img
-                          key={idx}
-                          src={window.mediaUrl?.(src) || src}
-                          alt=""
-                          className={`pack-img pack-img--${idx}`}
-                        />
-                      ))
+                {/* ── image: custom cover OR product slider ── */}
+                <div className="pack-card-images">
+                  {pack.image_url
+                    ? <img src={window.mediaUrl?.(pack.image_url) || pack.image_url} alt={packName} className="pack-cover-img" />
+                    : imgs.length === 0
+                      ? <div className="pack-img-placeholder" />
+                      : <PackSlider images={imgs} />
                   }
                   {savings > 0 && (
                     <span className="pack-savings-badge">−{savings.toLocaleString()} {txt.da}</span>
