@@ -1268,7 +1268,6 @@
         setLoaded(true);
       }).catch(() => setLoaded(true));
     }, []);
-    if (!loaded || packs.length === 0) return null;
     const txt = {
       fr: { eyebrow: "S\xE9lection exclusive", title: "Nos Tenues", subtitle: "Des ensembles curat\xE9s pour vous", save: "Vous \xE9conomisez", add: "Ajouter le pack", da: "DA" },
       ar: { eyebrow: "\u0627\u062E\u062A\u064A\u0627\u0631 \u062D\u0635\u0631\u064A", title: "\u062A\u0646\u0633\u064A\u0642\u0627\u062A\u0646\u0627", subtitle: "\u0645\u062C\u0645\u0648\u0639\u0627\u062A \u0645\u0646\u062A\u0642\u0627\u0629 \u0628\u0639\u0646\u0627\u064A\u0629 \u0644\u0643", save: "\u062A\u0648\u0641\u064A\u0631", add: "\u0625\u0636\u0627\u0641\u0629 \u0627\u0644\u062A\u0646\u0633\u064A\u0642", da: "\u062F\u062C" },
@@ -1289,7 +1288,7 @@
         }
       });
     };
-    return /* @__PURE__ */ React.createElement("section", { className: "scene-packs", ref: sceneRef, id: "packs" }, /* @__PURE__ */ React.createElement("div", { className: "packs-inner" }, /* @__PURE__ */ React.createElement("div", { className: "packs-header reveal" }, /* @__PURE__ */ React.createElement("span", { className: "packs-eyebrow" }, txt.eyebrow), /* @__PURE__ */ React.createElement("h2", { className: "packs-title" }, txt.title), /* @__PURE__ */ React.createElement("p", { className: "packs-subtitle" }, txt.subtitle)), /* @__PURE__ */ React.createElement("div", { className: "packs-grid" }, packs.map((pack) => {
+    return /* @__PURE__ */ React.createElement("section", { className: `scene-packs${!loaded || packs.length === 0 ? " scene-packs--empty" : ""}`, ref: sceneRef, id: "packs" }, loaded && packs.length > 0 && /* @__PURE__ */ React.createElement("div", { className: "packs-inner" }, /* @__PURE__ */ React.createElement("div", { className: "packs-header reveal" }, /* @__PURE__ */ React.createElement("span", { className: "packs-eyebrow" }, txt.eyebrow), /* @__PURE__ */ React.createElement("h2", { className: "packs-title" }, txt.title), /* @__PURE__ */ React.createElement("p", { className: "packs-subtitle" }, txt.subtitle)), /* @__PURE__ */ React.createElement("div", { className: "packs-grid" }, packs.map((pack) => {
       const savings = pack.compare_price ? pack.compare_price - pack.price : 0;
       const imgs = (pack.items || []).map((i) => i.image_url).filter(Boolean);
       const packName = lang === "ar" ? pack.name_ar || pack.name_fr : pack.name_fr;

@@ -1589,8 +1589,6 @@ const PackScene = ({ lang, onAddToCart }) => {
       .catch(() => setLoaded(true));
   }, []);
 
-  if (!loaded || packs.length === 0) return null;
-
   const txt = {
     fr: { eyebrow: "Sélection exclusive", title: "Nos Tenues",  subtitle: "Des ensembles curatés pour vous", save: "Vous économisez", add: "Ajouter le pack", da: "DA" },
     ar: { eyebrow: "اختيار حصري",        title: "تنسيقاتنا",   subtitle: "مجموعات منتقاة بعناية لك",    save: "توفير",          add: "إضافة التنسيق",   da: "دج" },
@@ -1614,8 +1612,8 @@ const PackScene = ({ lang, onAddToCart }) => {
   };
 
   return (
-    <section className="scene-packs" ref={sceneRef} id="packs">
-      <div className="packs-inner">
+    <section className={`scene-packs${!loaded || packs.length === 0 ? " scene-packs--empty" : ""}`} ref={sceneRef} id="packs">
+      {loaded && packs.length > 0 && <div className="packs-inner">
         <div className="packs-header reveal">
           <span className="packs-eyebrow">{txt.eyebrow}</span>
           <h2 className="packs-title">{txt.title}</h2>
@@ -1680,7 +1678,7 @@ const PackScene = ({ lang, onAddToCart }) => {
             );
           })}
         </div>
-      </div>
+      </div>}
     </section>
   );
 };

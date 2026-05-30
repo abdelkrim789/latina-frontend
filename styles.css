@@ -1877,6 +1877,7 @@ html, body {
   background: var(--cream-50, #FDF9F5);
   padding: 100px 24px 120px;
 }
+.scene-packs--empty { padding: 0; background: none; }
 .packs-inner  { max-width: 1200px; margin: 0 auto; }
 .packs-header { text-align: center; margin-bottom: 64px; }
 .packs-eyebrow {
