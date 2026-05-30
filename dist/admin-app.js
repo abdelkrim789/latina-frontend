@@ -3009,30 +3009,72 @@ Nouveau stock pour "${product.name_fr}":`, String(product.stock));
         onChange: (e) => setItemQty(item.product_id, e.target.value),
         style: { width: 52, padding: "4px 8px", border: "1px solid var(--cream-300)", borderRadius: 6, fontFamily: "inherit", textAlign: "center" }
       }
-    )), /* @__PURE__ */ React.createElement("button", { onClick: () => removeItem(item.product_id), style: { background: "none", border: "none", cursor: "pointer", color: "#8A7464", fontSize: 16 } }, "\u2715"))), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, color: "#8A7464", textAlign: "right" } }, "Total produits individuels: ", /* @__PURE__ */ React.createElement("strong", null, totalProductPrice.toLocaleString(), " DA"), form.price && Number(form.price) < totalProductPrice && /* @__PURE__ */ React.createElement("span", { style: { color: "#16a34a", marginLeft: 8 } }, "\u2192 \xE9conomie de ", (totalProductPrice - Number(form.price)).toLocaleString(), " DA")))), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "admin-label", style: { marginBottom: 8 } }, "Image du pack (optionnel)"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 14, alignItems: "flex-start" } }, imagePreview && /* @__PURE__ */ React.createElement("div", { style: { position: "relative", flexShrink: 0 } }, /* @__PURE__ */ React.createElement("img", { src: imagePreview, style: { width: 90, height: 90, objectFit: "cover", borderRadius: 10, border: "1px solid var(--cream-300)" } }), /* @__PURE__ */ React.createElement(
-      "button",
+    )), /* @__PURE__ */ React.createElement("button", { onClick: () => removeItem(item.product_id), style: { background: "none", border: "none", cursor: "pointer", color: "#8A7464", fontSize: 16 } }, "\u2715"))), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, color: "#8A7464", textAlign: "right" } }, "Total produits individuels: ", /* @__PURE__ */ React.createElement("strong", null, totalProductPrice.toLocaleString(), " DA"), form.price && Number(form.price) < totalProductPrice && /* @__PURE__ */ React.createElement("span", { style: { color: "#16a34a", marginLeft: 8 } }, "\u2192 \xE9conomie de ", (totalProductPrice - Number(form.price)).toLocaleString(), " DA")))), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "admin-label", style: { marginBottom: 8 } }, "Image du pack (optionnel)"), /* @__PURE__ */ React.createElement(
+      "div",
       {
-        onClick: () => {
-          setImageFile(null);
-          setImagePreview("");
+        onClick: () => document.getElementById("pack-img-input").click(),
+        style: {
+          position: "relative",
+          width: "100%",
+          aspectRatio: "16/9",
+          border: imagePreview ? "none" : "2px dashed rgba(198,139,111,.5)",
+          borderRadius: 12,
+          cursor: "pointer",
+          overflow: "hidden",
+          background: imagePreview ? "#000" : "rgba(198,139,111,.05)",
+          transition: "border-color .2s, background .2s"
         },
-        style: { position: "absolute", top: -6, right: -6, background: "var(--rose-500)", color: "#fff", border: "none", borderRadius: "50%", width: 20, height: 20, cursor: "pointer", fontSize: 11, lineHeight: 1 }
+        onMouseEnter: (e) => {
+          if (!imagePreview) e.currentTarget.style.borderColor = "rgba(198,139,111,.9)";
+        },
+        onMouseLeave: (e) => {
+          if (!imagePreview) e.currentTarget.style.borderColor = "rgba(198,139,111,.5)";
+        }
       },
-      "\u2715"
-    )), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ React.createElement(
+      imagePreview ? /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("img", { src: imagePreview, style: { width: "100%", height: "100%", objectFit: "cover", display: "block" } }), /* @__PURE__ */ React.createElement(
+        "div",
+        {
+          style: {
+            position: "absolute",
+            inset: 0,
+            background: "rgba(0,0,0,.45)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            opacity: 0,
+            transition: "opacity .2s"
+          },
+          onMouseEnter: (e) => e.currentTarget.style.opacity = 1,
+          onMouseLeave: (e) => e.currentTarget.style.opacity = 0
+        },
+        /* @__PURE__ */ React.createElement("span", { style: { color: "#fff", fontSize: 13, fontWeight: 600, letterSpacing: ".3px" } }, "Changer l'image")
+      ), /* @__PURE__ */ React.createElement(
+        "button",
+        {
+          onClick: (e) => {
+            e.stopPropagation();
+            setImageFile(null);
+            setImagePreview("");
+          },
+          style: { position: "absolute", top: 8, right: 8, background: "rgba(0,0,0,.65)", color: "#fff", border: "none", borderRadius: "50%", width: 26, height: 26, cursor: "pointer", fontSize: 13, display: "flex", alignItems: "center", justifyContent: "center" }
+        },
+        "\u2715"
+      )) : /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 10 } }, /* @__PURE__ */ React.createElement("svg", { width: "36", height: "36", viewBox: "0 0 24 24", fill: "none", stroke: "rgba(198,139,111,.8)", strokeWidth: "1.4", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ React.createElement("path", { d: "M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7" }), /* @__PURE__ */ React.createElement("circle", { cx: "9", cy: "9", r: "2" }), /* @__PURE__ */ React.createElement("path", { d: "M21 3l-5 5" }), /* @__PURE__ */ React.createElement("path", { d: "M16 3h5v5" }), /* @__PURE__ */ React.createElement("path", { d: "m3 21 6-6 3 3 4-5" })), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 13, color: "rgba(198,139,111,.9)", fontWeight: 600 } }, "Cliquer pour ajouter une photo"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 11, color: "var(--text-3,#8A7464)" } }, "JPG, PNG, WEBP \u2014 max 4 Mo"))
+    ), /* @__PURE__ */ React.createElement(
       "input",
       {
+        id: "pack-img-input",
         type: "file",
         accept: "image/*",
+        style: { display: "none" },
         onChange: (e) => {
           const file = e.target.files?.[0];
           if (!file) return;
           setImageFile(file);
           setImagePreview(URL.createObjectURL(file));
-        },
-        style: { fontSize: 13, display: "block", marginBottom: 6 }
+        }
       }
-    ), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 11, color: "#8A7464", lineHeight: 1.5 } }, "Si aucune image \u2014 les photos des produits d\xE9filent automatiquement c\xF4t\xE9 client.")))), /* @__PURE__ */ React.createElement("label", { style: { display: "flex", alignItems: "center", gap: 10, cursor: "pointer", userSelect: "none" } }, /* @__PURE__ */ React.createElement("input", { type: "checkbox", checked: form.is_active, onChange: (e) => set("is_active", e.target.checked), style: { width: 16, height: 16, accentColor: "var(--rose-500)" } }), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: 600 } }, "Activer imm\xE9diatement (visible c\xF4t\xE9 client)"))), /* @__PURE__ */ React.createElement("div", { className: "admin-modal-foot" }, /* @__PURE__ */ React.createElement("button", { className: "btn btn-ghost", onClick: () => setModal(null) }, "Annuler"), /* @__PURE__ */ React.createElement("button", { className: "btn btn-rose", onClick: save, disabled: saving }, saving ? "Enregistrement\u2026" : modal?.id ? "Mettre \xE0 jour" : "Cr\xE9er le pack")))));
+    ), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 11, color: "var(--text-3,#8A7464)", lineHeight: 1.5, marginTop: 6 } }, "Sans image personnalis\xE9e, les photos des produits d\xE9filent automatiquement c\xF4t\xE9 client.")), /* @__PURE__ */ React.createElement("label", { style: { display: "flex", alignItems: "center", gap: 10, cursor: "pointer", userSelect: "none" } }, /* @__PURE__ */ React.createElement("input", { type: "checkbox", checked: form.is_active, onChange: (e) => set("is_active", e.target.checked), style: { width: 16, height: 16, accentColor: "var(--rose-500)" } }), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: 600 } }, "Activer imm\xE9diatement (visible c\xF4t\xE9 client)"))), /* @__PURE__ */ React.createElement("div", { className: "admin-modal-foot" }, /* @__PURE__ */ React.createElement("button", { className: "btn btn-ghost", onClick: () => setModal(null) }, "Annuler"), /* @__PURE__ */ React.createElement("button", { className: "btn btn-rose", onClick: save, disabled: saving }, saving ? "Enregistrement\u2026" : modal?.id ? "Mettre \xE0 jour" : "Cr\xE9er le pack")))));
   };
   var PAGE_TITLES_FR = {
     dashboard: "Dashboard",
