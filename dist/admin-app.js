@@ -790,10 +790,12 @@
       const items = Array.from(files).filter((f) => f.type.startsWith("image/")).map((f) => ({
         id: Math.random().toString(36).slice(2),
         file: f,
-        preview: URL.createObjectURL(f)
+        preview: URL.createObjectURL(f),
+        color: ""
       }));
       setPendingFiles((prev) => [...prev, ...items]);
     };
+    const setPendingColor = (id, color) => setPendingFiles((ps) => ps.map((p) => p.id === id ? { ...p, color } : p));
     const removePending = (id) => setPendingFiles((prev) => {
       const it = prev.find((f) => f.id === id);
       if (it) URL.revokeObjectURL(it.preview);
@@ -808,6 +810,7 @@
         try {
           const fd = new FormData();
           fd.append("image", item.file);
+          if (item.color) fd.append("color", item.color);
           await fetch(`${root}/admin/products/${pid}/media`, {
             method: "POST",
             headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
@@ -980,7 +983,17 @@
           onClick: () => img._saved ? deleteImage(img.id) : removePending(img._pendingId)
         },
         "\u2715"
-      )))), /* @__PURE__ */ React.createElement("div", { className: "pm-img-thumb pm-img-add-thumb", onClick: () => fileRef.current?.click() }, uploading ? /* @__PURE__ */ React.createElement("span", { className: "admin-spinner", style: { width: 16, height: 16 } }) : /* @__PURE__ */ React.createElement("span", null, "+"))), pendingFiles.length > 0 && /* @__PURE__ */ React.createElement("div", { className: "pm-img-pending-notice" }, pendingFiles.length, " photo", pendingFiles.length > 1 ? "s" : "", " en attente \u2014 sauvegard\xE9e", pendingFiles.length > 1 ? "s" : "", " avec le produit")),
+      )), !img._saved && /* @__PURE__ */ React.createElement(
+        "select",
+        {
+          title: "Lier \xE0 une couleur",
+          value: img.color || "",
+          onChange: (e) => setPendingColor(img._pendingId, e.target.value),
+          style: { position: "absolute", bottom: 0, left: 0, right: 0, fontSize: 9, border: "none", background: "rgba(0,0,0,.55)", color: "#fff", padding: "2px 4px", cursor: "pointer" }
+        },
+        /* @__PURE__ */ React.createElement("option", { value: "" }, "Couleur\u2026"),
+        Object.keys(COLOR_HEX).map((c) => /* @__PURE__ */ React.createElement("option", { key: c, value: c }, c))
+      ))), /* @__PURE__ */ React.createElement("div", { className: "pm-img-thumb pm-img-add-thumb", onClick: () => fileRef.current?.click() }, uploading ? /* @__PURE__ */ React.createElement("span", { className: "admin-spinner", style: { width: 16, height: 16 } }) : /* @__PURE__ */ React.createElement("span", null, "+"))), pendingFiles.length > 0 && /* @__PURE__ */ React.createElement("div", { className: "pm-img-pending-notice" }, pendingFiles.length, " photo", pendingFiles.length > 1 ? "s" : "", " en attente \u2014 sauvegard\xE9e", pendingFiles.length > 1 ? "s" : "", " avec le produit")),
       /* @__PURE__ */ React.createElement(
         "input",
         {
