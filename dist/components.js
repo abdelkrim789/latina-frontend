@@ -26,6 +26,8 @@
   var ProductCard = ({ product, onAdd, onQuickView, onWishlist, wishlisted, badge, lang = "fr" }) => {
     const ref = useRef(null);
     const [hover, setHover] = useState(false);
+    const [selectedColor, setSelectedColor] = useState(null);
+    const [slideIdx, setSlideIdx] = useState(0);
     const colorSwatches = useMemo(() => {
       if (!product.variants?.length) return [];
       const seen = {};
@@ -36,6 +38,28 @@
       });
       return Object.entries(seen).map(([color, hasStock]) => ({ color, hasStock }));
     }, [product.variants]);
+    const variantImageMap = useMemo(() => {
+      const map = {};
+      const media = product.media || [];
+      const variants = product.variants || [];
+      media.forEach((m) => {
+        if (!m.variant_id) return;
+        const v = variants.find((v2) => v2.id === m.variant_id);
+        if (v && v.color) map[v.color] = m.url;
+      });
+      return map;
+    }, [product.media, product.variants]);
+    const allMediaUrls = useMemo(() => {
+      const media = product.media || [];
+      if (media.length) return media.map((m) => m.url).filter(Boolean);
+      return product.img ? [product.img] : [];
+    }, [product.media, product.img]);
+    const currentImg = selectedColor ? variantImageMap[selectedColor] || product.img || allMediaUrls[0] || null : allMediaUrls[slideIdx] || product.img || null;
+    useEffect(() => {
+      if (selectedColor || allMediaUrls.length <= 1) return;
+      const iv = setInterval(() => setSlideIdx((i) => (i + 1) % allMediaUrls.length), 3500);
+      return () => clearInterval(iv);
+    }, [selectedColor, allMediaUrls.length]);
     const onMouseMove = (e) => {
       const el = ref.current;
       if (!el) return;
@@ -104,13 +128,27 @@
           onClick: handleWishlist
         },
         /* @__PURE__ */ React.createElement(IconHeart, { width: 14, height: 14 })
-      ), /* @__PURE__ */ React.createElement("div", { className: "product-image" }, product.img || product.image ? /* @__PURE__ */ React.createElement("img", { src: product.img || product.image, alt: product.name, className: "pc-img", loading: "lazy" }) : /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("span", { className: "ph-label" }, product.cat || catLabel), /* @__PURE__ */ React.createElement("span", { className: "ph-sku" }, "SKU \xB7 ", product.sku)), outOfStock && /* @__PURE__ */ React.createElement("div", { className: "pc-out-overlay" }, labels.out), /* @__PURE__ */ React.createElement("button", { type: "button", className: "pc-quick", onClick: handleQuickView }, /* @__PURE__ */ React.createElement(IconSearch, { width: 12, height: 12 }), /* @__PURE__ */ React.createElement("span", null, labels.quick))), /* @__PURE__ */ React.createElement("div", { className: "meta" }, catLabel && /* @__PURE__ */ React.createElement("span", { className: "pc-cat-tag" }, catLabel), /* @__PURE__ */ React.createElement("div", { className: "pc-name-row" }, /* @__PURE__ */ React.createElement("span", { className: "name" }, product.name)), visibleSwatches.length > 0 && /* @__PURE__ */ React.createElement("div", { className: "pc-colors" }, visibleSwatches.map(({ color, hasStock }) => /* @__PURE__ */ React.createElement(
+      ), /* @__PURE__ */ React.createElement("div", { className: "product-image" }, currentImg ? /* @__PURE__ */ React.createElement("img", { src: currentImg, alt: product.name, className: "pc-img", loading: "lazy" }) : /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("span", { className: "ph-label" }, product.cat || catLabel), /* @__PURE__ */ React.createElement("span", { className: "ph-sku" }, "SKU \xB7 ", product.sku)), allMediaUrls.length > 1 && !selectedColor && /* @__PURE__ */ React.createElement("div", { className: "pc-slide-dots" }, allMediaUrls.map((_, i) => /* @__PURE__ */ React.createElement(
+        "span",
+        {
+          key: i,
+          className: `pc-slide-dot${i === slideIdx ? " active" : ""}`,
+          onClick: (e) => {
+            e.stopPropagation();
+            setSlideIdx(i);
+          }
+        }
+      ))), outOfStock && /* @__PURE__ */ React.createElement("div", { className: "pc-out-overlay" }, labels.out), /* @__PURE__ */ React.createElement("button", { type: "button", className: "pc-quick", onClick: handleQuickView }, /* @__PURE__ */ React.createElement(IconSearch, { width: 12, height: 12 }), /* @__PURE__ */ React.createElement("span", null, labels.quick))), /* @__PURE__ */ React.createElement("div", { className: "meta" }, catLabel && /* @__PURE__ */ React.createElement("span", { className: "pc-cat-tag" }, catLabel), /* @__PURE__ */ React.createElement("div", { className: "pc-name-row" }, /* @__PURE__ */ React.createElement("span", { className: "name" }, product.name)), visibleSwatches.length > 0 && /* @__PURE__ */ React.createElement("div", { className: "pc-colors" }, visibleSwatches.map(({ color, hasStock }) => /* @__PURE__ */ React.createElement(
         "span",
         {
           key: color,
-          className: `pc-color-dot${hasStock ? "" : " sold-out"}`,
+          className: `pc-color-dot${hasStock ? "" : " sold-out"}${selectedColor === color ? " selected" : ""}`,
           style: { background: COLOR_SWATCHES[color] || "#ccc" },
-          title: color
+          title: color,
+          onClick: (e) => {
+            e.stopPropagation();
+            setSelectedColor((c) => c === color ? null : color);
+          }
         }
       )), hiddenCount > 0 && /* @__PURE__ */ React.createElement("span", { className: "pc-color-more" }, "+", hiddenCount)), /* @__PURE__ */ React.createElement("div", { className: "pc-price-row" }, /* @__PURE__ */ React.createElement("div", { className: "pc-prices" }, /* @__PURE__ */ React.createElement("span", { className: "price t-num" }, Number(product.price).toLocaleString("fr-DZ"), " DA"), hasDiscount && /* @__PURE__ */ React.createElement("span", { className: "pc-compare t-num" }, Number(product.compare).toLocaleString("fr-DZ"))), lowStock && /* @__PURE__ */ React.createElement("span", { className: "pc-low t-mono" }, labels.low, " ", stock), outOfStock ? /* @__PURE__ */ React.createElement("button", { type: "button", className: "pc-restock", onClick: (e) => {
         e.stopPropagation();

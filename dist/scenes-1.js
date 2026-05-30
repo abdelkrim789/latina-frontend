@@ -144,6 +144,7 @@
             heel: p.attributes?.heel_height ?? 0,
             audience: [p.segment || "ALL"],
             img: window.mediaUrl(p.primary_image?.url) || null,
+            media: (p.media || []).map((m) => ({ id: m.id, url: window.mediaUrl(m.url), variant_id: m.variant_id || null })),
             variants: vs,
             _tab,
             _apiId: p.id,
